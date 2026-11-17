@@ -1,0 +1,7 @@
+.wrapper {
+  margin-bottom: var(--cds-spacing-06);
+}
+
+.retryButton {
+  margin-top: var(--cds-spacing-03);
+}

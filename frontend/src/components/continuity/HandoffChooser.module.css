@@ -1,0 +1,7 @@
+.radioGroup {
+  gap: var(--cds-spacing-03);
+}
+
+.descriptionText {
+  color: var(--cds-text-secondary);
+}

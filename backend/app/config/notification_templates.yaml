@@ -1,0 +1,43 @@
+# Notification templates for approved update types
+# Templates use safe preview text with no case or account details pre-login
+
+templates:
+  status_change:
+    notification_type: "case_update"
+    safe_preview_text: "Your case has been updated"
+    subject_text: "Case status update"
+    body_text: "The status of your case has been updated. Sign in to view the details."
+    approved_wording_set: "status_change_v1"
+    deep_link_target: "case_view"
+
+  owner_change:
+    notification_type: "case_update"
+    safe_preview_text: "Your case has been assigned to a specialist"
+    subject_text: "Case assignment update"
+    body_text: "Your case has been assigned to a specialist team. Sign in to view who is helping you."
+    approved_wording_set: "owner_change_v1"
+    deep_link_target: "case_view"
+
+  expected_by_change:
+    notification_type: "case_update"
+    safe_preview_text: "Timing update for your case"
+    subject_text: "Case timing update"
+    body_text: "We have updated the expected timing for your case. Sign in to see the latest information."
+    approved_wording_set: "expected_by_change_v1"
+    deep_link_target: "case_view"
+
+  customer_action_requested:
+    notification_type: "action_required"
+    safe_preview_text: "Action needed on your case"
+    subject_text: "Action required"
+    body_text: "We need some information from you to progress your case. Sign in to provide what we need."
+    approved_wording_set: "customer_action_requested_v1"
+    deep_link_target: "case_view"
+
+  incident_update:
+    notification_type: "service_update"
+    safe_preview_text: "Service update affecting your case"
+    subject_text: "Service update"
+    body_text: "There has been a service update that may affect your case. Sign in for more details."
+    approved_wording_set: "incident_update_v1"
+    deep_link_target: "case_view"

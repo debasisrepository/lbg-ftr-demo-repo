@@ -1,0 +1,15 @@
+# Protected Actions Fallback Guidance Catalogue
+# Format: {action_domain}_{action_type}: guidance_text
+
+fallback_guidance:
+  # Card domain actions
+  card_stop_card: "We were unable to stop your card automatically. Please call us immediately on 0345 300 0000 to secure your account."
+  card_replace_card: "We were unable to process your card replacement request. Please visit your nearest branch or call 0345 300 0000 for assistance."
+  card_update_limit: "We were unable to update your card limit. Please try again later or contact us on 0345 300 0000."
+  card_freeze_card: "We were unable to freeze your card. For immediate help, please call 0345 300 0000."
+  
+  # Money domain actions
+  money_transfer: "We were unable to complete your transfer. Please try again later or use telephone banking on 0345 300 0000."
+  money_standing_order: "We were unable to set up your standing order. Please visit your nearest branch or call 0345 300 0000."
+  money_payment: "We were unable to process your payment. Please try again or contact us on 0345 300 0000 for assistance."
+  money_direct_debit: "We were unable to manage your Direct Debit. Please call us on 0345 300 0000 or visit your nearest branch."
