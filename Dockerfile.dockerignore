@@ -1,0 +1,4 @@
+# Exclude frontend node_modules and build output to prevent
+# overwriting the image's installed dependencies
+frontend/node_modules/
+frontend/dist/

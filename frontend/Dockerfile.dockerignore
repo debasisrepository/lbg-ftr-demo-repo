@@ -1,0 +1,13 @@
+backend/node_modules
+backend/.venv
+backend/__pycache__
+backend/app.db
+backend/e2e.db
+backend/.pytest_cache
+backend/.quality
+backend/clear_path_backend.egg-info
+graphify-out
+.git
+.verification
+.pass_summaries
+.handoff
