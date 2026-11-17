@@ -1,0 +1,221 @@
+{
+  "status": "issues_found",
+  "target_path": "/repos/lbg-ftr-demo-repo/backend",
+  "requested_linters": [
+    "ruff"
+  ],
+  "applicable_linters": [
+    "ruff",
+    "shellcheck",
+    "shfmt"
+  ],
+  "selected_linters": [
+    "ruff"
+  ],
+  "message": "All findings, including any findings omitted from the inline response, are available in the report files listed under `report_paths`.",
+  "summary": {
+    "errors": 170,
+    "warnings": 0,
+    "total_findings": 170,
+    "inline_findings": 20,
+    "remaining_findings": 150,
+    "linters_run": 1,
+    "linters_with_issues": 1,
+    "linters_unavailable": 0
+  },
+  "by_tool": {
+    "ruff": {
+      "status": "issues_found",
+      "errors": 170,
+      "warnings": 0,
+      "total_findings": 170,
+      "inline_findings": 20,
+      "remaining_findings": 150,
+      "files": [
+        {
+          "path": "/repos/lbg-ftr-demo-repo/backend/alembic/env.py",
+          "findings": [
+            {
+              "msg": "Import block is un-sorted or un-formatted",
+              "line": 1,
+              "column": 1,
+              "code": "I001"
+            },
+            {
+              "msg": "Import block is un-sorted or un-formatted",
+              "line": 9,
+              "column": 1,
+              "code": "I001"
+            },
+            {
+              "msg": "`app.services.audit.models` imported but unused",
+              "line": 18,
+              "column": 8,
+              "code": "F401"
+            }
+          ]
+        },
+        {
+          "path": "/repos/lbg-ftr-demo-repo/backend/alembic/versions/326975b912bc_initial_schema_with_all_21_tables.py",
+          "findings": [
+            {
+              "msg": "Import block is un-sorted or un-formatted",
+              "line": 8,
+              "column": 1,
+              "code": "I001"
+            }
+          ]
+        },
+        {
+          "path": "/repos/lbg-ftr-demo-repo/backend/alembic/versions/7cd303311b34_change_uuid_columns_from_varchar_to_.py",
+          "findings": [
+            {
+              "msg": "Import block is un-sorted or un-formatted",
+              "line": 8,
+              "column": 1,
+              "code": "I001"
+            }
+          ]
+        },
+        {
+          "path": "/repos/lbg-ftr-demo-repo/backend/app/adapters/base.py",
+          "findings": [
+            {
+              "msg": "Unnecessary `pass` statement",
+              "line": 32,
+              "column": 9,
+              "code": "PIE790"
+            }
+          ]
+        },
+        {
+          "path": "/repos/lbg-ftr-demo-repo/backend/app/adapters/gateway_client.py",
+          "findings": [
+            {
+              "msg": "Import block is un-sorted or un-formatted",
+              "line": 2,
+              "column": 1,
+              "code": "I001"
+            }
+          ]
+        },
+        {
+          "path": "/repos/lbg-ftr-demo-repo/backend/app/adapters/party_auth.py",
+          "findings": [
+            {
+              "msg": "Import block is un-sorted or un-formatted",
+              "line": 2,
+              "column": 1,
+              "code": "I001"
+            }
+          ]
+        },
+        {
+          "path": "/repos/lbg-ftr-demo-repo/backend/app/agents/base.py",
+          "findings": [
+            {
+              "msg": "Unnecessary `pass` statement",
+              "line": 26,
+              "column": 9,
+              "code": "PIE790"
+            }
+          ]
+        },
+        {
+          "path": "/repos/lbg-ftr-demo-repo/backend/app/agents/case_owner.py",
+          "findings": [
+            {
+              "msg": "`uuid` imported but unused",
+              "line": 2,
+              "column": 8,
+              "code": "F401"
+            }
+          ]
+        },
+        {
+          "path": "/repos/lbg-ftr-demo-repo/backend/app/agents/intake_triage.py",
+          "findings": [
+            {
+              "msg": "Import block is un-sorted or un-formatted",
+              "line": 1,
+              "column": 1,
+              "code": "I001"
+            }
+          ]
+        },
+        {
+          "path": "/repos/lbg-ftr-demo-repo/backend/app/api/auth_router.py",
+          "findings": [
+            {
+              "msg": "Import block is un-sorted or un-formatted",
+              "line": 1,
+              "column": 1,
+              "code": "I001"
+            },
+            {
+              "msg": "Do not perform function call `Depends` in argument defaults; instead, perform the call within the function, or read the default from a module-level singleton variable",
+              "line": 17,
+              "column": 19,
+              "code": "B008"
+            },
+            {
+              "msg": "Do not perform function call `Depends` in argument defaults; instead, perform the call within the function, or read the default from a module-level singleton variable",
+              "line": 42,
+              "column": 19,
+              "code": "B008"
+            },
+            {
+              "msg": "Do not perform function call `Depends` in argument defaults; instead, perform the call within the function, or read the default from a module-level singleton variable",
+              "line": 51,
+              "column": 29,
+              "code": "B008"
+            }
+          ]
+        },
+        {
+          "path": "/repos/lbg-ftr-demo-repo/backend/app/api/colleague/cases_router.py",
+          "findings": [
+            {
+              "msg": "Import block is un-sorted or un-formatted",
+              "line": 2,
+              "column": 1,
+              "code": "I001"
+            },
+            {
+              "msg": "Do not perform function call `Depends` in argument defaults; instead, perform the call within the function, or read the default from a module-level singleton variable",
+              "line": 32,
+              "column": 29,
+              "code": "B008"
+            },
+            {
+              "msg": "Do not perform function call `Depends` in argument defaults; instead, perform the call within the function, or read the default from a module-level singleton variable",
+              "line": 33,
+              "column": 19,
+              "code": "B008"
+            },
+            {
+              "msg": "Do not perform function call `Depends` in argument defaults; instead, perform the call within the function, or read the default from a module-level singleton variable",
+              "line": 68,
+              "column": 29,
+              "code": "B008"
+            },
+            {
+              "msg": "Do not perform function call `Depends` in argument defaults; instead, perform the call within the function, or read the default from a module-level singleton variable",
+              "line": 69,
+              "column": 19,
+              "code": "B008"
+            }
+          ]
+        }
+      ],
+      "report_path": "/repos/lbg-ftr-demo-repo/backend/.quality/lint/ruff-result.json",
+      "truncated": true
+    }
+  },
+  "report_dir": "/repos/lbg-ftr-demo-repo/backend/.quality/lint",
+  "report_paths": {
+    "summary": "/repos/lbg-ftr-demo-repo/backend/.quality/lint/summary.json",
+    "ruff": "/repos/lbg-ftr-demo-repo/backend/.quality/lint/ruff-result.json"
+  },
+  "truncated": true
+}

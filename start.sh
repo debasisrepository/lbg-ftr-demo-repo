@@ -153,10 +153,12 @@ python -m app.seed 2>/dev/null || true
 
 # Update CORS origins in .env before starting
 if [ -f .env ]; then
-    # Remove existing CORS_ORIGINS line and add new one
-    grep -v "^CORS_ORIGINS=" .env > .env.tmp 2>/dev/null || touch .env.tmp
-    echo "CORS_ORIGINS=http://localhost:$FRONTEND_PORT" >> .env.tmp
-    mv .env.tmp .env
+    # Remove existing CORS_ORIGINS line and add new one using sed in-place
+    if command -v sed >/dev/null 2>&1; then
+        sed -i.bak "/^CORS_ORIGINS=/d" .env 2>/dev/null || sed -i '' "/^CORS_ORIGINS=/d" .env 2>/dev/null || true
+        rm -f .env.bak
+    fi
+    echo "CORS_ORIGINS=http://localhost:$FRONTEND_PORT" >> .env
 fi
 
 # Start backend

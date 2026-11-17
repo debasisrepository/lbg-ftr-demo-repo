@@ -1,0 +1,27 @@
+# Exclude frontend node_modules and build output
+frontend/node_modules/
+frontend/dist/
+
+# Exclude backend virtual environment and cache
+backend/.venv/
+backend/__pycache__/
+backend/**/__pycache__/
+backend/.pytest_cache/
+
+# Exclude git and IDE files
+.git/
+.gitignore
+.vscode/
+.idea/
+
+# Exclude local config and data
+backend/.env
+backend/app.db
+backend/app.db-*
+
+# Exclude documentation and scripts
+*.md
+start.sh
+stop.sh
+start.bat
+stop.bat

@@ -1,0 +1,37 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Critical layout fallback */
+.app-layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+.app-sidebar {
+  width: 240px;
+  flex-shrink: 0;
+}
+
+.app-main {
+  flex: 1;
+  overflow: auto;
+}
+
+/* Global resets */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: 'Public Sans', 'Segoe UI', system-ui, sans-serif;
+  color: #1B2A2F;
+  font-size: 16px;
+  line-height: 1.5;
+  background: #F6F2EA;
+}
+
+h1, h2, h3, p {
+  margin: 0;
+}
