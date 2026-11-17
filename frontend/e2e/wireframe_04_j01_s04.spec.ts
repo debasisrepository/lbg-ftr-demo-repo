@@ -1,6 +1,48 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from './_pipeline_guard';
 
 test.describe('Wireframe 04 - Colleague Hand-off Pack', () => {
+  let caseId: string;
+  let caseRef: string;
+
+  test.beforeAll(async ({ browser }) => {
+    // Create a real case by doing the customer flow
+    const context = await browser.newContext();
+    const page = await context.newPage();
+    
+    // Login as customer
+    await page.goto('/login');
+    await page.getByLabel('Email').fill('admin@example.com');
+    await page.getByLabel('Password').fill('admin123');
+    await page.getByRole('button', { name: /sign in/i }).click();
+    await page.waitForURL('/');
+    
+    const customerToken = await page.evaluate(() => localStorage.getItem('access_token'));
+    
+    // Create resolve session
+    const resolveResponse = await page.request.post('/api/v1/resolve', {
+      headers: { 'Authorization': `Bearer ${customerToken}` },
+      data: {
+        message_text: 'Test case for colleague hand-off verification',
+        status_context_shown: true,
+      },
+    });
+    
+    const resolveTurn = await resolveResponse.json();
+    const sessionId = resolveTurn.session_id;
+    
+    // Request human help to create case
+    const humanRequestResponse = await page.request.post(`/api/v1/resolve/${sessionId}/human-request`, {
+      headers: { 'Authorization': `Bearer ${customerToken}` },
+      data: {},
+    });
+    
+    const humanRequestData = await humanRequestResponse.json();
+    caseId = humanRequestData.case_id;
+    caseRef = humanRequestData.case_ref;
+    
+    await context.close();
+  });
+
   test('colleague can open case and see hand-off pack with transcript', async ({ page }) => {
     // Log in as colleague
     await page.goto('/login');
@@ -14,20 +56,18 @@ test.describe('Wireframe 04 - Colleague Hand-off Pack', () => {
     // Navigate to colleague cases (team worklist)
     await page.goto('/colleague/cases');
     
-    // In a real flow, we'd click on a case from the worklist
-    // For now, navigate directly to a colleague case detail
-    // The case ID would come from the worklist or seed data
-    await page.goto('/colleague/cases/test-case-id');
+    // Navigate to the real case
+    await page.goto(`/colleague/cases/${caseId}`);
     
     // Verify case header
     await expect(page.getByText(/colleague desktop/i)).toBeVisible();
     await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
-    await expect(page.getByText(/case cp-/i).first()).toBeVisible();
+    await expect(page.getByText(caseRef).first()).toBeVisible();
     
     // Verify left column: one-screen summary
     await expect(page.getByRole('heading', { name: /one-screen summary/i })).toBeVisible();
-    await expect(page.getByText(/status/i)).toBeVisible();
-    await expect(page.getByText(/expected by/i)).toBeVisible();
+    await expect(page.getByText('Status', { exact: true })).toBeVisible();
+    await expect(page.getByText('Expected by', { exact: true })).toBeVisible();
     await expect(page.getByText(/why it came to us/i)).toBeVisible();
     await expect(page.getByText(/how it arrived/i)).toBeVisible();
     
@@ -44,7 +84,7 @@ test.describe('Wireframe 04 - Colleague Hand-off Pack', () => {
     // Verify reply composer
     await expect(page.getByText(/reply to/i)).toBeVisible();
     await expect(page.getByRole('textbox', { name: /reply/i })).toBeVisible();
-    await expect(page.getByRole('combobox', { name: /visibility/i })).toBeVisible();
+    await expect(page.locator('#vis')).toBeVisible();
     
     // Verify right column: evidence and timeline
     await expect(page.getByRole('heading', { name: /evidence/i })).toBeVisible();
@@ -64,15 +104,15 @@ test.describe('Wireframe 04 - Colleague Hand-off Pack', () => {
     
     await expect(page).toHaveURL('/');
     
-    // Navigate to a colleague case
-    await page.goto('/colleague/cases/test-case-id');
+    // Navigate to the real case
+    await page.goto(`/colleague/cases/${caseId}`);
     
     // Fill in reply
     const replyText = 'Hi, this is Priya from the fraud team. I\'ve reviewed your case and will update you shortly.';
     await page.getByRole('textbox', { name: /reply/i }).fill(replyText);
     
     // Ensure visibility is set to customer-visible
-    await page.getByRole('combobox', { name: /visibility/i }).selectOption('customer_and_colleague');
+    await page.locator('#vis').selectOption('customer_and_colleague');
     
     // Send reply
     await page.getByRole('button', { name: /send reply/i }).click();
@@ -90,15 +130,15 @@ test.describe('Wireframe 04 - Colleague Hand-off Pack', () => {
     
     await expect(page).toHaveURL('/');
     
-    // Navigate to a colleague case
-    await page.goto('/colleague/cases/test-case-id');
+    // Navigate to the real case
+    await page.goto(`/colleague/cases/${caseId}`);
     
     // Fill in colleague-only note
     const noteText = 'Internal note: Customer seems distressed, handle with care.';
     await page.getByRole('textbox', { name: /reply/i }).fill(noteText);
     
     // Set visibility to colleague-only
-    await page.getByRole('combobox', { name: /visibility/i }).selectOption('colleague_only');
+    await page.locator('#vis').selectOption('colleague_only');
     
     // Save as note
     await page.getByRole('button', { name: /save.*colleague-only/i }).click();

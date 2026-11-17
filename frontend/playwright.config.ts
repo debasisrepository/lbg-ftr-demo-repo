@@ -24,7 +24,7 @@ export default defineConfig({
     {
       command: `cd ../backend && ${python} -m alembic upgrade head && ${python} -c "from app.seed import seed_all; from app.database import SessionLocal; seed_all(SessionLocal())" && ${python} -m uvicorn app.main:app --host 127.0.0.1 --port ${backendPort}`,
       url: `http://127.0.0.1:${backendPort}/health`,
-      reuseExistingServer: false,
+      reuseExistingServer: true,
       timeout: 180_000,
       stdout: 'pipe',
       stderr: 'pipe',
@@ -35,7 +35,7 @@ export default defineConfig({
     {
       command: `npm run dev -- --host 127.0.0.1 --port ${frontendPort} --strictPort`,
       url: `http://127.0.0.1:${frontendPort}`,
-      reuseExistingServer: false,
+      reuseExistingServer: true,
       timeout: 180_000,
       stdout: 'pipe',
       stderr: 'pipe',

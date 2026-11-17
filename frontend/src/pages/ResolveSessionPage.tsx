@@ -150,9 +150,8 @@ export function ResolveSessionPage() {
     if (!sessionId) return;
 
     try {
-      await apiClient.post(`/v1/resolve/${sessionId}/human-request`, {});
-      alert('Your request has been escalated to a colleague');
-      navigate('/cases');
+      const response = await apiClient.post<{ case_id: string; case_ref: string }>(`/v1/resolve/${sessionId}/human-request`, {});
+      navigate(`/case-confirmation?caseId=${response.case_id}`);
     } catch (err) {
       console.error('Failed to request human:', err);
       setError(err instanceof Error ? err.message : 'Failed to request human assistance');

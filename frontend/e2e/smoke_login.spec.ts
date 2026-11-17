@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from './_pipeline_guard';
 
 test('smoke login: user can log in with seed credentials and see dashboard', async ({ page }) => {
   // Navigate to login page

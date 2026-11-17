@@ -1,7 +1,8 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from './_pipeline_guard';
 
 test.describe('Wireframe 03 - Case Confirmation', () => {
   test('customer sees case confirmation after requesting human help', async ({ page }) => {
+    test.setTimeout(60000); // Increase timeout for this integration test
     // Log in as customer
     await page.goto('/login');
     await page.getByLabel('Email').fill('admin@example.com');

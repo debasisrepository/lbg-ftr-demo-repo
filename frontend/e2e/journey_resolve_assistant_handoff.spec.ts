@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from './_pipeline_guard';
 
 /**
  * End-to-end journey test for the Clear Path API contracts and data flow:
