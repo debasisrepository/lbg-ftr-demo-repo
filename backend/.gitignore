@@ -1,0 +1,55 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+env/
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Project specific
+.env
+app.db
+app.db-shm
+app.db-wal
+*.db
+*.db-journal
+.pytest_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+_migration_check.db
+
+# Verification artifacts
+_start_server.py
+_stop_server.py
+_test.env
+_server.log
+_server.pid
+.verification/
