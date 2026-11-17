@@ -1,0 +1,21 @@
+# Expected-by explanatory text catalogue
+# Approved wording for expected-by commitments when no date is shown
+
+under_review:
+  default: "Timing is under review"
+  description: "Default text shown when commitment_state is under_review"
+
+withdrawn:
+  service_delay: "We're experiencing delays with this type of request. We'll update you as soon as we have a new timeframe."
+  dependency_pending: "We're waiting on additional information before we can provide a timeframe."
+  sla_breach: "We weren't able to meet the original timeframe. We're working on this and will update you soon."
+  customer_action_needed: "We need some information from you before we can proceed. Please check your messages."
+  specialist_review: "Your case requires specialist review. We'll provide a timeframe once the review is complete."
+  incident_affecting: "A service issue is affecting our ability to provide a timeframe. We'll update you when service is restored."
+  default: "We're unable to provide a specific timeframe at this time. We'll keep you updated."
+
+committed:
+  description: "No explanatory text - the expected_by_at date is shown"
+
+revised:
+  description: "No explanatory text - the revised expected_by_at date is shown"

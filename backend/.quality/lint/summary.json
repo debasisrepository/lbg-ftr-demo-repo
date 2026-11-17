@@ -1,0 +1,742 @@
+{
+  "status": "issues_found",
+  "target_path": "/repos/lbg-ftr-demo-repo/backend",
+  "requested_linters": [
+    "ruff"
+  ],
+  "applicable_linters": [
+    "ruff",
+    "shellcheck",
+    "shfmt",
+    "yamllint"
+  ],
+  "selected_linters": [
+    "ruff"
+  ],
+  "message": "All findings, including any findings omitted from the inline response, are available in the report files listed under `report_paths`.",
+  "summary": {
+    "errors": 864,
+    "warnings": 0,
+    "total_findings": 864,
+    "inline_findings": 100,
+    "remaining_findings": 764,
+    "linters_run": 1,
+    "linters_with_issues": 1,
+    "linters_unavailable": 0
+  },
+  "by_tool": {
+    "ruff": {
+      "status": "issues_found",
+      "errors": 864,
+      "warnings": 0,
+      "total_findings": 864,
+      "inline_findings": 100,
+      "remaining_findings": 764,
+      "files": [
+        {
+          "path": "/repos/lbg-ftr-demo-repo/backend/alembic/env.py",
+          "findings": [
+            {
+              "msg": "Import block is un-sorted or un-formatted",
+              "line": 2,
+              "column": 1,
+              "code": "I001"
+            }
+          ]
+        },
+        {
+          "path": "/repos/lbg-ftr-demo-repo/backend/alembic/versions/001_initial_schema.py",
+          "findings": [
+            {
+              "msg": "Trailing whitespace",
+              "line": 4,
+              "column": 9,
+              "code": "W291"
+            },
+            {
+              "msg": "Import block is un-sorted or un-formatted",
+              "line": 8,
+              "column": 1,
+              "code": "I001"
+            }
+          ]
+        },
+        {
+          "path": "/repos/lbg-ftr-demo-repo/backend/app/adapters/base.py",
+          "findings": [
+            {
+              "msg": "`datetime.timedelta` imported but unused",
+              "line": 4,
+              "column": 32,
+              "code": "F401"
+            },
+            {
+              "msg": "`typing.Any` imported but unused",
+              "line": 5,
+              "column": 20,
+              "code": "F401"
+            },
+            {
+              "msg": "Blank line contains whitespace",
+              "line": 18,
+              "column": 1,
+              "code": "W293"
+            },
+            {
+              "msg": "Blank line contains whitespace",
+              "line": 25,
+              "column": 1,
+              "code": "W293"
+            },
+            {
+              "msg": "Blank line contains whitespace",
+              "line": 30,
+              "column": 1,
+              "code": "W293"
+            },
+            {
+              "msg": "Blank line contains whitespace",
+              "line": 35,
+              "column": 1,
+              "code": "W293"
+            },
+            {
+              "msg": "Blank line contains whitespace",
+              "line": 38,
+              "column": 1,
+              "code": "W293"
+            },
+            {
+              "msg": "Blank line contains whitespace",
+              "line": 43,
+              "column": 1,
+              "code": "W293"
+            },
+            {
+              "msg": "Blank line contains whitespace",
+              "line": 51,
+              "column": 1,
+              "code": "W293"
+            },
+            {
+              "msg": "Blank line contains whitespace",
+              "line": 57,
+              "column": 1,
+              "code": "W293"
+            },
+            {
+              "msg": "Blank line contains whitespace",
+              "line": 60,
+              "column": 1,
+              "code": "W293"
+            }
+          ]
+        },
+        {
+          "path": "/repos/lbg-ftr-demo-repo/backend/app/adapters/customer_case_adapter.py",
+          "findings": [
+            {
+              "msg": "Blank line contains whitespace",
+              "line": 13,
+              "column": 1,
+              "code": "W293"
+            },
+            {
+              "msg": "Blank line contains whitespace",
+              "line": 18,
+              "column": 1,
+              "code": "W293"
+            },
+            {
+              "msg": "Blank line contains whitespace",
+              "line": 28,
+              "column": 1,
+              "code": "W293"
+            },
+            {
+              "msg": "Blank line contains whitespace",
+              "line": 40,
+              "column": 1,
+              "code": "W293"
+            },
+            {
+              "msg": "Blank line contains whitespace",
+              "line": 48,
+              "column": 1,
+              "code": "W293"
+            },
+            {
+              "msg": "Blank line contains whitespace",
+              "line": 56,
+              "column": 1,
+              "code": "W293"
+            },
+            {
+              "msg": "Blank line contains whitespace",
+              "line": 63,
+              "column": 1,
+              "code": "W293"
+            },
+            {
+              "msg": "Blank line contains whitespace",
+              "line": 69,
+              "column": 1,
+              "code": "W293"
+            },
+            {
+              "msg": "Blank line contains whitespace",
+              "line": 79,
+              "column": 1,
+              "code": "W293"
+            },
+            {
+              "msg": "Blank line contains whitespace",
+              "line": 88,
+              "column": 1,
+              "code": "W293"
+            }
+          ]
+        },
+        {
+          "path": "/repos/lbg-ftr-demo-repo/backend/app/adapters/incident_adapter.py",
+          "findings": [
+            {
+              "msg": "`datetime.datetime` imported but unused",
+              "line": 2,
+              "column": 22,
+              "code": "F401"
+            },
+            {
+              "msg": "Blank line contains whitespace",
+              "line": 12,
+              "column": 1,
+              "code": "W293"
+            },
+            {
+              "msg": "Blank line contains whitespace",
+              "line": 22,
+              "column": 1,
+              "code": "W293"
+            },
+            {
+              "msg": "Blank line contains whitespace",
+              "line": 45,
+              "column": 1,
+              "code": "W293"
+            },
+            {
+              "msg": "Blank line contains whitespace",
+              "line": 49,
+              "column": 1,
+              "code": "W293"
+            },
+            {
+              "msg": "Blank line contains whitespace",
+              "line": 72,
+              "column": 1,
+              "code": "W293"
+            },
+            {
+              "msg": "Blank line contains whitespace",
+              "line": 79,
+              "column": 1,
+              "code": "W293"
+            }
+          ]
+        },
+        {
+          "path": "/repos/lbg-ftr-demo-repo/backend/app/core/errors.py",
+          "findings": [
+            {
+              "msg": "Exception name `DependencyUnavailable` should be named with an Error suffix",
+              "line": 34,
+              "column": 7,
+              "code": "N818"
+            }
+          ]
+        },
+        {
+          "path": "/repos/lbg-ftr-demo-repo/backend/app/core/ids.py",
+          "findings": [
+            {
+              "msg": "Import block is un-sorted or un-formatted",
+              "line": 2,
+              "column": 1,
+              "code": "I001"
+            },
+            {
+              "msg": "`string` imported but unused",
+              "line": 4,
+              "column": 8,
+              "code": "F401"
+            },
+            {
+              "msg": "Blank line contains whitespace",
+              "line": 14,
+              "column": 1,
+              "code": "W293"
+            },
+            {
+              "msg": "Blank line contains whitespace",
+              "line": 17,
+              "column": 1,
+              "code": "W293"
+            }
+          ]
+        },
+        {
+          "path": "/repos/lbg-ftr-demo-repo/backend/app/core/lifecycle_graph.py",
+          "findings": [
+            {
+              "msg": "Blank line contains whitespace",
+              "line": 12,
+              "column": 1,
+              "code": "W293"
+            },
+            {
+              "msg": "Blank line contains whitespace",
+              "line": 16,
+              "column": 1,
+              "code": "W293"
+            },
+            {
+              "msg": "Blank line contains whitespace",
+              "line": 23,
+              "column": 1,
+              "code": "W293"
+            },
+            {
+              "msg": "Blank line contains whitespace",
+              "line": 27,
+              "column": 1,
+              "code": "W293"
+            },
+            {
+              "msg": "Blank line contains whitespace",
+              "line": 32,
+              "column": 1,
+              "code": "W293"
+            },
+            {
+              "msg": "Blank line contains whitespace",
+              "line": 37,
+              "column": 1,
+              "code": "W293"
+            },
+            {
+              "msg": "Blank line contains whitespace",
+              "line": 41,
+              "column": 1,
+              "code": "W293"
+            },
+            {
+              "msg": "Blank line contains whitespace",
+              "line": 45,
+              "column": 1,
+              "code": "W293"
+            },
+            {
+              "msg": "Blank line contains whitespace",
+              "line": 48,
+              "column": 1,
+              "code": "W293"
+            },
+            {
+              "msg": "Blank line contains whitespace",
+              "line": 53,
+              "column": 1,
+              "code": "W293"
+            },
+            {
+              "msg": "Blank line contains whitespace",
+              "line": 58,
+              "column": 1,
+              "code": "W293"
+            },
+            {
+              "msg": "Blank line contains whitespace",
+              "line": 60,
+              "column": 1,
+              "code": "W293"
+            },
+            {
+              "msg": "Blank line contains whitespace",
+              "line": 64,
+              "column": 1,
+              "code": "W293"
+            },
+            {
+              "msg": "Blank line contains whitespace",
+              "line": 71,
+              "column": 1,
+              "code": "W293"
+            },
+            {
+              "msg": "Blank line contains whitespace",
+              "line": 75,
+              "column": 1,
+              "code": "W293"
+            },
+            {
+              "msg": "Blank line contains whitespace",
+              "line": 81,
+              "column": 1,
+              "code": "W293"
+            }
+          ]
+        },
+        {
+          "path": "/repos/lbg-ftr-demo-repo/backend/app/deps.py",
+          "findings": [
+            {
+              "msg": "Blank line contains whitespace",
+              "line": 43,
+              "column": 1,
+              "code": "W293"
+            },
+            {
+              "msg": "Blank line contains whitespace",
+              "line": 49,
+              "column": 1,
+              "code": "W293"
+            },
+            {
+              "msg": "Blank line contains whitespace",
+              "line": 51,
+              "column": 1,
+              "code": "W293"
+            },
+            {
+              "msg": "Blank line contains whitespace",
+              "line": 54,
+              "column": 1,
+              "code": "W293"
+            },
+            {
+              "msg": "Blank line contains whitespace",
+              "line": 58,
+              "column": 1,
+              "code": "W293"
+            },
+            {
+              "msg": "Blank line contains whitespace",
+              "line": 61,
+              "column": 1,
+              "code": "W293"
+            },
+            {
+              "msg": "Blank line contains whitespace",
+              "line": 67,
+              "column": 1,
+              "code": "W293"
+            },
+            {
+              "msg": "Blank line contains whitespace",
+              "line": 86,
+              "column": 1,
+              "code": "W293"
+            },
+            {
+              "msg": "Blank line contains whitespace",
+              "line": 94,
+              "column": 1,
+              "code": "W293"
+            }
+          ]
+        },
+        {
+          "path": "/repos/lbg-ftr-demo-repo/backend/app/jobs/continuity_refresh_job.py",
+          "findings": [
+            {
+              "msg": "`datetime.datetime` imported but unused",
+              "line": 4,
+              "column": 22,
+              "code": "F401"
+            },
+            {
+              "msg": "Blank line contains whitespace",
+              "line": 32,
+              "column": 1,
+              "code": "W293"
+            },
+            {
+              "msg": "Blank line contains whitespace",
+              "line": 41,
+              "column": 1,
+              "code": "W293"
+            },
+            {
+              "msg": "Blank line contains whitespace",
+              "line": 69,
+              "column": 1,
+              "code": "W293"
+            },
+            {
+              "msg": "Blank line contains whitespace",
+              "line": 72,
+              "column": 1,
+              "code": "W293"
+            },
+            {
+              "msg": "Blank line contains whitespace",
+              "line": 74,
+              "column": 1,
+              "code": "W293"
+            },
+            {
+              "msg": "Blank line contains whitespace",
+              "line": 86,
+              "column": 1,
+              "code": "W293"
+            },
+            {
+              "msg": "Blank line contains whitespace",
+              "line": 95,
+              "column": 1,
+              "code": "W293"
+            }
+          ]
+        },
+        {
+          "path": "/repos/lbg-ftr-demo-repo/backend/app/jobs/incident_ingest_job.py",
+          "findings": [
+            {
+              "msg": "`datetime.datetime` imported but unused",
+              "line": 4,
+              "column": 22,
+              "code": "F401"
+            },
+            {
+              "msg": "Blank line contains whitespace",
+              "line": 28,
+              "column": 1,
+              "code": "W293"
+            },
+            {
+              "msg": "Blank line contains whitespace",
+              "line": 34,
+              "column": 1,
+              "code": "W293"
+            },
+            {
+              "msg": "Blank line contains whitespace",
+              "line": 47,
+              "column": 1,
+              "code": "W293"
+            },
+            {
+              "msg": "Blank line contains whitespace",
+              "line": 51,
+              "column": 1,
+              "code": "W293"
+            },
+            {
+              "msg": "Blank line contains whitespace",
+              "line": 55,
+              "column": 1,
+              "code": "W293"
+            },
+            {
+              "msg": "Blank line contains whitespace",
+              "line": 67,
+              "column": 1,
+              "code": "W293"
+            },
+            {
+              "msg": "Blank line contains whitespace",
+              "line": 70,
+              "column": 1,
+              "code": "W293"
+            }
+          ]
+        },
+        {
+          "path": "/repos/lbg-ftr-demo-repo/backend/app/main.py",
+          "findings": [
+            {
+              "msg": "Import block is un-sorted or un-formatted",
+              "line": 2,
+              "column": 1,
+              "code": "I001"
+            },
+            {
+              "msg": "Blank line contains whitespace",
+              "line": 44,
+              "column": 1,
+              "code": "W293"
+            },
+            {
+              "msg": "Blank line contains whitespace",
+              "line": 51,
+              "column": 1,
+              "code": "W293"
+            },
+            {
+              "msg": "Blank line contains whitespace",
+              "line": 55,
+              "column": 1,
+              "code": "W293"
+            },
+            {
+              "msg": "Blank line contains whitespace",
+              "line": 59,
+              "column": 1,
+              "code": "W293"
+            },
+            {
+              "msg": "Blank line contains whitespace",
+              "line": 61,
+              "column": 1,
+              "code": "W293"
+            }
+          ]
+        },
+        {
+          "path": "/repos/lbg-ftr-demo-repo/backend/app/repositories/action_repository.py",
+          "findings": [
+            {
+              "msg": "Import block is un-sorted or un-formatted",
+              "line": 2,
+              "column": 1,
+              "code": "I001"
+            }
+          ]
+        },
+        {
+          "path": "/repos/lbg-ftr-demo-repo/backend/app/repositories/case_repository.py",
+          "findings": [
+            {
+              "msg": "Blank line contains whitespace",
+              "line": 20,
+              "column": 1,
+              "code": "W293"
+            },
+            {
+              "msg": "Blank line contains whitespace",
+              "line": 39,
+              "column": 1,
+              "code": "W293"
+            },
+            {
+              "msg": "Blank line contains whitespace",
+              "line": 42,
+              "column": 1,
+              "code": "W293"
+            },
+            {
+              "msg": "Blank line contains whitespace",
+              "line": 45,
+              "column": 1,
+              "code": "W293"
+            },
+            {
+              "msg": "Blank line contains whitespace",
+              "line": 49,
+              "column": 1,
+              "code": "W293"
+            },
+            {
+              "msg": "Blank line contains whitespace",
+              "line": 55,
+              "column": 1,
+              "code": "W293"
+            }
+          ]
+        },
+        {
+          "path": "/repos/lbg-ftr-demo-repo/backend/app/repositories/communication_repository.py",
+          "findings": [
+            {
+              "msg": "Blank line contains whitespace",
+              "line": 40,
+              "column": 1,
+              "code": "W293"
+            },
+            {
+              "msg": "Blank line contains whitespace",
+              "line": 44,
+              "column": 1,
+              "code": "W293"
+            },
+            {
+              "msg": "Blank line contains whitespace",
+              "line": 49,
+              "column": 1,
+              "code": "W293"
+            }
+          ]
+        },
+        {
+          "path": "/repos/lbg-ftr-demo-repo/backend/app/repositories/config_repository.py",
+          "findings": [
+            {
+              "msg": "Blank line contains whitespace",
+              "line": 28,
+              "column": 1,
+              "code": "W293"
+            }
+          ]
+        },
+        {
+          "path": "/repos/lbg-ftr-demo-repo/backend/app/repositories/history_repository.py",
+          "findings": [
+            {
+              "msg": "Blank line contains whitespace",
+              "line": 38,
+              "column": 1,
+              "code": "W293"
+            },
+            {
+              "msg": "Blank line contains whitespace",
+              "line": 41,
+              "column": 1,
+              "code": "W293"
+            },
+            {
+              "msg": "Blank line contains whitespace",
+              "line": 45,
+              "column": 1,
+              "code": "W293"
+            },
+            {
+              "msg": "Blank line contains whitespace",
+              "line": 48,
+              "column": 1,
+              "code": "W293"
+            }
+          ]
+        },
+        {
+          "path": "/repos/lbg-ftr-demo-repo/backend/app/schemas/case.py",
+          "findings": [
+            {
+              "msg": "Import block is un-sorted or un-formatted",
+              "line": 2,
+              "column": 1,
+              "code": "I001"
+            }
+          ]
+        },
+        {
+          "path": "/repos/lbg-ftr-demo-repo/backend/app/seed.py",
+          "findings": [
+            {
+              "msg": "Import block is un-sorted or un-formatted",
+              "line": 2,
+              "column": 1,
+              "code": "I001"
+            }
+          ]
+        }
+      ],
+      "report_path": "/repos/lbg-ftr-demo-repo/backend/.quality/lint/ruff-result.json",
+      "truncated": true
+    }
+  },
+  "report_dir": "/repos/lbg-ftr-demo-repo/backend/.quality/lint",
+  "report_paths": {
+    "summary": "/repos/lbg-ftr-demo-repo/backend/.quality/lint/summary.json",
+    "ruff": "/repos/lbg-ftr-demo-repo/backend/.quality/lint/ruff-result.json"
+  },
+  "truncated": true
+}

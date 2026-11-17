@@ -1,0 +1,9 @@
+# Mapping of event types to update types for notification generation
+# Only approved update types trigger notifications
+
+event_to_update_type:
+  CaseStatusChanged: "status_change"
+  OwnerChanged: "owner_change"
+  ExpectedByChanged: "expected_by_change"
+  ProtectedActionRequested: "customer_action_requested"
+  IncidentDeclared: "incident_update"

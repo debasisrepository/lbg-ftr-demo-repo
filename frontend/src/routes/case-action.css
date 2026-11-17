@@ -1,0 +1,53 @@
+.case-action-page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cds-spacing-06);
+  padding: var(--cds-spacing-05);
+}
+
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--cds-spacing-03);
+  min-height: 44px;
+  color: var(--cds-link-primary);
+  text-decoration: none;
+}
+
+.back-link:hover {
+  text-decoration: underline;
+}
+
+.action-header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cds-spacing-03);
+}
+
+.case-meta {
+  font-size: 12px;
+  line-height: 16px;
+  letter-spacing: 0.32px;
+  color: var(--cds-text-secondary);
+}
+
+.outcome-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cds-spacing-05);
+  margin-top: var(--cds-spacing-06);
+}
+
+.state-label {
+  display: inline-block;
+  background: var(--cds-text-primary);
+  color: var(--cds-text-on-color);
+  font-size: 12px;
+  line-height: 20px;
+  padding: 0 var(--cds-spacing-03);
+  margin-bottom: var(--cds-spacing-03);
+}
+
+.modal-secondary-text {
+  margin-top: var(--cds-spacing-05);
+}

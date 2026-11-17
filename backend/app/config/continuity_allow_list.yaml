@@ -1,0 +1,51 @@
+# Continuity package allow-list configuration
+# Defines which fields are exposed in different contexts
+
+# Full structured context (most permissive)
+structured_context:
+  - case_reference
+  - customer_party_id
+  - issue_type
+  - issue_title
+  - issue_summary
+  - current_lifecycle_state
+  - current_status_code
+  - current_status_label
+  - owner_team_code
+  - owner_display_name
+  - expected_by_at
+  - expected_by_text
+  - latest_update_text
+  - latest_update_at
+  - channel_history
+  - recent_events
+
+# Colleague-facing payload (narrower than structured_context)
+# Excludes customer_party_id to protect privacy
+colleague_payload:
+  - case_reference
+  - issue_type
+  - issue_title
+  - issue_summary
+  - current_lifecycle_state
+  - current_status_code
+  - owner_team_code
+  - owner_display_name
+  - expected_by_at
+  - latest_update_text
+  - latest_update_at
+  - channel_history
+
+# LLM-safe payload (most restrictive)
+# Excludes PAN, passcodes, security answers, and customer PII
+# This is the narrowest filter - suitable for AI assistant context
+llm_safe_payload:
+  - case_reference
+  - issue_type
+  - issue_title
+  - current_lifecycle_state
+  - current_status_code
+  - owner_team_code
+  - expected_by_at
+  - latest_update_text
+  - latest_update_at
