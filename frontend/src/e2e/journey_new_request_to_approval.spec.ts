@@ -14,7 +14,7 @@
  * across multiple screens and backend interactions.
  */
 
-import { test, expect } from '@playwright/test'
+import { test, expect } from './_pipeline_guard'
 
 test.describe('Journey: New Request to Approval', () => {
   test('completes full payment journey from sign in to sent confirmation', async ({ page }) => {
@@ -35,11 +35,11 @@ test.describe('Journey: New Request to Approval', () => {
       return page.goto('/login', { waitUntil: 'networkidle' })
     })
     
-    await page.waitForSelector('input[name="username"]', { state: 'visible', timeout: 10000 })
+    await page.waitForSelector('#username', { state: 'visible', timeout: 10000 })
     
     // Enter seed credentials
-    await page.fill('input[name="username"]', 'sasha.patel@gmail.com')
-    await page.fill('input[name="password"]', 'Demo1234!')
+    await page.fill('#username', 'sasha.patel@gmail.com')
+    await page.fill('#password', 'Demo1234!')
     await page.click('button[type="submit"]')
     
     // Verify navigation to proof page
@@ -80,7 +80,7 @@ test.describe('Journey: New Request to Approval', () => {
     
     // Verify payment entry page loaded with payee details
     await expect(page.locator('h2')).toContainText('Pay Jamie Clarke')
-    await expect(page.locator('text=04-00-04')).toBeVisible()
+    await expect(page.locator('text=12-34-56')).toBeVisible()
 
     // STEP 7: Enter payment details (FR-005)
     // Select source account (should default to Personal Current Account)
@@ -136,7 +136,7 @@ test.describe('Journey: New Request to Approval', () => {
     await expect(page.locator('text=/Report a scam/i')).toBeVisible()
 
     // STEP 10: Return to accounts
-    const doneButton = page.locator('button:has-text("Done")')
+    const doneButton = page.getByRole('button', { name: /Back to accounts/i })
     await expect(doneButton).toBeVisible()
     await doneButton.click()
     
@@ -149,8 +149,8 @@ test.describe('Journey: New Request to Approval', () => {
 
   test('handles payment friction during journey', async ({ page }) => {
     // STEP 1-6: Navigate through sign in, proof, accounts, to payment entry
-    await page.goto('/', { waitUntil: 'networkidle' })
     await page.context().clearCookies()
+    await page.goto('/login')
     try {
       await page.evaluate(() => {
         localStorage.clear()
@@ -160,13 +160,10 @@ test.describe('Journey: New Request to Approval', () => {
       // Ignore
     }
 
-    await page.waitForURL('**/login', { timeout: 5000 }).catch(() => {
-      return page.goto('/login', { waitUntil: 'networkidle' })
-    })
-    
-    await page.waitForSelector('input[name="username"]', { state: 'visible', timeout: 10000 })
-    await page.fill('input[name="username"]', 'sasha.patel@gmail.com')
-    await page.fill('input[name="password"]', 'Demo1234!')
+    await page.goto('/login')
+    await page.waitForLoadState('networkidle')
+    await page.fill('#username', 'sasha.patel@gmail.com')
+    await page.fill('#password', 'Demo1234!')
     await page.click('button[type="submit"]')
     
     await page.waitForURL('**/proof', { timeout: 10000 })
@@ -186,7 +183,7 @@ test.describe('Journey: New Request to Approval', () => {
     // Note: Stub adapter may return allow for all, but test validates UI handles friction
     await page.fill('input#amount', '800.00')
     await page.fill('input#reference', 'Large payment')
-    await page.click('button:has-text("Pay")')
+    await page.click('button:has-text("Pay £800.00")')
 
     // Should navigate to review regardless (friction would appear on review page if triggered)
     await page.waitForURL('**/payment/review', { timeout: 10000 })
@@ -201,8 +198,8 @@ test.describe('Journey: New Request to Approval', () => {
 
   test('validates balance limits during journey', async ({ page }) => {
     // Navigate through authentication
-    await page.goto('/', { waitUntil: 'networkidle' })
     await page.context().clearCookies()
+    await page.goto('/login')
     try {
       await page.evaluate(() => {
         localStorage.clear()
@@ -212,13 +209,10 @@ test.describe('Journey: New Request to Approval', () => {
       // Ignore
     }
 
-    await page.waitForURL('**/login', { timeout: 5000 }).catch(() => {
-      return page.goto('/login', { waitUntil: 'networkidle' })
-    })
-    
-    await page.waitForSelector('input[name="username"]', { state: 'visible', timeout: 10000 })
-    await page.fill('input[name="username"]', 'sasha.patel@gmail.com')
-    await page.fill('input[name="password"]', 'Demo1234!')
+    await page.goto('/login')
+    await page.waitForLoadState('networkidle')
+    await page.fill('#username', 'sasha.patel@gmail.com')
+    await page.fill('#password', 'Demo1234!')
     await page.click('button[type="submit"]')
     
     await page.waitForURL('**/proof', { timeout: 10000 })
@@ -241,7 +235,7 @@ test.describe('Journey: New Request to Approval', () => {
     await page.fill('input#reference', 'Exceeds balance')
     
     // Try to pay
-    await page.click('button:has-text("Pay")')
+    await page.click('button:has-text("Pay £2000.00")')
     
     // Should show client-side validation error
     await expect(page.locator('text=/You can pay up to|exceeds/i')).toBeVisible({ timeout: 5000 })

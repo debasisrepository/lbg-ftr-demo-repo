@@ -246,26 +246,48 @@ export function AddPayeePage() {
           )}
 
           {copCheck && copCheck.outcome === 'match' && (
-            <button
-              type="button"
-              onClick={handleContinue}
-              style={{
-                display: 'block',
-                width: '100%',
-                minHeight: '52px',
-                border: '2px solid #161616',
-                fontSize: '16px',
-                fontWeight: 600,
-                fontFamily: 'inherit',
-                padding: '0 16px',
-                marginTop: '12px',
-                background: '#161616',
-                color: '#fff',
-                cursor: 'pointer',
-              }}
-            >
-              Continue
-            </button>
+            <>
+              <button
+                type="button"
+                onClick={handleContinue}
+                style={{
+                  display: 'block',
+                  width: '100%',
+                  minHeight: '52px',
+                  border: '2px solid #161616',
+                  fontSize: '16px',
+                  fontWeight: 600,
+                  fontFamily: 'inherit',
+                  padding: '0 16px',
+                  marginTop: '12px',
+                  background: '#161616',
+                  color: '#fff',
+                  cursor: 'pointer',
+                }}
+              >
+                Continue
+              </button>
+              <button
+                type="button"
+                onClick={handleTryAgain}
+                style={{
+                  display: 'block',
+                  width: '100%',
+                  minHeight: '52px',
+                  border: '2px solid #161616',
+                  fontSize: '16px',
+                  fontWeight: 600,
+                  fontFamily: 'inherit',
+                  padding: '0 16px',
+                  marginTop: '12px',
+                  background: '#ffffff',
+                  color: '#161616',
+                  cursor: 'pointer',
+                }}
+              >
+                Edit details
+              </button>
+            </>
           )}
 
           {copCheck && (copCheck.outcome === 'mismatch' || copCheck.outcome === 'partial_match') && (

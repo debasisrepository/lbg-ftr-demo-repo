@@ -49,4 +49,8 @@ describe('pipeline: route modules resolve', () => {
     const mod = await import('../pages/SignInPage');
     expect(mod).toBeDefined();
   });
+  it('resolves pages/StepUpPage.tsx', async () => {
+    const mod = await import('../pages/StepUpPage');
+    expect(mod).toBeDefined();
+  });
 });

@@ -3,35 +3,29 @@
  * Tests FR-006: Payment sent/pending/failed outcomes with references
  */
 
-import { test, expect } from '@playwright/test'
+import { test, expect } from './_pipeline_guard'
 
 test.describe('Wireframe 06: Payment Outcome', () => {
   test.beforeEach(async ({ page }) => {
-    // Navigate to login first and wait for it to load
-    await page.goto('/', { waitUntil: 'networkidle' })
-
-    // Clear storage after page has loaded
+    // Clear storage and navigate to login
     await page.context().clearCookies()
+    await page.goto('/login')
     try {
       await page.evaluate(() => {
         localStorage.clear()
         sessionStorage.clear()
       })
     } catch (e) {
-      // Ignore SecurityError on about:blank or before page loads
+      // Ignore SecurityError
     }
 
-    // Ensure we're on the login page
-    await page.waitForURL('**/login', { timeout: 5000 }).catch(() => {
-      return page.goto('/login', { waitUntil: 'networkidle' })
-    })
-
-    // Wait for username input to be visible
-    await page.waitForSelector('input[name="username"]', { state: 'visible', timeout: 10000 })
+    // Navigate to login page and wait for it to load
+    await page.goto('/login')
+    await page.waitForLoadState('networkidle')
 
     // Sign in
-    await page.fill('input[name="username"]', 'sasha.patel@gmail.com')
-    await page.fill('input[name="password"]', 'Demo1234!')
+    await page.fill('#username', 'sasha.patel@gmail.com')
+    await page.fill('#password', 'Demo1234!')
     await page.click('button[type="submit"]')
 
     await page.waitForURL('**/proof', { timeout: 10000 })
@@ -54,7 +48,7 @@ test.describe('Wireframe 06: Payment Outcome', () => {
 
     await page.fill('input[id="amount"]', '40.00')
     await page.fill('input[id="reference"]', 'Test payment')
-    await page.click('button:has-text("Pay")')
+    await page.click('button:has-text("Pay £40.00")')
 
     await page.waitForURL('**/payment/review', { timeout: 10000 })
     await page.click('button:has-text("Approve with Face ID")')
@@ -63,12 +57,12 @@ test.describe('Wireframe 06: Payment Outcome', () => {
     await page.waitForURL('**/payment/outcome', { timeout: 10000 })
 
     // Verify sent status elements
-    const statusTag = page.locator('text=/Sent|Pending/i')
+    const statusTag = page.locator('text=/Sent|Pending/i').first()
     await expect(statusTag).toBeVisible({ timeout: 10000 })
 
     // Verify payment reference is displayed
     await expect(page.locator('text=/Payment reference/i')).toBeVisible()
-    await expect(page.locator('text=/PAY/i')).toBeVisible()
+    await expect(page.locator('text=/PAY/i').first()).toBeVisible()
 
     // Verify amount and payee
     await expect(page.locator('text=/£40.00/i')).toBeVisible()
@@ -83,7 +77,7 @@ test.describe('Wireframe 06: Payment Outcome', () => {
     await page.waitForURL('**/pay')
 
     await page.fill('input[id="amount"]', '40.00')
-    await page.click('button:has-text("Pay")')
+    await page.click('button:has-text("Pay £40.00")')
 
     await page.waitForURL('**/payment/review', { timeout: 10000 })
     await page.click('button:has-text("Approve with Face ID")')
@@ -103,7 +97,7 @@ test.describe('Wireframe 06: Payment Outcome', () => {
     await page.waitForURL('**/pay')
 
     await page.fill('input[id="amount"]', '40.00')
-    await page.click('button:has-text("Pay")')
+    await page.click('button:has-text("Pay £40.00")')
 
     await page.waitForURL('**/payment/review', { timeout: 10000 })
     await page.click('button:has-text("Approve with Face ID")')
@@ -124,7 +118,7 @@ test.describe('Wireframe 06: Payment Outcome', () => {
     await page.waitForURL('**/pay')
 
     await page.fill('input[id="amount"]', '40.00')
-    await page.click('button:has-text("Pay")')
+    await page.click('button:has-text("Pay £40.00")')
 
     await page.waitForURL('**/payment/review', { timeout: 10000 })
     await page.click('button:has-text("Approve with Face ID")')
@@ -145,7 +139,7 @@ test.describe('Wireframe 06: Payment Outcome', () => {
     await page.waitForURL('**/pay')
 
     await page.fill('input[id="amount"]', '40.00')
-    await page.click('button:has-text("Pay")')
+    await page.click('button:has-text("Pay £40.00")')
 
     await page.waitForURL('**/payment/review', { timeout: 10000 })
     await page.click('button:has-text("Approve with Face ID")')
@@ -168,7 +162,7 @@ test.describe('Wireframe 06: Payment Outcome', () => {
     await page.waitForURL('**/pay')
 
     await page.fill('input[id="amount"]', '40.00')
-    await page.click('button:has-text("Pay")')
+    await page.click('button:has-text("Pay £40.00")')
 
     await page.waitForURL('**/payment/review', { timeout: 10000 })
     await page.click('button:has-text("Approve with Face ID")')
@@ -188,7 +182,7 @@ test.describe('Wireframe 06: Payment Outcome', () => {
     await page.waitForURL('**/pay')
 
     await page.fill('input[id="amount"]', '40.00')
-    await page.click('button:has-text("Pay")')
+    await page.click('button:has-text("Pay £40.00")')
 
     await page.waitForURL('**/payment/review', { timeout: 10000 })
     await page.click('button:has-text("Approve with Face ID")')

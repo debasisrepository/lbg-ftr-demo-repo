@@ -78,7 +78,7 @@ export function CopOutcomePanel({ copCheck, onAcknowledge }: CopOutcomePanelProp
             marginBottom: '4px',
           }}
         >
-          {config.title}
+          Confirmation of Payee: {config.title}
         </strong>
         {config.message}
       </div>

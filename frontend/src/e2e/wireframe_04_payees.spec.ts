@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test'
+import { test, expect } from './_pipeline_guard'
 
 /**
  * E2E tests for Pay & Transfer and Add Payee (FR-004)

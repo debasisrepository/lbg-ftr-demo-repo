@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test'
+import { test, expect } from './_pipeline_guard'
 
 /**
  * Smoke test: Basic application loading and infrastructure verification

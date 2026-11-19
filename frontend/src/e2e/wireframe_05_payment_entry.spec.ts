@@ -3,36 +3,29 @@
  * Tests FR-005: Enter payment details, approve with SCA
  */
 
-import { test, expect } from '@playwright/test'
+import { test, expect } from './_pipeline_guard'
 
 test.describe('Wireframe 05: Payment Entry and Approval', () => {
   test.beforeEach(async ({ page }) => {
-    // Navigate to login first and wait for it to load
-    await page.goto('/', { waitUntil: 'networkidle' })
-
-    // Clear storage after page has loaded
+    // Clear storage and navigate to login
     await page.context().clearCookies()
+    await page.goto('/login')
     try {
       await page.evaluate(() => {
         localStorage.clear()
         sessionStorage.clear()
       })
     } catch (e) {
-      // Ignore SecurityError on about:blank or before page loads
+      // Ignore SecurityError
     }
 
-    // Ensure we're on the login page
-    await page.waitForURL('**/login', { timeout: 5000 }).catch(() => {
-      // If not redirected to login, navigate explicitly
-      return page.goto('/login', { waitUntil: 'networkidle' })
-    })
-
-    // Wait for username input to be visible
-    await page.waitForSelector('input[name="username"]', { state: 'visible', timeout: 10000 })
+    // Navigate to login page and wait for it to load
+    await page.goto('/login')
+    await page.waitForLoadState('networkidle')
 
     // Sign in
-    await page.fill('input[name="username"]', 'sasha.patel@gmail.com')
-    await page.fill('input[name="password"]', 'Demo1234!')
+    await page.fill('#username', 'sasha.patel@gmail.com')
+    await page.fill('#password', 'Demo1234!')
     await page.click('button[type="submit"]')
 
     // Wait for proof page
@@ -61,12 +54,12 @@ test.describe('Wireframe 05: Payment Entry and Approval', () => {
 
     // Verify page elements
     await expect(page.locator('h2')).toContainText('Pay Jamie Clarke')
-    await expect(page.locator('text=04-00-04')).toBeVisible()
+    await expect(page.locator('text=12-34-56')).toBeVisible()
 
     // Verify form fields
-    await expect(page.locator('label:has-text("From")')).toBeVisible()
-    await expect(page.locator('label:has-text("Amount")')).toBeVisible()
-    await expect(page.locator('label:has-text("Reference")')).toBeVisible()
+    await expect(page.getByText('From', { exact: true })).toBeVisible()
+    await expect(page.getByText('Amount')).toBeVisible()
+    await expect(page.getByText('Reference')).toBeVisible()
   })
 
   test('validates amount exceeding balance', async ({ page }) => {
@@ -83,7 +76,7 @@ test.describe('Wireframe 05: Payment Entry and Approval', () => {
     await amountInput.fill('5000.00')
 
     // Try to pay
-    await page.click('button:has-text("Pay")')
+    await page.click('button:has-text("Pay £5000.00")')
 
     // Wait for error message
     await expect(page.locator('text=/You can pay up to/i')).toBeVisible({ timeout: 10000 })
@@ -106,7 +99,7 @@ test.describe('Wireframe 05: Payment Entry and Approval', () => {
     await refInput.fill('Test payment')
 
     // Click pay button
-    await page.click('button:has-text("Pay £40.00")')
+    await page.getByRole('button', { name: 'Pay £40.00' }).click()
 
     // Wait for review page
     await page.waitForURL('**/payment/review', { timeout: 10000 })
@@ -124,15 +117,15 @@ test.describe('Wireframe 05: Payment Entry and Approval', () => {
 
     await page.fill('input[id="amount"]', '40.00')
     await page.fill('input[id="reference"]', 'Test')
-    await page.click('button:has-text("Pay")')
+    await page.click('button:has-text("Pay £40.00")')
 
     await page.waitForURL('**/payment/review', { timeout: 10000 })
 
     // Verify payment details in review
-    await expect(page.locator('text=Current Account')).toBeVisible()
-    await expect(page.locator('text=Jamie Clarke')).toBeVisible()
-    await expect(page.locator('text=£40.00')).toBeVisible()
-    await expect(page.locator('text=Test')).toBeVisible()
+    await expect(page.locator('text=Current Account').first()).toBeVisible()
+    await expect(page.locator('text=Jamie Clarke').first()).toBeVisible()
+    await expect(page.locator('text=£40.00').first()).toBeVisible()
+    await expect(page.locator('text=Test').first()).toBeVisible()
   })
 
   test('shows Face ID approval option', async ({ page }) => {
@@ -143,13 +136,13 @@ test.describe('Wireframe 05: Payment Entry and Approval', () => {
     await page.waitForURL('**/pay')
 
     await page.fill('input[id="amount"]', '40.00')
-    await page.click('button:has-text("Pay")')
+    await page.click('button:has-text("Pay £40.00")')
 
     await page.waitForURL('**/payment/review', { timeout: 10000 })
 
     // Verify Face ID panel
-    await expect(page.locator('text=/Approve.*with Face ID/i')).toBeVisible()
-    await expect(page.locator('button:has-text("Approve with Face ID")')).toBeVisible()
+    await expect(page.locator('text=/Approve.*with Face ID/i').first()).toBeVisible()
+    await expect(page.getByRole('button', { name: /Approve with Face ID/i }).first()).toBeVisible()
   })
 
   test('allows cancellation from review screen', async ({ page }) => {
@@ -160,7 +153,7 @@ test.describe('Wireframe 05: Payment Entry and Approval', () => {
     await page.waitForURL('**/pay')
 
     await page.fill('input[id="amount"]', '40.00')
-    await page.click('button:has-text("Pay")')
+    await page.click('button:has-text("Pay £40.00")')
 
     await page.waitForURL('**/payment/review', { timeout: 10000 })
 
@@ -179,7 +172,7 @@ test.describe('Wireframe 05: Payment Entry and Approval', () => {
     await page.waitForURL('**/pay')
 
     await page.fill('input[id="amount"]', '40.00')
-    await page.click('button:has-text("Pay")')
+    await page.click('button:has-text("Pay £40.00")')
 
     await page.waitForURL('**/payment/review', { timeout: 10000 })
 

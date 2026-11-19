@@ -201,4 +201,5 @@ def test_recovery_endpoint(client):
 
     assert response.status_code == 200
     data = response.json()
-    assert "Recovery initiated" in data["message"]
+    # Backend returns secure message that doesn't reveal whether account exists
+    assert "recovery instructions have been sent" in data["message"].lower()

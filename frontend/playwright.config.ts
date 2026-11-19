@@ -61,7 +61,7 @@ export default defineConfig({
         return `cd "${backendDir}" && "${python}" -m alembic upgrade head && "${python}" -m app.seed && "${python}" -m uvicorn app.main:app --host 127.0.0.1 --port ${backendPort}`
       })(),
       url: `http://127.0.0.1:${process.env.E2E_BACKEND_PORT ?? '9000'}/api/v1/health`,
-      reuseExistingServer: false,
+      reuseExistingServer: !process.env.CI,
       timeout: 180_000,
       stdout: 'pipe',
       stderr: 'pipe',
@@ -73,7 +73,7 @@ export default defineConfig({
     {
       command: `npm run dev -- --host 127.0.0.1 --port ${process.env.E2E_FRONTEND_PORT ?? '5173'} --strictPort`,
       url: `http://127.0.0.1:${process.env.E2E_FRONTEND_PORT ?? '5173'}`,
-      reuseExistingServer: false,
+      reuseExistingServer: !process.env.CI,
       timeout: 180_000,
       stdout: 'pipe',
       stderr: 'pipe',

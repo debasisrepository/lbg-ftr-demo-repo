@@ -150,12 +150,12 @@ export default function EnterPaymentPage() {
           <>
             {/* From Account */}
             <div className="mb-6">
-              <label htmlFor="from-account" className="block text-sm leading-5 font-semibold mb-2">
+              <label htmlFor="account" className="block text-sm leading-5 font-semibold mb-2">
                 From
               </label>
               <div className="relative">
                 <select
-                  id="from-account"
+                  id="account"
                   value={selectedAccountId}
                   onChange={(e) => setSelectedAccountId(e.target.value)}
                   className="w-full min-h-[52px] border border-gray-400 bg-gray-100 px-4 text-base appearance-none pr-10"
@@ -214,7 +214,7 @@ export default function EnterPaymentPage() {
                 type="text"
                 value={reference}
                 onChange={(e) => setReference(e.target.value)}
-                maxLength={18}
+                maxLength={35}
                 placeholder=""
                 className="w-full min-h-[52px] border border-gray-400 bg-gray-100 px-4 text-base"
               />
@@ -244,7 +244,7 @@ export default function EnterPaymentPage() {
               : 'border-black bg-black text-white hover:bg-gray-900'
           }`}
         >
-          {preparing ? 'Preparing...' : `Pay ${amountGbp ? amountGbp : '£0.00'}`}
+          {preparing ? 'Preparing...' : `Pay ${amountGbp ? (amountGbp.startsWith('£') ? amountGbp : `£${amountGbp}`) : '£0.00'}`}
         </button>
       </div>
     </div>

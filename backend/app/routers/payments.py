@@ -199,10 +199,14 @@ def get_payment(
     """Get payment details"""
     payment_service = PaymentService(db)
 
-    payment_order = payment_service.get_payment(payment_order_id)
+    result = payment_service.get_payment_with_details(payment_order_id)
 
-    if not payment_order:
+    if not result:
         raise HTTPException(status_code=404, detail="Payment order not found")
+
+    payment_order = result["payment_order"]
+    account_name = result["account_name"]
+    payee_name = result["payee_name"]
 
     return PaymentDetailResponse(
         payment_order_id=payment_order.payment_order_id,
@@ -212,7 +216,9 @@ def get_payment(
         currency_code=payment_order.currency_code,
         payment_type=payment_order.payment_type,
         source_account_id=payment_order.source_account_id,
+        source_account_name=account_name,
         payee_id=payment_order.payee_id,
+        payee_name=payee_name,
         current_internal_state=payment_order.current_internal_state,
         normalized_status=payment_order.normalized_status,
         latest_status_at=payment_order.latest_status_at,

@@ -135,7 +135,7 @@ describe('AddPayeePage', () => {
     await user.click(submitButton)
 
     await waitFor(() => {
-      expect(screen.getByText('Name matches')).toBeInTheDocument()
+      expect(screen.getByText(/Name matches/)).toBeInTheDocument()
     })
 
     expect(screen.getByText(/We checked the name against the account/)).toBeInTheDocument()

@@ -161,7 +161,7 @@ export default function PaymentOutcomePage() {
 
         {/* Payment Reference */}
         <div className="border border-gray-400 bg-gray-100 px-4 py-3 mb-4 text-sm leading-5 flex justify-between">
-          <span>Payment reference</span>
+          <span>Payment reference:</span>
           <span className="font-semibold">
             {status.customer_payment_ref || 'N/A'}
           </span>
@@ -183,6 +183,12 @@ export default function PaymentOutcomePage() {
               className="w-full min-h-[52px] px-4 border-2 border-black bg-white text-black font-semibold text-base hover:bg-gray-50 mt-3"
             >
               Make another payment
+            </button>
+            <button
+              onClick={handleReportScam}
+              className="inline-block text-black underline text-sm min-h-11 leading-[44px] mt-1"
+            >
+              Report a scam concern
             </button>
           </>
         )}

@@ -253,8 +253,7 @@ export default function ReviewApprovePage() {
                 <path d="M4 8V4h4M16 4h4v4M20 16v4h-4M8 20H4v-4M9 10v2M15 10v2M9 16c1.5 1 4.5 1 6 0" />
               </svg>
               <p className="font-semibold text-lg">
-                Approve {formatMinor(preparedPayment.amount_minor)} to{' '}
-                {preparedPayment.payee_name} with Face ID
+                Use Face ID to continue
               </p>
             </div>
 

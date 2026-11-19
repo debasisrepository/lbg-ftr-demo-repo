@@ -18,7 +18,7 @@ describe('CopOutcomePanel', () => {
 
     render(<CopOutcomePanel copCheck={copCheck} />)
 
-    expect(screen.getByText('Name matches')).toBeInTheDocument()
+    expect(screen.getByText(/Name matches/)).toBeInTheDocument()
     expect(screen.getByText(/We checked the name against the account/)).toBeInTheDocument()
   })
 

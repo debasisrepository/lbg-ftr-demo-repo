@@ -95,3 +95,4 @@ Thumbs.db
 /backend/_server.pid
 /backend/_test.env
 .verification/
+.verification/

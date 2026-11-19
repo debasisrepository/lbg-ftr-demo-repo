@@ -3,7 +3,7 @@
  * Tests the complete passcode proof flow
  */
 
-import { test, expect } from '@playwright/test'
+import { test, expect } from './_pipeline_guard'
 
 test.describe('Wireframe 02: Proof', () => {
   test.beforeEach(async ({ page }) => {
@@ -39,7 +39,7 @@ test.describe('Wireframe 02: Proof', () => {
     await page.waitForURL(/\/accounts/, { timeout: 10000 })
     
     // Should see accounts page content
-    await expect(page.locator('h1:has-text("Accounts")')).toBeVisible()
+    await expect(page.locator('h2:has-text("Your accounts")')).toBeVisible()
   })
 
   test('shows passcode entry progress', async ({ page }) => {

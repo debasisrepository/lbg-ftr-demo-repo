@@ -90,7 +90,9 @@ class PaymentDetailResponse(BaseModel):
     currency_code: str
     payment_type: str
     source_account_id: uuid.UUID
+    source_account_name: str
     payee_id: uuid.UUID
+    payee_name: str
     current_internal_state: str
     normalized_status: str
     latest_status_at: datetime

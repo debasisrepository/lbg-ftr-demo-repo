@@ -3,7 +3,7 @@
  * Tests the complete sign-in flow with seed credentials
  */
 
-import { test, expect } from '@playwright/test'
+import { test, expect } from './_pipeline_guard'
 
 test.describe('Wireframe 01: Sign In', () => {
   test.beforeEach(async ({ page }) => {
