@@ -1,0 +1,386 @@
+{
+  "tool": "ruff",
+  "status": "issues_found",
+  "errors": 33,
+  "warnings": 0,
+  "total_findings": 33,
+  "inline_findings": 10,
+  "remaining_findings": 23,
+  "files": [
+    {
+      "path": "/repos/lbg-ftr-demo-repo/backend/alembic/versions/1bccdcbe3fda_initial_schema.py",
+      "findings": [
+        {
+          "msg": "Trailing whitespace",
+          "line": 4,
+          "column": 9,
+          "code": "W291"
+        }
+      ]
+    },
+    {
+      "path": "/repos/lbg-ftr-demo-repo/backend/app/core/parallel.py",
+      "findings": [
+        {
+          "msg": "Blank line contains whitespace",
+          "line": 11,
+          "column": 1,
+          "code": "W293"
+        },
+        {
+          "msg": "Blank line contains whitespace",
+          "line": 15,
+          "column": 1,
+          "code": "W293"
+        },
+        {
+          "msg": "Blank line contains whitespace",
+          "line": 18,
+          "column": 1,
+          "code": "W293"
+        }
+      ]
+    },
+    {
+      "path": "/repos/lbg-ftr-demo-repo/backend/app/main.py",
+      "findings": [
+        {
+          "msg": "Module level import not at top of file",
+          "line": 71,
+          "column": 1,
+          "code": "E402"
+        }
+      ]
+    },
+    {
+      "path": "/repos/lbg-ftr-demo-repo/backend/app/repositories/bank_account_repository.py",
+      "findings": [
+        {
+          "msg": "Blank line contains whitespace",
+          "line": 21,
+          "column": 1,
+          "code": "W293"
+        }
+      ]
+    },
+    {
+      "path": "/repos/lbg-ftr-demo-repo/backend/app/repositories/entitlement_repository.py",
+      "findings": [
+        {
+          "msg": "Blank line contains whitespace",
+          "line": 39,
+          "column": 1,
+          "code": "W293"
+        }
+      ]
+    },
+    {
+      "path": "/repos/lbg-ftr-demo-repo/backend/app/repositories/payee_repository.py",
+      "findings": [
+        {
+          "msg": "Avoid equality comparisons to `True`; use `Payee.is_saved:` for truth checks",
+          "line": 30,
+          "column": 20,
+          "code": "E712"
+        },
+        {
+          "msg": "Avoid equality comparisons to `True`; use `Payee.is_saved:` for truth checks",
+          "line": 46,
+          "column": 20,
+          "code": "E712"
+        }
+      ]
+    },
+    {
+      "path": "/repos/lbg-ftr-demo-repo/backend/app/repositories/ref_code_repository.py",
+      "findings": [
+        {
+          "msg": "Avoid equality comparisons to `True`; use `RefCode.is_active:` for truth checks",
+          "line": 18,
+          "column": 21,
+          "code": "E712"
+        }
+      ]
+    }
+  ],
+  "report_path": "/repos/lbg-ftr-demo-repo/backend/.quality/lint/ruff-result.json",
+  "fix_applied": true,
+  "truncated": true,
+  "command": [
+    "/usr/local/bin/ruff",
+    "check",
+    "/app/data/projects/81eefd8a4e7d/output/39097b6dc546/repos/lbg-ftr-demo-repo/backend",
+    "--output-format",
+    "json",
+    "--fix"
+  ],
+  "exit_code": 1,
+  "stdout": "[\n  {\n    \"cell\": null,\n    \"code\": \"W291\",\n    \"end_location\": {\n      \"column\": 10,\n      \"row\": 4\n    },\n    \"filename\": \"/app/data/projects/81eefd8a4e7d/output/39097b6dc546/repos/lbg-ftr-demo-repo/backend/alembic/versions/1bccdcbe3fda_initial_schema.py\",\n    \"fix\": {\n      \"applicability\": \"unsafe\",\n      \"edits\": [\n        {\n          \"content\": \"\",\n          \"end_location\": {\n            \"column\": 10,\n            \"row\": 4\n          },\n          \"location\": {\n            \"column\": 9,\n            \"row\": 4\n          }\n        }\n      ],\n      \"message\": \"Remove trailing whitespace\"\n    },\n    \"location\": {\n      \"column\": 9,\n      \"row\": 4\n    },\n    \"message\": \"Trailing whitespace\",\n    \"name\": \"trailing-whitespace\",\n    \"noqa_row\": 7,\n    \"severity\": \"error\",\n    \"url\": \"https://docs.astral.sh/ruff/rules/trailing-whitespace\"\n  },\n  {\n    \"cell\": null,\n    \"code\": \"W293\",\n    \"end_location\": {\n      \"column\": 5,\n      \"row\": 11\n    },\n    \"filename\": \"/app/data/projects/81eefd8a4e7d/output/39097b6dc546/repos/lbg-ftr-demo-repo/backend/app/core/parallel.py\",\n    \"fix\": {\n      \"applicability\": \"unsafe\",\n      \"edits\": [\n        {\n          \"content\": \"\",\n          \"end_location\": {\n            \"column\": 5,\n            \"row\": 11\n          },\n          \"location\": {\n            \"column\": 1,\n            \"row\": 11\n          }\n        }\n      ],\n      \"message\": \"Remove whitespace from blank line\"\n    },\n    \"location\": {\n      \"column\": 1,\n      \"row\": 11\n    },\n    \"message\": \"Blank line contains whitespace\",\n    \"name\": \"blank-line-with-whitespace\",\n    \"noqa_row\": 22,\n    \"severity\": \"error\",\n    \"url\": \"https://docs.astral.sh/ruff/rules/blank-line-with-whitespace\"\n  },\n  {\n    \"cell\": null,\n    \"code\": \"W293\",\n    \"end_location\": {\n      \"column\": 9,\n      \"row\": 15\n    },\n    \"filename\": \"/app/data/projects/81eefd8a4e7d/output/39097b6dc546/repos/lbg-ftr-demo-repo/backend/app/core/parallel.py\",\n    \"fix\": {\n      \"applicability\": \"unsafe\",\n      \"edits\": [\n        {\n          \"content\": \"\",\n          \"end_location\": {\n            \"column\": 9,\n            \"row\": 15\n          },\n          \"location\": {\n            \"column\": 1,\n            \"row\": 15\n          }\n        }\n      ],\n      \"message\": \"Remove whitespace from blank line\"\n    },\n    \"location\": {\n      \"column\": 1,\n      \"row\": 15\n    },\n    \"message\": \"Blank line contains whitespace\",\n    \"name\": \"blank-line-with-whitespace\",\n    \"noqa_row\": 22,\n    \"severity\": \"error\",\n    \"url\": \"https://docs.astral.sh/ruff/rules/blank-line-with-whitespace\"\n  },\n  {\n    \"cell\": null,\n    \"code\": \"W293\",\n    \"end_location\": {\n      \"column\": 9,\n      \"row\": 18\n    },\n    \"filename\": \"/app/data/projects/81eefd8a4e7d/output/39097b6dc546/repos/lbg-ftr-demo-repo/backend/app/core/parallel.py\",\n    \"fix\": {\n      \"applicability\": \"unsafe\",\n      \"edits\": [\n        {\n          \"content\": \"\",\n          \"end_location\": {\n            \"column\": 9,\n            \"row\": 18\n          },\n          \"location\": {\n            \"column\": 1,\n            \"row\": 18\n          }\n        }\n      ],\n      \"message\": \"Remove whitespace from blank line\"\n    },\n    \"location\": {\n      \"column\": 1,\n      \"row\": 18\n    },\n    \"message\": \"Blank line contains whitespace\",\n    \"name\": \"blank-line-with-whitespace\",\n    \"noqa_row\": 22,\n    \"severity\": \"error\",\n    \"url\": \"https://docs.astral.sh/ruff/rules/blank-line-with-whitespace\"\n  },\n  {\n    \"cell\": null,\n    \"code\": \"E402\",\n    \"end_location\": {\n      \"column\": 96,\n      \"row\": 71\n    },\n    \"filename\": \"/app/data/projects/81eefd8a4e7d/output/39097b6dc546/repos/lbg-ftr-demo-repo/backend/app/main.py\",\n    \"fix\": null,\n    \"location\": {\n      \"column\": 1,\n      \"row\": 71\n    },\n    \"message\": \"Module level import not at top of file\",\n    \"name\": \"module-import-not-at-top-of-file\",\n    \"noqa_row\": 71,\n    \"severity\": \"error\",\n    \"url\": \"https://docs.astral.sh/ruff/rules/module-import-not-at-top-of-file\"\n  },\n  {\n    \"cell\": null,\n    \"code\": \"W293\",\n    \"end_location\": {\n      \"column\": 9,\n      \"row\": 21\n    },\n    \"filename\": \"/app/data/projects/81eefd8a4e7d/output/39097b6dc546/repos/lbg-ftr-demo-repo/backend/app/repositories/bank_account_repository.py\",\n    \"fix\": {\n      \"applicability\": \"unsafe\",\n      \"edits\": [\n        {\n          \"content\": \"\",\n          \"end_location\": {\n            \"column\": 9,\n            \"row\": 21\n          },\n          \"location\": {\n            \"column\": 1,\n            \"row\": 21\n          }\n        }\n      ],\n      \"message\": \"Remove whitespace from blank line\"\n    },\n    \"location\": {\n      \"column\": 1,\n      \"row\": 21\n    },\n    \"message\": \"Blank line contains whitespace\",\n    \"name\": \"blank-line-with-whitespace\",\n    \"noqa_row\": 24,\n    \"severity\": \"error\",\n    \"url\": \"https://docs.astral.sh/ruff/rules/blank-line-with-whitespace\"\n  },\n  {\n    \"cell\": null,\n    \"code\": \"W293\",\n    \"end_location\": {\n      \"column\": 9,\n      \"row\": 39\n    },\n    \"filename\": \"/app/data/projects/81eefd8a4e7d/output/39097b6dc546/repos/lbg-ftr-demo-repo/backend/app/repositories/entitlement_repository.py\",\n    \"fix\": {\n      \"applicability\": \"unsafe\",\n      \"edits\": [\n        {\n          \"content\": \"\",\n          \"end_location\": {\n            \"column\": 9,\n            \"row\": 39\n          },\n          \"location\": {\n            \"column\": 1,\n            \"row\": 39\n          }\n        }\n      ],\n      \"message\": \"Remove whitespace from blank line\"\n    },\n    \"location\": {\n      \"column\": 1,\n      \"row\": 39\n    },\n    \"message\": \"Blank line contains whitespace\",\n    \"name\": \"blank-line-with-whitespace\",\n    \"noqa_row\": 42,\n    \"severity\": \"error\",\n    \"url\": \"https://docs.astral.sh/ruff/rules/blank-line-with-whitespace\"\n  },\n  {\n    \"cell\": null,\n    \"code\": \"E712\",\n    \"end_location\": {\n      \"column\": 42,\n      \"row\": 30\n    },\n    \"filename\": \"/app/data/projects/81eefd8a4e7d/output/39097b6dc546/repos/lbg-ftr-demo-repo/backend/app/repositories/payee_repository.py\",\n    \"fix\": {\n      \"applicability\": \"unsafe\",\n      \"edits\": [\n        {\n          \"content\": \"Payee.is_saved\",\n          \"end_location\": {\n            \"column\": 42,\n            \"row\": 30\n          },\n          \"location\": {\n            \"column\": 20,\n            \"row\": 30\n          }\n        }\n      ],\n      \"message\": \"Replace with `Payee.is_saved`\"\n    },\n    \"location\": {\n      \"column\": 20,\n      \"row\": 30\n    },\n    \"message\": \"Avoid equality comparisons to `True`; use `Payee.is_saved:` for truth checks\",\n    \"name\": \"true-false-comparison\",\n    \"noqa_row\": 30,\n    \"severity\": \"error\",\n    \"url\": \"https://docs.astral.sh/ruff/rules/true-false-comparison\"\n  },\n  {\n    \"cell\": null,\n    \"code\": \"E712\",\n    \"end_location\": {\n      \"column\": 42,\n      \"row\": 46\n    },\n    \"filename\": \"/app/data/projects/81eefd8a4e7d/output/39097b6dc546/repos/lbg-ftr-demo-repo/backend/app/repositories/payee_repository.py\",\n    \"fix\": {\n      \"applicability\": \"unsafe\",\n      \"edits\": [\n        {\n          \"content\": \"Payee.is_saved\",\n          \"end_location\": {\n            \"column\": 42,\n            \"row\": 46\n          },\n          \"location\": {\n            \"column\": 20,\n            \"row\": 46\n          }\n        }\n      ],\n      \"message\": \"Replace with `Payee.is_saved`\"\n    },\n    \"location\": {\n      \"column\": 20,\n      \"row\": 46\n    },\n    \"message\": \"Avoid equality comparisons to `True`; use `Payee.is_saved:` for truth checks\",\n    \"name\": \"true-false-comparison\",\n    \"noqa_row\": 46,\n    \"severity\": \"error\",\n    \"url\": \"https://docs.astral.sh/ruff/rules/true-false-comparison\"\n  },\n  {\n    \"cell\": null,\n    \"code\": \"E712\",\n    \"end_location\": {\n      \"column\": 46,\n      \"row\": 18\n    },\n    \"filename\": \"/app/data/projects/81eefd8a4e7d/output/39097b6dc546/repos/lbg-ftr-demo-repo/backend/app/repositories/ref_code_repository.py\",\n    \"fix\": {\n      \"applicability\": \"unsafe\",\n      \"edits\": [\n        {\n          \"content\": \"RefCode.is_active\",\n          \"end_location\": {\n            \"column\": 46,\n            \"row\": 18\n          },\n          \"location\": {\n            \"column\": 21,\n            \"row\": 18\n          }\n        }\n      ],\n      \"message\": \"Replace with `RefCode.is_active`\"\n    },\n    \"location\": {\n      \"column\": 21,\n      \"row\": 18\n    },\n    \"message\": \"Avoid equality comparisons to `True`; use `RefCode.is_active:` for truth checks\",\n    \"name\": \"true-false-comparison\",\n    \"noqa_row\": 18,\n    \"severity\": \"error\",\n    \"url\": \"https://docs.astral.sh/ruff/rules/true-false-comparison\"\n  },\n  {\n    \"cell\": null,\n    \"code\": \"E712\",\n    \"end_location\": {\n      \"column\": 46,\n      \"row\": 30\n    },\n    \"filename\": \"/app/data/projects/81eefd8a4e7d/output/39097b6dc546/repos/lbg-ftr-demo-repo/backend/app/repositories/ref_code_repository.py\",\n    \"fix\": {\n      \"applicability\": \"unsafe\",\n      \"edits\": [\n        {\n          \"content\": \"RefCode.is_active\",\n          \"end_location\": {\n            \"column\": 46,\n            \"row\": 30\n          },\n          \"location\": {\n            \"column\": 21,\n            \"row\": 30\n          }\n        }\n      ],\n      \"message\": \"Replace with `RefCode.is_active`\"\n    },\n    \"location\": {\n      \"column\": 21,\n      \"row\": 30\n    },\n    \"message\": \"Avoid equality comparisons to `True`; use `RefCode.is_active:` for truth checks\",\n    \"name\": \"true-false-comparison\",\n    \"noqa_row\": 30,\n    \"severity\": \"error\",\n    \"url\": \"https://docs.astral.sh/ruff/rules/true-false-comparison\"\n  },\n  {\n    \"cell\": null,\n    \"code\": \"W293\",\n    \"end_location\": {\n      \"column\": 9,\n      \"row\": 36\n    },\n    \"filename\": \"/app/data/projects/81eefd8a4e7d/output/39097b6dc546/repos/lbg-ftr-demo-repo/backend/app/services/accounts_overview_service.py\",\n    \"fix\": {\n      \"applicability\": \"unsafe\",\n      \"edits\": [\n        {\n          \"content\": \"\",\n          \"end_location\": {\n            \"column\": 9,\n            \"row\": 36\n          },\n          \"location\": {\n            \"column\": 1,\n            \"row\": 36\n          }\n        }\n      ],\n      \"message\": \"Remove whitespace from blank line\"\n    },\n    \"location\": {\n      \"column\": 1,\n      \"row\": 36\n    },\n    \"message\": \"Blank line contains whitespace\",\n    \"name\": \"blank-line-with-whitespace\",\n    \"noqa_row\": 43,\n    \"severity\": \"error\",\n    \"url\": \"https://docs.astral.sh/ruff/rules/blank-line-with-whitespace\"\n  },\n  {\n    \"cell\": null,\n    \"code\": \"W293\",\n    \"end_location\": {\n      \"column\": 9,\n      \"row\": 39\n    },\n    \"filename\": \"/app/data/projects/81eefd8a4e7d/output/39097b6dc546/repos/lbg-ftr-demo-repo/backend/app/services/accounts_overview_service.py\",\n    \"fix\": {\n      \"applicability\": \"unsafe\",\n      \"edits\": [\n        {\n          \"content\": \"\",\n          \"end_location\": {\n            \"column\": 9,\n            \"row\": 39\n          },\n          \"location\": {\n            \"column\": 1,\n            \"row\": 39\n          }\n        }\n      ],\n      \"message\": \"Remove whitespace from blank line\"\n    },\n    \"location\": {\n      \"column\": 1,\n      \"row\": 39\n    },\n    \"message\": \"Blank line contains whitespace\",\n    \"name\": \"blank-line-with-whitespace\",\n    \"noqa_row\": 43,\n    \"severity\": \"error\",\n    \"url\": \"https://docs.astral.sh/ruff/rules/blank-line-with-whitespace\"\n  },\n  {\n    \"cell\": null,\n    \"code\": \"W293\",\n    \"end_location\": {\n      \"column\": 9,\n      \"row\": 35\n    },\n    \"filename\": \"/app/data/projects/81eefd8a4e7d/output/39097b6dc546/repos/lbg-ftr-demo-repo/backend/app/services/cop_service.py\",\n    \"fix\": {\n      \"applicability\": \"unsafe\",\n      \"edits\": [\n        {\n          \"content\": \"\",\n          \"end_location\": {\n            \"column\": 9,\n            \"row\": 35\n          },\n          \"location\": {\n            \"column\": 1,\n            \"row\": 35\n          }\n        }\n      ],\n      \"message\": \"Remove whitespace from blank line\"\n    },\n    \"location\": {\n      \"column\": 1,\n      \"row\": 35\n    },\n    \"message\": \"Blank line contains whitespace\",\n    \"name\": \"blank-line-with-whitespace\",\n    \"noqa_row\": 41,\n    \"severity\": \"error\",\n    \"url\": \"https://docs.astral.sh/ruff/rules/blank-line-with-whitespace\"\n  },\n  {\n    \"cell\": null,\n    \"code\": \"W293\",\n    \"end_location\": {\n      \"column\": 13,\n      \"row\": 38\n    },\n    \"filename\": \"/app/data/projects/81eefd8a4e7d/output/39097b6dc546/repos/lbg-ftr-demo-repo/backend/app/services/cop_service.py\",\n    \"fix\": {\n      \"applicability\": \"unsafe\",\n      \"edits\": [\n        {\n          \"content\": \"\",\n          \"end_location\": {\n            \"column\": 13,\n            \"row\": 38\n          },\n          \"location\": {\n            \"column\": 1,\n            \"row\": 38\n          }\n        }\n      ],\n      \"message\": \"Remove whitespace from blank line\"\n    },\n    \"location\": {\n      \"column\": 1,\n      \"row\": 38\n    },\n    \"message\": \"Blank line contains whitespace\",\n    \"name\": \"blank-line-with-whitespace\",\n    \"noqa_row\": 41,\n    \"severity\": \"error\",\n    \"url\": \"https://docs.astral.sh/ruff/rules/blank-line-with-whitespace\"\n  },\n  {\n    \"cell\": null,\n    \"code\": \"W293\",\n    \"end_location\": {\n      \"column\": 9,\n      \"row\": 100\n    },\n    \"filename\": \"/app/data/projects/81eefd8a4e7d/output/39097b6dc546/repos/lbg-ftr-demo-repo/backend/app/services/cop_service.py\",\n    \"fix\": {\n      \"applicability\": \"unsafe\",\n      \"edits\": [\n        {\n          \"content\": \"\",\n          \"end_location\": {\n            \"column\": 9,\n            \"row\": 100\n          },\n          \"location\": {\n            \"column\": 1,\n            \"row\": 100\n          }\n        }\n      ],\n      \"message\": \"Remove whitespace from blank line\"\n    },\n    \"location\": {\n      \"column\": 1,\n      \"row\": 100\n    },\n    \"message\": \"Blank line contains whitespace\",\n    \"name\": \"blank-line-with-whitespace\",\n    \"noqa_row\": 103,\n    \"severity\": \"error\",\n    \"url\": \"https://docs.astral.sh/ruff/rules/blank-line-with-whitespace\"\n  },\n  {\n    \"cell\": null,\n    \"code\": \"W293\",\n    \"end_location\": {\n      \"column\": 9,\n      \"row\": 122\n    },\n    \"filename\": \"/app/data/projects/81eefd8a4e7d/output/39097b6dc546/repos/lbg-ftr-demo-repo/backend/app/services/cop_service.py\",\n    \"fix\": {\n      \"applicability\": \"unsafe\",\n      \"edits\": [\n        {\n          \"content\": \"\",\n          \"end_location\": {\n            \"column\": 9,\n            \"row\": 122\n          },\n          \"location\": {\n            \"column\": 1,\n            \"row\": 122\n          }\n        }\n      ],\n      \"message\": \"Remove whitespace from blank line\"\n    },\n    \"location\": {\n      \"column\": 1,\n      \"row\": 122\n    },\n    \"message\": \"Blank line contains whitespace\",\n    \"name\": \"blank-line-with-whitespace\",\n    \"noqa_row\": 125,\n    \"severity\": \"error\",\n    \"url\": \"https://docs.astral.sh/ruff/rules/blank-line-with-whitespace\"\n  },\n  {\n    \"cell\": null,\n    \"code\": \"W293\",\n    \"end_location\": {\n      \"column\": 9,\n      \"row\": 25\n    },\n    \"filename\": \"/app/data/projects/81eefd8a4e7d/output/39097b6dc546/repos/lbg-ftr-demo-repo/backend/app/services/entitlement_service.py\",\n    \"fix\": {\n      \"applicability\": \"unsafe\",\n      \"edits\": [\n        {\n          \"content\": \"\",\n          \"end_location\": {\n            \"column\": 9,\n            \"row\": 25\n          },\n          \"location\": {\n            \"column\": 1,\n            \"row\": 25\n          }\n        }\n      ],\n      \"message\": \"Remove whitespace from blank line\"\n    },\n    \"location\": {\n      \"column\": 1,\n      \"row\": 25\n    },\n    \"message\": \"Blank line contains whitespace\",\n    \"name\": \"blank-line-with-whitespace\",\n    \"noqa_row\": 36,\n    \"severity\": \"error\",\n    \"url\": \"https://docs.astral.sh/ruff/rules/blank-line-with-whitespace\"\n  },\n  {\n    \"cell\": null,\n    \"code\": \"W293\",\n    \"end_location\": {\n      \"column\": 13,\n      \"row\": 30\n    },\n    \"filename\": \"/app/data/projects/81eefd8a4e7d/output/39097b6dc546/repos/lbg-ftr-demo-repo/backend/app/services/entitlement_service.py\",\n    \"fix\": {\n      \"applicability\": \"unsafe\",\n      \"edits\": [\n        {\n          \"content\": \"\",\n          \"end_location\": {\n            \"column\": 13,\n            \"row\": 30\n          },\n          \"location\": {\n            \"column\": 1,\n            \"row\": 30\n          }\n        }\n      ],\n      \"message\": \"Remove whitespace from blank line\"\n    },\n    \"location\": {\n      \"column\": 1,\n      \"row\": 30\n    },\n    \"message\": \"Blank line contains whitespace\",\n    \"name\": \"blank-line-with-whitespace\",\n    \"noqa_row\": 36,\n    \"severity\": \"error\",\n    \"url\": \"https://docs.astral.sh/ruff/rules/blank-line-with-whitespace\"\n  },\n  {\n    \"cell\": null,\n    \"code\": \"W293\",\n    \"end_location\": {\n      \"column\": 13,\n      \"row\": 33\n    },\n    \"filename\": \"/app/data/projects/81eefd8a4e7d/output/39097b6dc546/repos/lbg-ftr-demo-repo/backend/app/services/entitlement_service.py\",\n    \"fix\": {\n      \"applicability\": \"unsafe\",\n      \"edits\": [\n        {\n          \"content\": \"\",\n          \"end_location\": {\n            \"column\": 13,\n            \"row\": 33\n          },\n          \"location\": {\n            \"column\": 1,\n            \"row\": 33\n          }\n        }\n      ],\n      \"message\": \"Remove whitespace from blank line\"\n    },\n    \"location\": {\n      \"column\": 1,\n      \"row\": 33\n    },\n    \"message\": \"Blank line contains whitespace\",\n    \"name\": \"blank-line-with-whitespace\",\n    \"noqa_row\": 36,\n    \"severity\": \"error\",\n    \"url\": \"https://docs.astral.sh/ruff/rules/blank-line-with-whitespace\"\n  },\n  {\n    \"cell\": null,\n    \"code\": \"W293\",\n    \"end_location\": {\n      \"column\": 9,\n      \"row\": 57\n    },\n    \"filename\": \"/app/data/projects/81eefd8a4e7d/output/39097b6dc546/repos/lbg-ftr-demo-repo/backend/app/services/entitlement_service.py\",\n    \"fix\": {\n      \"applicability\": \"unsafe\",\n      \"edits\": [\n        {\n          \"content\": \"\",\n          \"end_location\": {\n            \"column\": 9,\n            \"row\": 57\n          },\n          \"location\": {\n            \"column\": 1,\n            \"row\": 57\n          }\n        }\n      ],\n      \"message\": \"Remove whitespace from blank line\"\n    },\n    \"location\": {\n      \"column\": 1,\n      \"row\": 57\n    },\n    \"message\": \"Blank line contains whitespace\",\n    \"name\": \"blank-line-with-whitespace\",\n    \"noqa_row\": 60,\n    \"severity\": \"error\",\n    \"url\": \"https://docs.astral.sh/ruff/rules/blank-line-with-whitespace\"\n  },\n  {\n    \"cell\": null,\n    \"code\": \"W293\",\n    \"end_location\": {\n      \"column\": 9,\n      \"row\": 51\n    },\n    \"filename\": \"/app/data/projects/81eefd8a4e7d/output/39097b6dc546/repos/lbg-ftr-demo-repo/backend/app/services/payee_service.py\",\n    \"fix\": {\n      \"applicability\": \"unsafe\",\n      \"edits\": [\n        {\n          \"content\": \"\",\n          \"end_location\": {\n            \"column\": 9,\n            \"row\": 51\n          },\n          \"location\": {\n            \"column\": 1,\n            \"row\": 51\n          }\n        }\n      ],\n      \"message\": \"Remove whitespace from blank line\"\n    },\n    \"location\": {\n      \"column\": 1,\n      \"row\": 51\n    },\n    \"message\": \"Blank line contains whitespace\",\n    \"name\": \"blank-line-with-whitespace\",\n    \"noqa_row\": 55,\n    \"severity\": \"error\",\n    \"url\": \"https://docs.astral.sh/ruff/rules/blank-line-with-whitespace\"\n  },\n  {\n    \"cell\": null,\n    \"code\": \"W293\",\n    \"end_location\": {\n      \"column\": 9,\n      \"row\": 77\n    },\n    \"filename\": \"/app/data/projects/81eefd8a4e7d/output/39097b6dc546/repos/lbg-ftr-demo-repo/backend/app/services/payee_service.py\",\n    \"fix\": {\n      \"applicability\": \"unsafe\",\n      \"edits\": [\n        {\n          \"content\": \"\",\n          \"end_location\": {\n            \"column\": 9,\n            \"row\": 77\n          },\n          \"location\": {\n            \"column\": 1,\n            \"row\": 77\n          }\n        }\n      ],\n      \"message\": \"Remove whitespace from blank line\"\n    },\n    \"location\": {\n      \"column\": 1,\n      \"row\": 77\n    },\n    \"message\": \"Blank line contains whitespace\",\n    \"name\": \"blank-line-with-whitespace\",\n    \"noqa_row\": 80,\n    \"severity\": \"error\",\n    \"url\": \"https://docs.astral.sh/ruff/rules/blank-line-with-whitespace\"\n  },\n  {\n    \"cell\": null,\n    \"code\": \"W293\",\n    \"end_location\": {\n      \"column\": 9,\n      \"row\": 144\n    },\n    \"filename\": \"/app/data/projects/81eefd8a4e7d/output/39097b6dc546/repos/lbg-ftr-demo-repo/backend/app/services/payee_service.py\",\n    \"fix\": {\n      \"applicability\": \"unsafe\",\n      \"edits\": [\n        {\n          \"content\": \"\",\n          \"end_location\": {\n            \"column\": 9,\n            \"row\": 144\n          },\n          \"location\": {\n            \"column\": 1,\n            \"row\": 144\n          }\n        }\n      ],\n      \"message\": \"Remove whitespace from blank line\"\n    },\n    \"location\": {\n      \"column\": 1,\n      \"row\": 144\n    },\n    \"message\": \"Blank line contains whitespace\",\n    \"name\": \"blank-line-with-whitespace\",\n    \"noqa_row\": 147,\n    \"severity\": \"error\",\n    \"url\": \"https://docs.astral.sh/ruff/rules/blank-line-with-whitespace\"\n  },\n  {\n    \"cell\": null,\n    \"code\": \"W293\",\n    \"end_location\": {\n      \"column\": 9,\n      \"row\": 33\n    },\n    \"filename\": \"/app/data/projects/81eefd8a4e7d/output/39097b6dc546/repos/lbg-ftr-demo-repo/backend/app/services/profile_service.py\",\n    \"fix\": {\n      \"applicability\": \"unsafe\",\n      \"edits\": [\n        {\n          \"content\": \"\",\n          \"end_location\": {\n            \"column\": 9,\n            \"row\": 33\n          },\n          \"location\": {\n            \"column\": 1,\n            \"row\": 33\n          }\n        }\n      ],\n      \"message\": \"Remove whitespace from blank line\"\n    },\n    \"location\": {\n      \"column\": 1,\n      \"row\": 33\n    },\n    \"message\": \"Blank line contains whitespace\",\n    \"name\": \"blank-line-with-whitespace\",\n    \"noqa_row\": 37,\n    \"severity\": \"error\",\n    \"url\": \"https://docs.astral.sh/ruff/rules/blank-line-with-whitespace\"\n  },\n  {\n    \"cell\": null,\n    \"code\": \"F841\",\n    \"end_location\": {\n      \"column\": 18,\n      \"row\": 68\n    },\n    \"filename\": \"/app/data/projects/81eefd8a4e7d/output/39097b6dc546/repos/lbg-ftr-demo-repo/backend/app/services/step_up_service.py\",\n    \"fix\": {\n      \"applicability\": \"unsafe\",\n      \"edits\": [\n        {\n          \"content\": \"\",\n          \"end_location\": {\n            \"column\": 21,\n            \"row\": 68\n          },\n          \"location\": {\n            \"column\": 9,\n            \"row\": 68\n          }\n        }\n      ],\n      \"message\": \"Remove assignment to unused variable `challenge`\"\n    },\n    \"location\": {\n      \"column\": 9,\n      \"row\": 68\n    },\n    \"message\": \"Local variable `challenge` is assigned to but never used\",\n    \"name\": \"unused-variable\",\n    \"noqa_row\": 68,\n    \"severity\": \"error\",\n    \"url\": \"https://docs.astral.sh/ruff/rules/unused-variable\"\n  },\n  {\n    \"cell\": null,\n    \"code\": \"E402\",\n    \"end_location\": {\n      \"column\": 14,\n      \"row\": 21\n    },\n    \"filename\": \"/app/data/projects/81eefd8a4e7d/output/39097b6dc546/repos/lbg-ftr-demo-repo/backend/tests/conftest.py\",\n    \"fix\": null,\n    \"location\": {\n      \"column\": 1,\n      \"row\": 21\n    },\n    \"message\": \"Module level import not at top of file\",\n    \"name\": \"module-import-not-at-top-of-file\",\n    \"noqa_row\": 21,\n    \"severity\": \"error\",\n    \"url\": \"https://docs.astral.sh/ruff/rules/module-import-not-at-top-of-file\"\n  },\n  {\n    \"cell\": null,\n    \"code\": \"E402\",\n    \"end_location\": {\n      \"column\": 42,\n      \"row\": 22\n    },\n    \"filename\": \"/app/data/projects/81eefd8a4e7d/output/39097b6dc546/repos/lbg-ftr-demo-repo/backend/tests/conftest.py\",\n    \"fix\": null,\n    \"location\": {\n      \"column\": 1,\n      \"row\": 22\n    },\n    \"message\": \"Module level import not at top of file\",\n    \"name\": \"module-import-not-at-top-of-file\",\n    \"noqa_row\": 22,\n    \"severity\": \"error\",\n    \"url\": \"https://docs.astral.sh/ruff/rules/module-import-not-at-top-of-file\"\n  },\n  {\n    \"cell\": null,\n    \"code\": \"E402\",\n    \"end_location\": {\n      \"column\": 37,\n      \"row\": 23\n    },\n    \"filename\": \"/app/data/projects/81eefd8a4e7d/output/39097b6dc546/repos/lbg-ftr-demo-repo/backend/tests/conftest.py\",\n    \"fix\": null,\n    \"location\": {\n      \"column\": 1,\n      \"row\": 23\n    },\n    \"message\": \"Module level import not at top of file\",\n    \"name\": \"module-import-not-at-top-of-file\",\n    \"noqa_row\": 23,\n    \"severity\": \"error\",\n    \"url\": \"https://docs.astral.sh/ruff/rules/module-import-not-at-top-of-file\"\n  },\n  {\n    \"cell\": null,\n    \"code\": \"E402\",\n    \"end_location\": {\n      \"column\": 49,\n      \"row\": 24\n    },\n    \"filename\": \"/app/data/projects/81eefd8a4e7d/output/39097b6dc546/repos/lbg-ftr-demo-repo/backend/tests/conftest.py\",\n    \"fix\": null,\n    \"location\": {\n      \"column\": 1,\n      \"row\": 24\n    },\n    \"message\": \"Module level import not at top of file\",\n    \"name\": \"module-import-not-at-top-of-file\",\n    \"noqa_row\": 24,\n    \"severity\": \"error\",\n    \"url\": \"https://docs.astral.sh/ruff/rules/module-import-not-at-top-of-file\"\n  },\n  {\n    \"cell\": null,\n    \"code\": \"E402\",\n    \"end_location\": {\n      \"column\": 18,\n      \"row\": 26\n    },\n    \"filename\": \"/app/data/projects/81eefd8a4e7d/output/39097b6dc546/repos/lbg-ftr-demo-repo/backend/tests/conftest.py\",\n    \"fix\": null,\n    \"location\": {\n      \"column\": 1,\n      \"row\": 26\n    },\n    \"message\": \"Module level import not at top of file\",\n    \"name\": \"module-import-not-at-top-of-file\",\n    \"noqa_row\": 26,\n    \"severity\": \"error\",\n    \"url\": \"https://docs.astral.sh/ruff/rules/module-import-not-at-top-of-file\"\n  },\n  {\n    \"cell\": null,\n    \"code\": \"E402\",\n    \"end_location\": {\n      \"column\": 21,\n      \"row\": 29\n    },\n    \"filename\": \"/app/data/projects/81eefd8a4e7d/output/39097b6dc546/repos/lbg-ftr-demo-repo/backend/tests/conftest.py\",\n    \"fix\": null,\n    \"location\": {\n      \"column\": 1,\n      \"row\": 29\n    },\n    \"message\": \"Module level import not at top of file\",\n    \"name\": \"module-import-not-at-top-of-file\",\n    \"noqa_row\": 29,\n    \"severity\": \"error\",\n    \"url\": \"https://docs.astral.sh/ruff/rules/module-import-not-at-top-of-file\"\n  },\n  {\n    \"cell\": null,\n    \"code\": \"E402\",\n    \"end_location\": {\n      \"column\": 38,\n      \"row\": 30\n    },\n    \"filename\": \"/app/data/projects/81eefd8a4e7d/output/39097b6dc546/repos/lbg-ftr-demo-repo/backend/tests/conftest.py\",\n    \"fix\": null,\n    \"location\": {\n      \"column\": 1,\n      \"row\": 30\n    },\n    \"message\": \"Module level import not at top of file\",\n    \"name\": \"module-import-not-at-top-of-file\",\n    \"noqa_row\": 30,\n    \"severity\": \"error\",\n    \"url\": \"https://docs.astral.sh/ruff/rules/module-import-not-at-top-of-file\"\n  }\n]",
+  "stderr": "",
+  "all_findings": [
+    {
+      "path": "/repos/lbg-ftr-demo-repo/backend/alembic/versions/1bccdcbe3fda_initial_schema.py",
+      "line": 4,
+      "column": 9,
+      "code": "W291",
+      "msg": "Trailing whitespace",
+      "severity": "error"
+    },
+    {
+      "path": "/repos/lbg-ftr-demo-repo/backend/app/core/parallel.py",
+      "line": 11,
+      "column": 1,
+      "code": "W293",
+      "msg": "Blank line contains whitespace",
+      "severity": "error"
+    },
+    {
+      "path": "/repos/lbg-ftr-demo-repo/backend/app/core/parallel.py",
+      "line": 15,
+      "column": 1,
+      "code": "W293",
+      "msg": "Blank line contains whitespace",
+      "severity": "error"
+    },
+    {
+      "path": "/repos/lbg-ftr-demo-repo/backend/app/core/parallel.py",
+      "line": 18,
+      "column": 1,
+      "code": "W293",
+      "msg": "Blank line contains whitespace",
+      "severity": "error"
+    },
+    {
+      "path": "/repos/lbg-ftr-demo-repo/backend/app/main.py",
+      "line": 71,
+      "column": 1,
+      "code": "E402",
+      "msg": "Module level import not at top of file",
+      "severity": "error"
+    },
+    {
+      "path": "/repos/lbg-ftr-demo-repo/backend/app/repositories/bank_account_repository.py",
+      "line": 21,
+      "column": 1,
+      "code": "W293",
+      "msg": "Blank line contains whitespace",
+      "severity": "error"
+    },
+    {
+      "path": "/repos/lbg-ftr-demo-repo/backend/app/repositories/entitlement_repository.py",
+      "line": 39,
+      "column": 1,
+      "code": "W293",
+      "msg": "Blank line contains whitespace",
+      "severity": "error"
+    },
+    {
+      "path": "/repos/lbg-ftr-demo-repo/backend/app/repositories/payee_repository.py",
+      "line": 30,
+      "column": 20,
+      "code": "E712",
+      "msg": "Avoid equality comparisons to `True`; use `Payee.is_saved:` for truth checks",
+      "severity": "error"
+    },
+    {
+      "path": "/repos/lbg-ftr-demo-repo/backend/app/repositories/payee_repository.py",
+      "line": 46,
+      "column": 20,
+      "code": "E712",
+      "msg": "Avoid equality comparisons to `True`; use `Payee.is_saved:` for truth checks",
+      "severity": "error"
+    },
+    {
+      "path": "/repos/lbg-ftr-demo-repo/backend/app/repositories/ref_code_repository.py",
+      "line": 18,
+      "column": 21,
+      "code": "E712",
+      "msg": "Avoid equality comparisons to `True`; use `RefCode.is_active:` for truth checks",
+      "severity": "error"
+    },
+    {
+      "path": "/repos/lbg-ftr-demo-repo/backend/app/repositories/ref_code_repository.py",
+      "line": 30,
+      "column": 21,
+      "code": "E712",
+      "msg": "Avoid equality comparisons to `True`; use `RefCode.is_active:` for truth checks",
+      "severity": "error"
+    },
+    {
+      "path": "/repos/lbg-ftr-demo-repo/backend/app/services/accounts_overview_service.py",
+      "line": 36,
+      "column": 1,
+      "code": "W293",
+      "msg": "Blank line contains whitespace",
+      "severity": "error"
+    },
+    {
+      "path": "/repos/lbg-ftr-demo-repo/backend/app/services/accounts_overview_service.py",
+      "line": 39,
+      "column": 1,
+      "code": "W293",
+      "msg": "Blank line contains whitespace",
+      "severity": "error"
+    },
+    {
+      "path": "/repos/lbg-ftr-demo-repo/backend/app/services/cop_service.py",
+      "line": 35,
+      "column": 1,
+      "code": "W293",
+      "msg": "Blank line contains whitespace",
+      "severity": "error"
+    },
+    {
+      "path": "/repos/lbg-ftr-demo-repo/backend/app/services/cop_service.py",
+      "line": 38,
+      "column": 1,
+      "code": "W293",
+      "msg": "Blank line contains whitespace",
+      "severity": "error"
+    },
+    {
+      "path": "/repos/lbg-ftr-demo-repo/backend/app/services/cop_service.py",
+      "line": 100,
+      "column": 1,
+      "code": "W293",
+      "msg": "Blank line contains whitespace",
+      "severity": "error"
+    },
+    {
+      "path": "/repos/lbg-ftr-demo-repo/backend/app/services/cop_service.py",
+      "line": 122,
+      "column": 1,
+      "code": "W293",
+      "msg": "Blank line contains whitespace",
+      "severity": "error"
+    },
+    {
+      "path": "/repos/lbg-ftr-demo-repo/backend/app/services/entitlement_service.py",
+      "line": 25,
+      "column": 1,
+      "code": "W293",
+      "msg": "Blank line contains whitespace",
+      "severity": "error"
+    },
+    {
+      "path": "/repos/lbg-ftr-demo-repo/backend/app/services/entitlement_service.py",
+      "line": 30,
+      "column": 1,
+      "code": "W293",
+      "msg": "Blank line contains whitespace",
+      "severity": "error"
+    },
+    {
+      "path": "/repos/lbg-ftr-demo-repo/backend/app/services/entitlement_service.py",
+      "line": 33,
+      "column": 1,
+      "code": "W293",
+      "msg": "Blank line contains whitespace",
+      "severity": "error"
+    },
+    {
+      "path": "/repos/lbg-ftr-demo-repo/backend/app/services/entitlement_service.py",
+      "line": 57,
+      "column": 1,
+      "code": "W293",
+      "msg": "Blank line contains whitespace",
+      "severity": "error"
+    },
+    {
+      "path": "/repos/lbg-ftr-demo-repo/backend/app/services/payee_service.py",
+      "line": 51,
+      "column": 1,
+      "code": "W293",
+      "msg": "Blank line contains whitespace",
+      "severity": "error"
+    },
+    {
+      "path": "/repos/lbg-ftr-demo-repo/backend/app/services/payee_service.py",
+      "line": 77,
+      "column": 1,
+      "code": "W293",
+      "msg": "Blank line contains whitespace",
+      "severity": "error"
+    },
+    {
+      "path": "/repos/lbg-ftr-demo-repo/backend/app/services/payee_service.py",
+      "line": 144,
+      "column": 1,
+      "code": "W293",
+      "msg": "Blank line contains whitespace",
+      "severity": "error"
+    },
+    {
+      "path": "/repos/lbg-ftr-demo-repo/backend/app/services/profile_service.py",
+      "line": 33,
+      "column": 1,
+      "code": "W293",
+      "msg": "Blank line contains whitespace",
+      "severity": "error"
+    },
+    {
+      "path": "/repos/lbg-ftr-demo-repo/backend/app/services/step_up_service.py",
+      "line": 68,
+      "column": 9,
+      "code": "F841",
+      "msg": "Local variable `challenge` is assigned to but never used",
+      "severity": "error"
+    },
+    {
+      "path": "/repos/lbg-ftr-demo-repo/backend/tests/conftest.py",
+      "line": 21,
+      "column": 1,
+      "code": "E402",
+      "msg": "Module level import not at top of file",
+      "severity": "error"
+    },
+    {
+      "path": "/repos/lbg-ftr-demo-repo/backend/tests/conftest.py",
+      "line": 22,
+      "column": 1,
+      "code": "E402",
+      "msg": "Module level import not at top of file",
+      "severity": "error"
+    },
+    {
+      "path": "/repos/lbg-ftr-demo-repo/backend/tests/conftest.py",
+      "line": 23,
+      "column": 1,
+      "code": "E402",
+      "msg": "Module level import not at top of file",
+      "severity": "error"
+    },
+    {
+      "path": "/repos/lbg-ftr-demo-repo/backend/tests/conftest.py",
+      "line": 24,
+      "column": 1,
+      "code": "E402",
+      "msg": "Module level import not at top of file",
+      "severity": "error"
+    },
+    {
+      "path": "/repos/lbg-ftr-demo-repo/backend/tests/conftest.py",
+      "line": 26,
+      "column": 1,
+      "code": "E402",
+      "msg": "Module level import not at top of file",
+      "severity": "error"
+    },
+    {
+      "path": "/repos/lbg-ftr-demo-repo/backend/tests/conftest.py",
+      "line": 29,
+      "column": 1,
+      "code": "E402",
+      "msg": "Module level import not at top of file",
+      "severity": "error"
+    },
+    {
+      "path": "/repos/lbg-ftr-demo-repo/backend/tests/conftest.py",
+      "line": 30,
+      "column": 1,
+      "code": "E402",
+      "msg": "Module level import not at top of file",
+      "severity": "error"
+    }
+  ]
+}

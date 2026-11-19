@@ -1,0 +1,98 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+/backend/lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.hypothesis/
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Virtual environments
+/backend/.venv
+/backend/venv
+/backend/env
+
+# SQLite databases
+*.db
+*.db-journal
+*.db-shm
+*.db-wal
+
+# Environment files
+/backend/.env
+.env.local
+.env.production
+.env.test
+
+# Node
+node_modules/
+/frontend/dist
+/frontend/dist-ssr
+*.local
+*.tsbuildinfo
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+*.log
+
+# Editor
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.swp
+*.swo
+*~
+
+# Process IDs
+.pids
+pids.txt
+
+# OS
+Thumbs.db
+
+# Testing
+/coverage
+/frontend/playwright-report
+/frontend/test-results
+
+# Misc
+.agentic/
+.handoff/
+
+# Verification harness (do not commit)
+/backend/_start_server.py
+/backend/_stop_server.py
+/backend/_server.log
+/backend/_server.pid
+/backend/_test.env
+.verification/
+.verification/
