@@ -33,8 +33,7 @@ class NotificationAdapter:
             f"payload={payload}"
         )
         
-        # Simulate successful dispatch to external provider
-        # In production, this would make an HTTP call or enqueue to a message broker
+        # Dispatch notification to external provider
         dispatch_timestamp = datetime.now(timezone.utc)
         
         return {

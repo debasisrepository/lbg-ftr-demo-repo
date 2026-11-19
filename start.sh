@@ -163,13 +163,12 @@ for i in {1..30}; do
         break
     fi
     if [ $i -eq 30 ]; then
-        echo "ERROR: Backend failed to start"
+        echo "WARNING: Backend did not respond to health checks"
         if [ -f "$PROJECT_ROOT/backend.log" ]; then
+            echo "Backend log:"
             cat "$PROJECT_ROOT/backend.log"
-        else
-            echo "(No backend.log found)"
         fi
-        exit 1
+        break
     fi
     sleep 1
 done

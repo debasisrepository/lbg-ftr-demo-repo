@@ -12,7 +12,7 @@ class PaymentStatusService:
     def __init__(self, db: Session):
         self.db = db
         self.payment_repo = PaymentRepository(db)
-        self.status_adapter = PaymentStatusAdapter()
+        self.status_adapter = PaymentStatusAdapter(db)
 
     def record_status(
         self,
