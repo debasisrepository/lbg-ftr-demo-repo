@@ -1,0 +1,87 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+/backend/lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+env/
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Environment files
+.env
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+# Test coverage
+.coverage
+htmlcov/
+.pytest_cache/
+
+# Logs
+*.log
+
+# Build artifacts
+*.pyc
+*.pyo
+
+# Alembic
+alembic/__pycache__/
+
+# Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Process tracking
+.pids
+pids.txt
+
+# Graphify (already present)
+graphify-out/
+
+# Verification artifacts
+_start_server.py
+_stop_server.py
+_server.log
+_server.pid
+_test.env
+_test_*.py
+.verification/
+
+# Pass summaries (internal tracking)
+.pass_summaries/

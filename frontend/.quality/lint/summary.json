@@ -1,0 +1,43 @@
+{
+  "status": "failed",
+  "target_path": "/repos/lbg-ftr-demo-repo/frontend",
+  "requested_linters": [
+    "biome"
+  ],
+  "applicable_linters": [
+    "biome",
+    "djlint"
+  ],
+  "selected_linters": [
+    "biome"
+  ],
+  "message": "All findings, including any findings omitted from the inline response, are available in the report files listed under `report_paths`.",
+  "summary": {
+    "errors": 0,
+    "warnings": 0,
+    "total_findings": 0,
+    "inline_findings": 0,
+    "remaining_findings": 0,
+    "linters_run": 1,
+    "linters_with_issues": 0,
+    "linters_unavailable": 0
+  },
+  "by_tool": {
+    "biome": {
+      "status": "failed",
+      "errors": 0,
+      "warnings": 0,
+      "total_findings": 0,
+      "inline_findings": 0,
+      "remaining_findings": 0,
+      "files": [],
+      "report_path": "/repos/lbg-ftr-demo-repo/frontend/.quality/lint/biome-result.json",
+      "reason": "npm error npx canceled due to missing packages and no YES option: [\"@biomejs/biome@2.6.8\"]\nnpm error A complete log of this run can be found in: /home/appuser/.npm/_logs/2026-11-19T19_15_13_457Z-debug-0.log"
+    }
+  },
+  "report_dir": "/repos/lbg-ftr-demo-repo/frontend/.quality/lint",
+  "report_paths": {
+    "summary": "/repos/lbg-ftr-demo-repo/frontend/.quality/lint/summary.json",
+    "biome": "/repos/lbg-ftr-demo-repo/frontend/.quality/lint/biome-result.json"
+  }
+}

@@ -1,0 +1,14 @@
+# Exclude backend files
+backend/
+
+# Exclude other components' build artifacts and dependencies
+**/node_modules
+**/.venv
+**/venv
+**/dist
+**/build
+
+# Exclude git and misc
+.git
+.gitignore
+**/.DS_Store
