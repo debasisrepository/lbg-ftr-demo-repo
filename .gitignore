@@ -53,6 +53,7 @@ node_modules/
 /frontend/dist
 /frontend/dist-ssr
 *.local
+*.tsbuildinfo
 
 # Logs
 npm-debug.log*
@@ -80,6 +81,8 @@ Thumbs.db
 
 # Testing
 /coverage
+/frontend/playwright-report
+/frontend/test-results
 
 # Misc
 .agentic/
