@@ -1,0 +1,35 @@
+# Backend Dockerfile - multi-stage build
+FROM python:3.11-slim as base
+
+WORKDIR /app
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    gcc \
+    libpq-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy dependency files
+COPY pyproject.toml ./
+
+# Copy application code
+COPY app/ ./app/
+COPY alembic/ ./alembic/
+COPY alembic.ini ./
+
+# Install dependencies (default to base package, override with INSTALL_SPEC for postgres extra)
+ARG INSTALL_SPEC=.
+RUN pip install --no-cache-dir "$INSTALL_SPEC"
+
+# Copy entrypoint script
+COPY docker-entrypoint.sh ./
+RUN chmod +x docker-entrypoint.sh
+
+# Expose backend port
+EXPOSE 9000
+
+# Entrypoint runs migrations, then exec the CMD
+ENTRYPOINT ["./docker-entrypoint.sh"]
+
+# Start uvicorn server
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "9000"]

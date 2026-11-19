@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    env_file:
+      - backend/dev.env
+    environment:
+      - DATABASE_URL=sqlite:////data/app.db
+    volumes:
+      - backend-data:/data
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/api/v1/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    x-preview-port: 9000
+
+  frontend:
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    x-preview-port: 80
+
+volumes:
+  backend-data:

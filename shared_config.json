@@ -1,0 +1,12 @@
+{
+  "version": "0.1.0",
+  "auth_storage_key": "lbg_ftr_demo_auth_token",
+  "app_name": "Sample Bank Mobile Payments",
+  "api_version": "v1",
+  "enums": {
+    "customer_types": ["retail", "dual_profile", "business_user"],
+    "profile_types": ["personal", "business"],
+    "payment_types": ["faster_payment"],
+    "normalized_status": ["sent", "pending", "failed"]
+  }
+}
