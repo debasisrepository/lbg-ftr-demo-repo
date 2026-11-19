@@ -1,0 +1,252 @@
+@use '@carbon/styles/scss/spacing' as *;
+@use '@carbon/styles/scss/theme' as *;
+
+.container {
+  width: 100%;
+  max-width: 393px;
+  min-height: 100vh;
+  margin: 0 auto;
+  background: var(--cds-background, #ffffff);
+  display: flex;
+  flex-direction: column;
+}
+
+.topbar {
+  flex-shrink: 0;
+  height: $spacing-09;
+  display: flex;
+  align-items: center;
+  gap: $spacing-03;
+  padding: 0 $spacing-05 0 0;
+  border-bottom: 1px solid var(--cds-border-subtle-01, #e0e0e0);
+}
+
+.backButton {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: 0;
+  color: #002563;
+  cursor: pointer;
+
+  &:focus {
+    outline: 2px solid var(--cds-focus, #0f62fe);
+    outline-offset: -2px;
+  }
+}
+
+.brand {
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 600;
+  color: #002563;
+  letter-spacing: 0.16px;
+}
+
+.content {
+  flex: 1 0 auto;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  column-gap: $spacing-05;
+  row-gap: $spacing-06;
+  padding: $spacing-06 $spacing-05 $spacing-07;
+  align-content: start;
+
+  > * {
+    grid-column: span 4;
+  }
+}
+
+.title {
+  font-size: 28px;
+  line-height: 36px;
+  font-weight: 400;
+  color: #002563;
+  margin: 0;
+}
+
+.payeePanel {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: $spacing-05;
+  min-height: 64px;
+  padding: $spacing-05;
+  background: #f2faff;
+  outline: 2px solid #002563;
+  outline-offset: -2px;
+}
+
+.payeeName {
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 600;
+  color: #002563;
+  margin: 0;
+}
+
+.payeeAccount {
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--cds-text-secondary, #525252);
+  margin: 0;
+}
+
+.checkIcon {
+  fill: #002563;
+  flex-shrink: 0;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-05;
+  grid-column: span 4;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-03;
+}
+
+.label {
+  font-size: 12px;
+  line-height: 16px;
+  letter-spacing: 0.32px;
+  color: var(--cds-text-secondary, #525252);
+}
+
+.input {
+  width: 100%;
+  height: 48px;
+  padding: 0 $spacing-05;
+  background: var(--cds-field-01, #f4f4f4);
+  border: 0;
+  border-bottom: 1px solid var(--cds-border-strong-01, #8d8d8d);
+  font-family: inherit;
+  font-size: 16px;
+  line-height: 24px;
+  color: var(--cds-text-primary, #161616);
+  border-radius: 0;
+
+  &:focus {
+    outline: 2px solid var(--cds-focus, #0f62fe);
+    outline-offset: -2px;
+  }
+}
+
+.inputReadonly {
+  @extend .input;
+  background: transparent;
+  border-bottom-color: var(--cds-border-subtle-01, #e0e0e0);
+}
+
+.inputInvalid {
+  outline: 2px solid var(--cds-support-error, #da1e28);
+  outline-offset: -2px;
+  border-bottom-color: transparent;
+}
+
+.amountWrapper {
+  position: relative;
+}
+
+.currencyPrefix {
+  position: absolute;
+  left: $spacing-05;
+  top: 0;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  font-size: 16px;
+  color: var(--cds-text-secondary, #525252);
+  pointer-events: none;
+}
+
+.amountInput {
+  padding-left: $spacing-07;
+}
+
+.helper {
+  font-size: 12px;
+  line-height: 16px;
+  letter-spacing: 0.32px;
+  color: var(--cds-text-helper, #6f6f6f);
+  margin: 0;
+}
+
+.errorMessage {
+  display: flex;
+  gap: $spacing-02;
+  align-items: flex-start;
+  font-size: 12px;
+  line-height: 16px;
+  letter-spacing: 0.32px;
+  color: var(--cds-text-error, #da1e28);
+  margin: 0;
+}
+
+.errorIcon {
+  fill: var(--cds-support-error, #da1e28);
+  flex-shrink: 0;
+}
+
+.payButton {
+  width: 100%;
+  justify-content: space-between;
+}
+
+.approvalContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: $spacing-05;
+  text-align: center;
+}
+
+.faceIdIcon {
+  fill: #002563;
+  width: 48px;
+  height: 48px;
+}
+
+.approvalSummary {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: $spacing-03 $spacing-05;
+  width: 100%;
+  padding: $spacing-04 $spacing-05;
+  background: var(--cds-layer-01, #f4f4f4);
+  text-align: left;
+  margin: 0;
+}
+
+.summaryRow {
+  display: contents;
+
+  dt {
+    font-size: 14px;
+    line-height: 20px;
+    color: var(--cds-text-secondary, #525252);
+    align-self: center;
+  }
+
+  dd {
+    font-size: 14px;
+    line-height: 20px;
+    font-weight: 600;
+    text-align: right;
+    margin: 0;
+  }
+}
+
+.approvalNote {
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--cds-text-secondary, #525252);
+  margin: 0;
+}

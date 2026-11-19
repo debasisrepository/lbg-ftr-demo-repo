@@ -1,0 +1,24 @@
+{
+  "tool": "biome",
+  "status": "failed",
+  "errors": 0,
+  "warnings": 0,
+  "total_findings": 0,
+  "inline_findings": 0,
+  "remaining_findings": 0,
+  "files": [],
+  "report_path": "/repos/lbg-ftr-demo-repo/frontend/.quality/lint/biome-result.json",
+  "reason": "npm error npx canceled due to missing packages and no YES option: [\"@biomejs/biome@2.6.8\"]\nnpm error A complete log of this run can be found in: /home/appuser/.npm/_logs/2026-11-19T19_15_13_457Z-debug-0.log",
+  "command": [
+    "npx",
+    "--no-install",
+    "@biomejs/biome",
+    "check",
+    "/app/data/projects/5a65f14211b2/output/938ae6396440/repos/lbg-ftr-demo-repo/frontend",
+    "--reporter=json"
+  ],
+  "exit_code": 1,
+  "stdout": "",
+  "stderr": "npm error npx canceled due to missing packages and no YES option: [\"@biomejs/biome@2.6.8\"]\nnpm error A complete log of this run can be found in: /home/appuser/.npm/_logs/2026-11-19T19_15_13_457Z-debug-0.log\n",
+  "all_findings": []
+}

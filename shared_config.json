@@ -1,0 +1,15 @@
+{
+  "auth": {
+    "tokenStorageKey": "lbg_ftr_auth_token",
+    "sessionTimeoutMinutes": 480
+  },
+  "api": {
+    "defaultPageSize": 20,
+    "maxPageSize": 100
+  },
+  "payment": {
+    "maxAmountMinor": 100000000,
+    "defaultCurrency": "GBP",
+    "supportedCurrencies": ["GBP"]
+  }
+}

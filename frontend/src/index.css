@@ -1,0 +1,30 @@
+/* Import Carbon Design System styles first */
+@import '@carbon/styles/css/styles.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Critical layout fallback */
+.app-layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+.app-main {
+  flex: 1;
+  overflow: auto;
+}
+
+/* Additional global styles */
+body {
+  margin: 0;
+  font-family: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#root {
+  min-height: 100vh;
+}

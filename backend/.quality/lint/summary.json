@@ -1,0 +1,191 @@
+{
+  "status": "issues_found",
+  "target_path": "/repos/lbg-ftr-demo-repo/backend",
+  "requested_linters": [
+    "ruff"
+  ],
+  "applicable_linters": [
+    "ruff",
+    "shellcheck",
+    "shfmt"
+  ],
+  "selected_linters": [
+    "ruff"
+  ],
+  "message": "All findings, including any findings omitted from the inline response, are available in the report files listed under `report_paths`.",
+  "summary": {
+    "errors": 623,
+    "warnings": 0,
+    "total_findings": 623,
+    "inline_findings": 20,
+    "remaining_findings": 603,
+    "linters_run": 1,
+    "linters_with_issues": 1,
+    "linters_unavailable": 0
+  },
+  "by_tool": {
+    "ruff": {
+      "status": "issues_found",
+      "errors": 623,
+      "warnings": 0,
+      "total_findings": 623,
+      "inline_findings": 20,
+      "remaining_findings": 603,
+      "files": [
+        {
+          "path": "/repos/lbg-ftr-demo-repo/backend/alembic/env.py",
+          "findings": [
+            {
+              "msg": "Import block is un-sorted or un-formatted",
+              "line": 1,
+              "column": 1,
+              "code": "I001"
+            }
+          ]
+        },
+        {
+          "path": "/repos/lbg-ftr-demo-repo/backend/alembic/versions/001_initial_schema.py",
+          "findings": [
+            {
+              "msg": "Trailing whitespace",
+              "line": 4,
+              "column": 9,
+              "code": "W291"
+            },
+            {
+              "msg": "Import block is un-sorted or un-formatted",
+              "line": 8,
+              "column": 1,
+              "code": "I001"
+            },
+            {
+              "msg": "`datetime.datetime` imported but unused",
+              "line": 8,
+              "column": 22,
+              "code": "F401"
+            },
+            {
+              "msg": "`datetime.timezone` imported but unused",
+              "line": 8,
+              "column": 32,
+              "code": "F401"
+            },
+            {
+              "msg": "Import from `collections.abc` instead: `Sequence`",
+              "line": 9,
+              "column": 1,
+              "code": "UP035"
+            },
+            {
+              "msg": "Use `X | Y` for type annotations",
+              "line": 17,
+              "column": 16,
+              "code": "UP007"
+            },
+            {
+              "msg": "Use `X | Y` for type annotations",
+              "line": 18,
+              "column": 16,
+              "code": "UP007"
+            },
+            {
+              "msg": "Use `X | Y` for type annotations",
+              "line": 19,
+              "column": 13,
+              "code": "UP007"
+            }
+          ]
+        },
+        {
+          "path": "/repos/lbg-ftr-demo-repo/backend/app/adapters/account_system_adapter.py",
+          "findings": [
+            {
+              "msg": "Blank line contains whitespace",
+              "line": 11,
+              "column": 1,
+              "code": "W293"
+            },
+            {
+              "msg": "Use `datetime.UTC` alias",
+              "line": 18,
+              "column": 39,
+              "code": "UP017"
+            }
+          ]
+        },
+        {
+          "path": "/repos/lbg-ftr-demo-repo/backend/app/adapters/ciam_adapter.py",
+          "findings": [
+            {
+              "msg": "Blank line contains whitespace",
+              "line": 10,
+              "column": 1,
+              "code": "W293"
+            },
+            {
+              "msg": "Blank line contains whitespace",
+              "line": 21,
+              "column": 1,
+              "code": "W293"
+            }
+          ]
+        },
+        {
+          "path": "/repos/lbg-ftr-demo-repo/backend/app/adapters/cop_adapter.py",
+          "findings": [
+            {
+              "msg": "Import block is un-sorted or un-formatted",
+              "line": 2,
+              "column": 1,
+              "code": "I001"
+            },
+            {
+              "msg": "Blank line contains whitespace",
+              "line": 12,
+              "column": 1,
+              "code": "W293"
+            },
+            {
+              "msg": "Blank line contains whitespace",
+              "line": 18,
+              "column": 1,
+              "code": "W293"
+            },
+            {
+              "msg": "Blank line contains whitespace",
+              "line": 24,
+              "column": 1,
+              "code": "W293"
+            },
+            {
+              "msg": "Use `datetime.UTC` alias",
+              "line": 29,
+              "column": 59,
+              "code": "UP017"
+            },
+            {
+              "msg": "Use `datetime.UTC` alias",
+              "line": 37,
+              "column": 59,
+              "code": "UP017"
+            },
+            {
+              "msg": "Use `datetime.UTC` alias",
+              "line": 45,
+              "column": 59,
+              "code": "UP017"
+            }
+          ]
+        }
+      ],
+      "report_path": "/repos/lbg-ftr-demo-repo/backend/.quality/lint/ruff-result.json",
+      "truncated": true
+    }
+  },
+  "report_dir": "/repos/lbg-ftr-demo-repo/backend/.quality/lint",
+  "report_paths": {
+    "summary": "/repos/lbg-ftr-demo-repo/backend/.quality/lint/summary.json",
+    "ruff": "/repos/lbg-ftr-demo-repo/backend/.quality/lint/ruff-result.json"
+  },
+  "truncated": true
+}
