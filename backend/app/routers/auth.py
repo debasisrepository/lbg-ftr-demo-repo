@@ -163,7 +163,7 @@ def start_recovery(
     
     # Find customer by username (email)
     customer_repo = CustomerRepository(db)
-    customer = customer_repo.get_by_username(request_body.username)
+    customer = customer_repo.get_by_external_identity_ref(request_body.username)
     
     if not customer:
         # Don't reveal whether username exists - return success anyway

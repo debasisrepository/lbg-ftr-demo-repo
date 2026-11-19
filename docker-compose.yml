@@ -11,6 +11,8 @@ services:
       - DATABASE_URL=sqlite:////data/app.db
     volumes:
       - backend-data:/data
+    ports:
+      - "9000:9000"
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:9000/api/v1/health"]
       interval: 10s

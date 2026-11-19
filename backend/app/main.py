@@ -2,12 +2,14 @@
 from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
 
-from fastapi import FastAPI, HTTPException
+from fastapi import Depends, FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from sqlalchemy.orm import Session
 
 from .config import settings
 from .core.errors import AppError, app_error_handler, generic_exception_handler, http_exception_handler
 from .core.middleware import CorrelationIDMiddleware
+from .database import get_db
 
 
 @asynccontextmanager
@@ -58,12 +60,21 @@ app.add_exception_handler(Exception, generic_exception_handler)
 
 # Root endpoint
 @app.get("/")
-def root() -> dict[str, str]:
-    """Root endpoint"""
+def root(db: Session = Depends(get_db)) -> dict[str, str]:
+    """Root endpoint with database connectivity check"""
+    from .models.ref_code import RefCode
+    
+    # Verify database connectivity by querying ref_code table
+    try:
+        db.query(RefCode).first()
+        status = "running"
+    except Exception:
+        status = "database_unavailable"
+    
     return {
         "service": "Sample Bank Mobile Payments MVP",
         "version": "0.1.0",
-        "status": "running"
+        "status": status
     }
 
 

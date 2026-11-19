@@ -94,9 +94,11 @@ export function StepUpPage() {
   const handleBiometric = async () => {
     setIsLoading(true)
     try {
-      const biometricData = await deviceBridge.requestBiometric('step-up')
-      if (biometricData) {
-        await submitStepUp(biometricData, 'biometric')
+      const result = await deviceBridge.requestBiometricProof('step-up')
+      if (result.success && result.proof_data) {
+        await submitStepUp(result.proof_data, 'biometric')
+      } else {
+        setPasscodeError(result.error_message || 'Biometric authentication failed. Please use passcode.')
       }
     } catch (error) {
       console.error('Biometric authentication failed:', error)
