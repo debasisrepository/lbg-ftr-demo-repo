@@ -1,4 +1,5 @@
 """Adapter for fraud decisioning engine integration."""
+import os
 import random
 from datetime import datetime, timezone
 
@@ -17,7 +18,17 @@ class FraudAdapter:
         Check payment against fraud rules.
         
         Returns stub fraud decision: 70% allow, 15% warn, 10% step_up, 5% hold.
+        In deterministic mode (STUB_MODE=deterministic), always returns allow.
         """
+        # Deterministic mode for E2E tests
+        if os.getenv('STUB_MODE') == 'deterministic':
+            return {
+                "decision_code": "allow",
+                "warning_message": None,
+                "hold_reason": None,
+                "provider_reference": f"FRD-{profile_id}-{payee_id}-{int(datetime.now(timezone.utc).timestamp())}"
+            }
+        
         rand = random.random()
         
         if rand < 0.70:

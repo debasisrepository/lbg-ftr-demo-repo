@@ -31,6 +31,7 @@ export default defineConfig({
       env: {
         DATABASE_URL: databaseUrl,
         RATE_LIMIT_ENABLED: 'false',  // Disable rate limiting for e2e tests
+        STUB_MODE: 'deterministic',  // Make fraud/rail adapters deterministic
       },
     },
     {

@@ -3,7 +3,7 @@
  * Tests login flow from wireframe action through to step-up navigation
  */
 
-import { test, expect } from '@playwright/test';
+import { test, expect } from './_pipeline_guard';
 
 test.describe('Wireframe 01 - Sign in (FR-001)', () => {
   test('logs in with seed credentials and advances to step-up', async ({ page }) => {

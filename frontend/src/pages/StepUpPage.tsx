@@ -82,6 +82,14 @@ export function StepUpPage() {
     if (e.key === 'Backspace' && !passcode[index] && index > 0) {
       inputRefs.current[index - 1]?.focus();
     }
+    // Handle Enter to submit the form
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      const form = (e.target as HTMLInputElement).form;
+      if (form) {
+        form.requestSubmit();
+      }
+    }
   };
 
   const handlePasscodeSubmit = async (e: FormEvent) => {

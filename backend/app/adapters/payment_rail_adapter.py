@@ -1,4 +1,5 @@
 """Adapter for payment rail / Faster Payments integration."""
+import os
 import random
 from datetime import datetime, timezone
 
@@ -19,7 +20,18 @@ class PaymentRailAdapter:
         Submit payment to rail.
         
         Returns stub rail response: 70% sent, 20% pending, 10% failed.
+        In deterministic mode (STUB_MODE=deterministic), always returns sent.
         """
+        # Deterministic mode for E2E tests
+        if os.getenv('STUB_MODE') == 'deterministic':
+            return {
+                "status": "sent",
+                "rail_reference": f"FPS-{int(datetime.now(timezone.utc).timestamp())}-{payment_reference[-6:]}",
+                "expected_arrival": "Funds will arrive by end of business today.",
+                "reason_code": None,
+                "reason_detail": None
+            }
+        
         rand = random.random()
         
         if rand < 0.70:

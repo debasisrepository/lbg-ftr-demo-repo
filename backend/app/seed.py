@@ -162,8 +162,8 @@ def seed_database(db: Session) -> None:
         masked_account_number="****1234",
         sort_code="12-34-56",
         currency="GBP",
-        current_balance_minor=500000,  # £5,000.00
-        available_balance_minor=500000,
+        current_balance_minor=124836,  # £1,248.36
+        available_balance_minor=124836,
         overdraft_available_minor=0,
         available_credit_minor=None,
         freshness_state=FreshnessState.CURRENT.value,
@@ -359,7 +359,7 @@ def seed_database(db: Session) -> None:
     db.add(cop_admin)
 
     payee1 = Payee(
-        profile_id=personal_profile.id,
+        profile_id=admin_profile.id,
         display_name="Jamie Clarke",
         nickname=None,
         sort_code="04-00-04",
@@ -389,7 +389,7 @@ def seed_database(db: Session) -> None:
     db.add(cop1)
 
     payee2 = Payee(
-        profile_id=personal_profile.id,
+        profile_id=admin_profile.id,
         display_name="Priya Patel",
         nickname=None,
         sort_code="08-92-99",
@@ -419,7 +419,7 @@ def seed_database(db: Session) -> None:
     db.add(cop2)
 
     payee3 = Payee(
-        profile_id=personal_profile.id,
+        profile_id=admin_profile.id,
         display_name="K Evans Lettings",
         nickname=None,
         sort_code="20-45-77",

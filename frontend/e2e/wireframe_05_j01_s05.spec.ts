@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from './_pipeline_guard';
 
 test.describe('Wireframe 05 - Payment Entry and Approval (FR-005)', () => {
   test.beforeEach(async ({ page }) => {
@@ -39,7 +39,8 @@ test.describe('Wireframe 05 - Payment Entry and Approval (FR-005)', () => {
     
     // Verify payment entry page loads
     await expect(page.locator('h1')).toHaveText('Make a payment');
-    await expect(page.locator('text=Jamie Clarke')).toBeVisible();
+    // Target the payee panel specifically, not the notification that also mentions the payee
+    await expect(page.locator('[aria-label*="Paying"] p').filter({ hasText: 'Jamie Clarke' })).toBeVisible();
     await expect(page.locator('text=04-00-04')).toBeVisible();
     
     // Verify from account is readonly
@@ -95,8 +96,9 @@ test.describe('Wireframe 05 - Payment Entry and Approval (FR-005)', () => {
     // Click pay button
     await page.click('button:has-text("Pay £50.00")');
     
-    // Wait for approval modal
-    await expect(page.locator('text=Approve with Face ID')).toBeVisible();
+    // Wait for approval modal (target the modal specifically)
+    await expect(page.locator('[role="dialog"]')).toBeVisible();
+    await expect(page.locator('[role="dialog"]').locator('h2:has-text("Approve with Face ID")')).toBeVisible();
     
     // Verify dynamic link summary shows payee and amount
     await expect(page.locator('text=Jamie Clarke')).toBeVisible();
@@ -121,8 +123,8 @@ test.describe('Wireframe 05 - Payment Entry and Approval (FR-005)', () => {
     // Click pay button
     await page.click('button:has-text("Pay £50.00")');
     
-    // Wait for approval modal and approve
-    await expect(page.locator('text=Approve with Face ID')).toBeVisible();
+    // Wait for approval modal and approve (target the modal heading specifically, not the notification)
+    await expect(page.locator('[role="dialog"] h2:has-text("Approve with Face ID")')).toBeVisible();
     await page.click('button:has-text("Approve")');
     
     // Wait for outcome page

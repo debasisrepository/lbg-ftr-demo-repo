@@ -82,7 +82,7 @@ class PaymentOrchestrationService:
         balance_check = {
             "passed": balance_passed,
             "available_balance_minor": available_balance,
-            "detail": None if balance_passed else f"Amount exceeds available balance of £{available_balance / 100:.2f}"
+            "detail": None if balance_passed else f"Payment amount exceeds available balance. You can pay up to £{available_balance / 100:.2f} from this account."
         }
 
         # Limit validation (stub: £10,000 limit)
@@ -94,16 +94,30 @@ class PaymentOrchestrationService:
             "detail": None if limit_passed else f"Amount exceeds payment limit of £{limit_minor / 100:.2f}"
         }
 
-        # Block if validation fails
+        # Get payee for validation failure response if needed
+        payee = self.payee_repo.get_payee_by_id(payee_id)
+        if not payee or payee.profile_id != profile_id:
+            raise ValidationError("Invalid payee")
+
+        # Return validation failure response - no payment created
         if not balance_passed or not limit_passed:
-            self.telemetry_service.emit_enter_approve_event(
-                correlation_id=self.correlation_id,
-                auth_session_id=auth_session_id,
-                profile_id=profile_id,
-                outcome_code=JourneyOutcomeCode.FAILURE.value,
-                failure_reason="validation_failed"
-            )
-            raise ValidationError("Payment validation failed")
+            # Don't create telemetry event yet - validation failed before payment attempt
+            return {
+                "payment_id": None,
+                "amount_minor": amount_minor,
+                "currency": currency,
+                "payee": {
+                    "payee_id": payee.id,
+                    "display_name": payee.display_name,
+                    "sort_code": payee.sort_code,
+                    "masked_account_number": payee.masked_account_number
+                },
+                "balance_check": balance_check,
+                "limit_check": limit_check,
+                "fraud_decision": {"decision": "allow"},  # No fraud check for invalid amounts
+                "approval_required": False,
+                "approval_challenge": None
+            }
 
         # Check entitlement for approval
         entitled_profiles = self.entitlement_service.get_entitled_profiles(user_identity_id)
@@ -119,11 +133,7 @@ class PaymentOrchestrationService:
             )
             raise AuthorizationError("You do not have permission to approve payments for this profile")
 
-        # Get payee
-        payee = self.payee_repo.get_payee_by_id(payee_id)
-        if not payee or payee.profile_id != profile_id:
-            raise ValidationError("Invalid payee")
-
+        # Payee already fetched and validated above
         # Fraud check
         fraud_result = self.fraud_service.evaluate_payment(
             profile_id=profile_id,

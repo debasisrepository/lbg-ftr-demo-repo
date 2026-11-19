@@ -4,7 +4,7 @@ import { InlineNotification, Button, TextInput, Theme } from '@carbon/react';
 import { Checkmark, Add } from '@carbon/icons-react';
 import apiClient from '../lib/api-client';
 import { useAuth } from '../lib/auth-context';
-import type { PayeesResponse, Payee, CreatePayeeRequest, CreatePayeeResponse } from '../types';
+import type { PayeesResponse, Payee, CreatePayeeRequest, CreatePayeeResponse, AccountsOverviewResponse, Account } from '../types';
 import styles from './PayeesPage.module.scss';
 
 export default function PayeesPage() {
@@ -13,6 +13,7 @@ export default function PayeesPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [payees, setPayees] = useState<Payee[]>([]);
+  const [accounts, setAccounts] = useState<Account[]>([]);
   const [selectedPayeeId, setSelectedPayeeId] = useState<number | null>(null);
   const [showAddForm, setShowAddForm] = useState(false);
   const [copResult, setCopResult] = useState<CreatePayeeResponse | null>(null);
@@ -24,7 +25,7 @@ export default function PayeesPage() {
   const [accountNumber, setAccountNumber] = useState('');
 
   useEffect(() => {
-    async function fetchPayees() {
+    async function fetchData() {
       try {
         setLoading(true);
         setError(null);
@@ -35,16 +36,22 @@ export default function PayeesPage() {
           return;
         }
         
-        const response = await apiClient.get<PayeesResponse>(`/payees?profile_id=${activeProfileId}`);
-        setPayees(response.payees || []);
+        // Fetch both payees and accounts
+        const [payeesResponse, accountsResponse] = await Promise.all([
+          apiClient.get<PayeesResponse>(`/payees?profile_id=${activeProfileId}`),
+          apiClient.get<AccountsOverviewResponse>(`/accounts/overview?profile_id=${activeProfileId}`)
+        ]);
+        
+        setPayees(payeesResponse.payees || []);
+        setAccounts(accountsResponse.accounts || []);
       } catch (err) {
-        setError(err instanceof Error ? err.message : 'Failed to load payees');
+        setError(err instanceof Error ? err.message : 'Failed to load data');
       } finally {
         setLoading(false);
       }
     }
 
-    fetchPayees();
+    fetchData();
   }, [activeProfileId]);
 
   const handleSelectPayee = (payeeId: number) => {
@@ -119,24 +126,19 @@ export default function PayeesPage() {
         : null;
 
       if (payee) {
-        // Navigate to payment entry with payee data
-        // In real implementation, would also fetch account data
-        // For now, using seed account data (account_id: 2)
+        // Find the first current account (or any account if no current account)
+        const sourceAccount = accounts.find(a => a.account_type === 'current_account') || accounts[0];
+        
+        if (!sourceAccount) {
+          setError('No accounts available for payment');
+          return;
+        }
+        
+        // Navigate to payment entry with payee and account data
         navigate('/payment/entry', { 
           state: { 
             payee,
-            account: {
-              account_id: 2,
-              account_name: 'Current Account',
-              sort_code: '00-03-20',
-              masked_account_number: '****5920',
-              available_balance_minor: 124836,
-              current_balance_minor: 124836,
-              currency: 'GBP',
-              account_type: 'current_account',
-              freshness_state: 'current',
-              last_updated_at: new Date().toISOString(),
-            }
+            account: sourceAccount
           } 
         });
       }

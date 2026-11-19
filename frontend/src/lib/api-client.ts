@@ -31,9 +31,14 @@ async function request<T>(
   const response = await fetch(url, { ...options, headers });
 
   // Handle 401 Unauthorized - clear token and redirect to login
+  // Only redirect if we actually had a token (authenticated request that became unauthorized)
+  // Don't redirect on login failures or when already unauthenticated
   if (response.status === 401) {
+    const hadToken = !!token;
     localStorage.removeItem(sharedConfig.auth.tokenStorageKey);
-    window.location.href = '/login';
+    if (hadToken && !window.location.pathname.startsWith('/login')) {
+      window.location.href = '/login';
+    }
     throw new Error('Unauthorized');
   }
 

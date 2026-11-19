@@ -67,8 +67,14 @@ export function LoginPage() {
         password,
       });
 
-      // Store token
+      // Store token and profile ID
       localStorage.setItem('lbg_ftr_auth_token', response.access_token);
+      if (response.active_profile_id) {
+        localStorage.setItem('lbg_ftr_active_profile_id', String(response.active_profile_id));
+      }
+      
+      // Notify auth context of token change
+      window.dispatchEvent(new Event('auth-token-changed'));
       
       // Show success and advance to step-up
       setSuccessMessage('Details accepted');

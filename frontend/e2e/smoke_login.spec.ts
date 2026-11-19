@@ -6,7 +6,7 @@
  * infrastructure: page loads, backend connectivity, form renders.
  */
 
-import { test, expect } from '@playwright/test';
+import { test, expect } from './_pipeline_guard';
 
 test.describe('Smoke Infrastructure Test', () => {
   test('should load frontend and render login page', async ({ page }) => {

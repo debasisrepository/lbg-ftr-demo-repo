@@ -17,7 +17,7 @@
  * Once that issue is resolved, remove the .skip and these tests should pass.
  */
 
-import { test, expect } from '@playwright/test';
+import { test, expect } from './_pipeline_guard';
 
 test.describe('Journey: Personal Payment to Existing Payee', () => {
   test.skip('completes full journey from sign-in to payment sent', async ({ page }) => {

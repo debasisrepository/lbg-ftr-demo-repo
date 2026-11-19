@@ -9,6 +9,7 @@ import {
 } from '@carbon/react';
 import { ArrowLeft, Checkmark, ChevronRight } from '@carbon/icons-react';
 import apiClient from '../lib/api-client';
+import { useAuth } from '../lib/auth-context';
 import type {
   Account,
   Payee,
@@ -22,6 +23,7 @@ import styles from './PaymentEntryPage.module.scss';
 export default function PaymentEntryPage() {
   const navigate = useNavigate();
   const location = useLocation();
+  const { activeProfileId } = useAuth();
   
   // Get payee and account from navigation state
   const selectedPayee = location.state?.payee as Payee | undefined;
@@ -87,8 +89,14 @@ export default function PaymentEntryPage() {
     setLoading(true);
 
     try {
+      if (!activeProfileId) {
+        setGeneralError('No active profile found');
+        setLoading(false);
+        return;
+      }
+
       const request: PaymentPrepareRequest = {
-        profile_id: 2, // Using personal profile from seed data
+        profile_id: activeProfileId,
         source_account_id: selectedAccount.account_id,
         payee_id: selectedPayee.payee_id,
         amount_minor: amountMinor,
@@ -310,7 +318,7 @@ export default function PaymentEntryPage() {
               disabled={loading || !amount}
               renderIcon={ChevronRight}
             >
-              Pay £{amount || '0.00'}
+              Pay £{amount ? formatCurrency(parseCurrencyToMinor(amount)) : '0.00'}
             </Button>
           </form>
         </main>

@@ -3,7 +3,7 @@
  * Tests step-up authentication with passcode and biometric
  */
 
-import { test, expect } from '@playwright/test';
+import { test, expect } from './_pipeline_guard';
 
 test.describe('Wireframe 02 - Step-up authentication (FR-002)', () => {
   test.beforeEach(async ({ page }) => {
@@ -45,7 +45,10 @@ test.describe('Wireframe 02 - Step-up authentication (FR-002)', () => {
     await expect(page.getByRole('heading', { name: /accounts/i })).toBeVisible();
   });
 
-  test('shows remaining attempts after wrong passcode', async ({ page }) => {
+  test('shows remaining attempts after wrong passcode', async ({ page, apiGuard }) => {
+    // Allow the expected failed state response for wrong passcode
+    apiGuard.allowFailedState('/sca/verify-step-up');
+
     // Enter incorrect passcode
     const inputs = page.getByLabel(/passcode digit/i);
     const wrongDigits = ['9', '9', '9', '9', '9', '9'];

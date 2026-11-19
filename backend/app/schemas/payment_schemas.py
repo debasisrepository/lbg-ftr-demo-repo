@@ -61,13 +61,13 @@ class PaymentPrepareRequest(BaseModel):
 
 class PaymentPrepareResponse(BaseModel):
     """Response from payment preparation."""
-    payment_id: int
-    payment_state: str
+    payment_id: int | None
+    payment_state: str | None = None
     amount_minor: int
     currency: str
-    source_account_id: int
+    source_account_id: int | None = None
     payee: PayeeInfo
-    reference: str | None
+    reference: str | None = None
     balance_check: BalanceCheck
     limit_check: LimitCheck
     fraud_decision: FraudDecisionResponse

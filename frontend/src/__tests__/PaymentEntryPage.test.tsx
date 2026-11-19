@@ -3,7 +3,8 @@ import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { BrowserRouter } from 'react-router-dom';
 import PaymentEntryPage from '../pages/PaymentEntryPage';
-import * as apiClient from '../lib/api-client';
+import { AuthProvider } from '../lib/auth-context';
+import * as apiClientModule from '../lib/api-client';
 
 // Mock ResizeObserver
 global.ResizeObserver = vi.fn().mockImplementation(() => ({
@@ -11,6 +12,18 @@ global.ResizeObserver = vi.fn().mockImplementation(() => ({
   unobserve: vi.fn(),
   disconnect: vi.fn(),
 }));
+
+// Mock localStorage
+const localStorageMock = (() => {
+  let store: Record<string, string> = {};
+  return {
+    getItem: (key: string) => store[key] || null,
+    setItem: (key: string, value: string) => { store[key] = value; },
+    removeItem: (key: string) => { delete store[key]; },
+    clear: () => { store = {}; },
+  };
+})();
+Object.defineProperty(global, 'localStorage', { value: localStorageMock });
 
 // Mock navigation
 const mockNavigate = vi.fn();
@@ -26,11 +39,41 @@ vi.mock('react-router-dom', async () => {
 });
 
 // Mock API client
-vi.mock('../lib/api-client');
+vi.mock('../lib/api-client', () => {
+  return {
+    default: {
+      get: vi.fn(),
+      post: vi.fn(),
+      put: vi.fn(),
+      patch: vi.fn(),
+      delete: vi.fn(),
+    },
+    get: vi.fn(),
+    post: vi.fn(),
+    put: vi.fn(),
+    patch: vi.fn(),
+    del: vi.fn(),
+  };
+});
+
+// Helper to render with required providers
+const renderWithProviders = (component: React.ReactElement) => {
+  return render(
+    <AuthProvider>
+      <BrowserRouter>
+        {component}
+      </BrowserRouter>
+    </AuthProvider>
+  );
+};
 
 describe('PaymentEntryPage', () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    localStorage.clear();
+    
+    // Set active profile ID for payment preparation
+    localStorage.setItem('lbg_ftr_active_profile_id', '1');
     
     // Set up default location state
     mockUseLocation.mockReturnValue({
@@ -59,11 +102,7 @@ describe('PaymentEntryPage', () => {
   });
 
   it('renders payment entry form with payee and account details', () => {
-    render(
-      <BrowserRouter>
-        <PaymentEntryPage />
-      </BrowserRouter>
-    );
+    renderWithProviders(<PaymentEntryPage />);
 
     expect(screen.getByText('Make a payment')).toBeInTheDocument();
     expect(screen.getByText('Jamie Clarke')).toBeInTheDocument();
@@ -78,7 +117,7 @@ describe('PaymentEntryPage', () => {
   it('shows amount exceeds balance error when amount is too high', async () => {
     const user = userEvent.setup();
     
-    vi.mocked(apiClient.post).mockResolvedValue({
+    vi.mocked(apiClientModule.default.post).mockResolvedValue({
       payment_id: 1,
       amount_minor: 150000,
       currency: 'GBP',
@@ -97,18 +136,14 @@ describe('PaymentEntryPage', () => {
       fraud_decision: { decision: 'allow' },
     });
 
-    render(
-      <BrowserRouter>
-        <PaymentEntryPage />
-      </BrowserRouter>
-    );
+    renderWithProviders(<PaymentEntryPage />);
 
     const amountInput = screen.getByLabelText('Amount');
     await user.clear(amountInput);
     await user.type(amountInput, '1500.00');
 
-    // Find the Pay button - it will say "Pay £1500.00" with the amount entered
-    const payButton = screen.getByRole('button', { name: (name) => name.startsWith('Pay £') && name.includes('1500') });
+    // Find the Pay button - it will say "Pay £1,500.00" with the amount entered (formatted with comma)
+    const payButton = screen.getByRole('button', { name: /Pay £1,500\.00/i });
     await user.click(payButton);
 
     await waitFor(() => {
@@ -119,7 +154,7 @@ describe('PaymentEntryPage', () => {
   it('shows fraud warning modal when fraud decision is warn', async () => {
     const user = userEvent.setup();
     
-    vi.mocked(apiClient.post).mockResolvedValue({
+    vi.mocked(apiClientModule.default.post).mockResolvedValue({
       payment_id: 1,
       amount_minor: 25000,
       currency: 'GBP',
@@ -147,11 +182,7 @@ describe('PaymentEntryPage', () => {
       },
     });
 
-    render(
-      <BrowserRouter>
-        <PaymentEntryPage />
-      </BrowserRouter>
-    );
+    renderWithProviders(<PaymentEntryPage />);
 
     const payButton = screen.getByRole('button', { name: /Pay £250.00/i });
     await user.click(payButton);
@@ -165,7 +196,7 @@ describe('PaymentEntryPage', () => {
   it('shows approval modal after successful preparation', async () => {
     const user = userEvent.setup();
     
-    vi.mocked(apiClient.post).mockResolvedValue({
+    vi.mocked(apiClientModule.default.post).mockResolvedValue({
       payment_id: 1,
       amount_minor: 25000,
       currency: 'GBP',
@@ -190,11 +221,7 @@ describe('PaymentEntryPage', () => {
       },
     });
 
-    render(
-      <BrowserRouter>
-        <PaymentEntryPage />
-      </BrowserRouter>
-    );
+    renderWithProviders(<PaymentEntryPage />);
 
     const payButton = screen.getByRole('button', { name: /Pay £250.00/i });
     await user.click(payButton);
@@ -256,16 +283,12 @@ describe('PaymentEntryPage', () => {
     };
 
     // Setup mock to return different responses for each call
-    const postMock = vi.mocked(apiClient.post);
+    const postMock = vi.mocked(apiClientModule.default.post);
     postMock
       .mockResolvedValueOnce(mockPrepareResponse)
       .mockResolvedValueOnce(mockApproveResponse);
 
-    render(
-      <BrowserRouter>
-        <PaymentEntryPage />
-      </BrowserRouter>
-    );
+    renderWithProviders(<PaymentEntryPage />);
 
     const payButton = screen.getByRole('button', { name: /Pay £250.00/i });
     await user.click(payButton);
@@ -291,11 +314,7 @@ describe('PaymentEntryPage', () => {
   it('enforces reference character limit of 18', async () => {
     const user = userEvent.setup();
 
-    render(
-      <BrowserRouter>
-        <PaymentEntryPage />
-      </BrowserRouter>
-    );
+    renderWithProviders(<PaymentEntryPage />);
 
     const referenceInput = screen.getByLabelText('Reference (optional)');
     await user.type(referenceInput, '123456789012345678901234567890');

@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from './_pipeline_guard';
 
 test.describe('Wireframe 03 - Accounts Overview', () => {
   test.beforeEach(async ({ page }) => {

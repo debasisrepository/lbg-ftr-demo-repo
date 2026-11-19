@@ -33,7 +33,35 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       // In a real app, you might validate the token or fetch user details here
       // For now, we'll mark as loaded
     }
+    
+    const storedProfileId = localStorage.getItem('lbg_ftr_active_profile_id');
+    if (storedProfileId) {
+      setActiveProfileId(Number(storedProfileId));
+    }
+    
     setLoading(false);
+
+    // Listen for token changes (when LoginPage stores a token directly)
+    const checkToken = () => {
+      const currentToken = localStorage.getItem(sharedConfig.auth.tokenStorageKey);
+      setToken(currentToken);
+      
+      const storedProfileId = localStorage.getItem('lbg_ftr_active_profile_id');
+      if (storedProfileId) {
+        setActiveProfileId(Number(storedProfileId));
+      }
+    };
+
+    // Check periodically for token changes (handles case where LoginPage stores token)
+    const interval = setInterval(checkToken, 100);
+
+    // Also listen for custom event that LoginPage can dispatch
+    window.addEventListener('auth-token-changed', checkToken);
+
+    return () => {
+      clearInterval(interval);
+      window.removeEventListener('auth-token-changed', checkToken);
+    };
   }, []);
 
   const login = async (credentials: LoginRequest) => {
@@ -69,11 +97,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setActiveProfileId(null);
   };
 
+  // Check authentication from localStorage directly to handle cases where
+  // token is stored outside the context (e.g., in LoginPage)
+  const currentToken = token || localStorage.getItem(sharedConfig.auth.tokenStorageKey);
+
   const value: AuthContextType = {
     user,
-    token,
+    token: currentToken,
     activeProfileId,
-    isAuthenticated: !!token,
+    isAuthenticated: !!currentToken,
     login,
     logout,
     loading,
