@@ -8,6 +8,7 @@ import EnterPaymentPage from './pages/EnterPaymentPage'
 import ReviewApprovePage from './pages/ReviewApprovePage'
 import PaymentOutcomePage from './pages/PaymentOutcomePage'
 import ScamReportPage from './pages/ScamReportPage'
+import IncidentReportPage from './pages/IncidentReportPage'
 import StepUpPage from './pages/StepUpPage'
 import { AuthProvider } from './lib/auth-context'
 import { PaymentFlowProvider } from './features/payments/PaymentFlowProvider'
@@ -30,6 +31,7 @@ function App() {
             <Route path="/payment/review" element={<ReviewApprovePage />} />
             <Route path="/payment/outcome" element={<PaymentOutcomePage />} />
             <Route path="/payment/scam-report" element={<ScamReportPage />} />
+            <Route path="/support/incident-report" element={<IncidentReportPage />} />
           </Routes>
         </PaymentFlowProvider>
       </AuthProvider>

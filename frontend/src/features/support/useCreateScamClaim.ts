@@ -20,6 +20,7 @@ export interface ScamClaim {
   support_case_reference?: string
   fraud_case_reference?: string
   payment_order_id?: string
+  reimbursement_timeline_days: number
   created_at: string
   updated_at: string
 }

@@ -135,10 +135,12 @@ export function StepUpPage() {
         setPasscodeError('Verification failed. Please try again.')
         setPasscode('')
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Step-up verification failed:', error)
       
-      if (error.response?.status === 401) {
+      if (error && typeof error === 'object' && 'response' in error && 
+          typeof error.response === 'object' && error.response && 
+          'status' in error.response && error.response.status === 401) {
         setPasscodeError('Invalid passcode. Please try again.')
       } else {
         setPasscodeError('Verification failed. Please try again.')

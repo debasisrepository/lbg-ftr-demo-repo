@@ -65,7 +65,7 @@ class StepUpService:
             if device and device.biometric_enabled:
                 method = 'biometric_attestation'
 
-        challenge = self.step_up_repo.create(
+        self.step_up_repo.create(
             customer_id=session.customer_id,
             device_id=session.device_id,
             session_id=session_id,

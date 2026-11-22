@@ -4,6 +4,7 @@ import uuid
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
+from ..core.auth_middleware import get_current_customer_id
 from ..database import get_db
 from ..schemas.notification_schemas import (
     NotificationListResponse,
@@ -17,19 +18,14 @@ from ..services.service_status_service import ServiceStatusService
 router = APIRouter()
 
 
-def get_current_customer_id() -> uuid.UUID:
-    """Stub: get customer ID from session"""
-    return uuid.UUID("10000000-0000-0000-0000-000000000001")
-
-
 @router.get("", response_model=NotificationListResponse, status_code=200)
 def list_notifications(
     limit: int = 50,
     offset: int = 0,
+    customer_id: uuid.UUID = Depends(get_current_customer_id),
     db: Session = Depends(get_db)
 ):
     """Get customer notifications"""
-    customer_id = get_current_customer_id()
 
     notification_service = NotificationService(db)
     notifications, total, unread_count = notification_service.get_customer_notifications(

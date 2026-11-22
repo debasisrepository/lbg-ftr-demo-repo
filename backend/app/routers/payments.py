@@ -4,6 +4,7 @@ import uuid
 from fastapi import APIRouter, Depends, HTTPException, Request
 from sqlalchemy.orm import Session
 
+from ..core.auth_middleware import get_current_customer_id, get_current_profile_id
 from ..core.middleware import get_correlation_id
 from ..database import get_db
 from ..schemas.payment_schemas import (
@@ -18,21 +19,12 @@ from ..schemas.payment_schemas import (
     PaymentSubmitRequest,
     PaymentSubmitResponse,
 )
+from ..services.entitlement_service import EntitlementService
 from ..services.fraud_service import FraudService
 from ..services.payment_service import PaymentService
 from ..services.treatment_mapper import TreatmentMapper
 
 router = APIRouter()
-
-
-def get_current_customer_id() -> uuid.UUID:
-    """Stub: get customer ID from session"""
-    return uuid.UUID("10000000-0000-0000-0000-000000000001")
-
-
-def get_current_profile_id() -> uuid.UUID:
-    """Stub: get profile ID from session"""
-    return uuid.UUID("10000000-0000-0000-0000-000000000101")
 
 
 def get_current_device_id() -> uuid.UUID:
@@ -44,12 +36,19 @@ def get_current_device_id() -> uuid.UUID:
 def prepare_payment(
     request: Request,
     payment_request: PaymentPrepareRequest,
+    customer_id: uuid.UUID = Depends(get_current_customer_id),
+    profile_id: uuid.UUID | None = Depends(get_current_profile_id),
     db: Session = Depends(get_db)
 ):
     """Prepare a new payment"""
-    customer_id = get_current_customer_id()
-    profile_id = get_current_profile_id()
     correlation_id = get_correlation_id(request)
+
+    # H-004: Enforce entitlement check for payment initiation
+    if profile_id is None:
+        raise HTTPException(status_code=403, detail="No active profile selected")
+    
+    entitlement_service = EntitlementService()
+    entitlement_service.require_capability(db, profile_id, "initiate_payments")
 
     payment_service = PaymentService(db)
     fraud_service = FraudService(db)
@@ -96,16 +95,24 @@ def approve_payment(
     payment_order_id: uuid.UUID,
     approval_request: PaymentApprovalRequest,
     request: Request,
+    customer_id: uuid.UUID = Depends(get_current_customer_id),
     db: Session = Depends(get_db)
 ):
     """Approve payment with SCA"""
-    customer_id = get_current_customer_id()
     device_id = get_current_device_id()
     correlation_id = get_correlation_id(request)
 
     payment_service = PaymentService(db)
 
     try:
+        # H-002: Verify ownership before approval
+        result = payment_service.get_payment_with_details(payment_order_id)
+        if not result:
+            raise HTTPException(status_code=404, detail="Payment not found")
+        
+        if result["payment_order"].customer_id != customer_id:
+            raise HTTPException(status_code=404, detail="Payment not found")
+
         payment_order = payment_service.approve_payment(
             payment_order_id,
             device_id,
@@ -120,6 +127,8 @@ def approve_payment(
             message="Payment approved successfully",
             next_step="submit"
         )
+    except HTTPException:
+        raise
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
 
@@ -129,14 +138,21 @@ def respond_to_risk(
     payment_order_id: uuid.UUID,
     risk_response: PaymentRiskResponseRequest,
     request: Request,
+    customer_id: uuid.UUID = Depends(get_current_customer_id),
     db: Session = Depends(get_db)
 ):
     """Respond to risk warning/challenge"""
     get_correlation_id(request)
 
     fraud_service = FraudService(db)
+    payment_service = PaymentService(db)
 
     try:
+        # H-002: Verify ownership
+        result = payment_service.get_payment_with_details(payment_order_id)
+        if not result or result["payment_order"].customer_id != customer_id:
+            raise HTTPException(status_code=404, detail="Payment not found")
+
         risk_assessment = fraud_service.risk_assessment_repo.get_by_payment_order(payment_order_id)
 
         if not risk_assessment:
@@ -164,15 +180,23 @@ def submit_payment(
     payment_order_id: uuid.UUID,
     submit_request: PaymentSubmitRequest,
     request: Request,
+    customer_id: uuid.UUID = Depends(get_current_customer_id),
     db: Session = Depends(get_db)
 ):
     """Submit payment to hub"""
-    customer_id = get_current_customer_id()
     correlation_id = get_correlation_id(request)
 
     payment_service = PaymentService(db)
 
     try:
+        # H-002: Verify ownership before submission
+        result = payment_service.get_payment_with_details(payment_order_id)
+        if not result:
+            raise HTTPException(status_code=404, detail="Payment not found")
+        
+        if result["payment_order"].customer_id != customer_id:
+            raise HTTPException(status_code=404, detail="Payment not found")
+
         payment_order = payment_service.submit_payment(
             payment_order_id,
             customer_id,
@@ -187,6 +211,8 @@ def submit_payment(
             submitted_at=payment_order.submitted_at,
             expected_arrival_text=payment_order.expected_arrival_text
         )
+    except HTTPException:
+        raise
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
 
@@ -194,6 +220,7 @@ def submit_payment(
 @router.get("/{payment_order_id}", response_model=PaymentDetailResponse, status_code=200)
 def get_payment(
     payment_order_id: uuid.UUID,
+    customer_id: uuid.UUID = Depends(get_current_customer_id),
     db: Session = Depends(get_db)
 ):
     """Get payment details"""
@@ -202,7 +229,11 @@ def get_payment(
     result = payment_service.get_payment_with_details(payment_order_id)
 
     if not result:
-        raise HTTPException(status_code=404, detail="Payment order not found")
+        raise HTTPException(status_code=404, detail="Payment not found")
+
+    # H-002: Verify ownership
+    if result["payment_order"].customer_id != customer_id:
+        raise HTTPException(status_code=404, detail="Payment not found")
 
     payment_order = result["payment_order"]
     account_name = result["account_name"]
@@ -233,6 +264,7 @@ def get_payment(
 @router.get("/{payment_order_id}/receipt", response_model=PaymentReceiptResponse, status_code=200)
 def get_payment_receipt(
     payment_order_id: uuid.UUID,
+    customer_id: uuid.UUID = Depends(get_current_customer_id),
     db: Session = Depends(get_db)
 ):
     """Get payment receipt"""
@@ -241,7 +273,11 @@ def get_payment_receipt(
     result = payment_service.get_payment_with_details(payment_order_id)
 
     if not result:
-        raise HTTPException(status_code=404, detail="Payment order not found")
+        raise HTTPException(status_code=404, detail="Payment not found")
+
+    # H-002: Verify ownership
+    if result["payment_order"].customer_id != customer_id:
+        raise HTTPException(status_code=404, detail="Payment not found")
 
     payment_order = result["payment_order"]
     account_name = result["account_name"]

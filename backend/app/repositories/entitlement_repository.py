@@ -36,7 +36,7 @@ class EntitlementRepository:
     ) -> bool:
         """
         Check if profile has specific capability.
-        
+
         Args:
             capability: One of 'view_accounts', 'manage_payees', 'initiate_payments'
         """

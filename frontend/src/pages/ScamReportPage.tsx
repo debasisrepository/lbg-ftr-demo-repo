@@ -11,6 +11,7 @@ import { useNavigate, useLocation } from 'react-router-dom'
 import { useCreateScamClaim } from '../features/support/useCreateScamClaim'
 import { SCAM_CLAIM_REASONS } from '../lib/scam-claim-reasons'
 import { formatMinor } from '../lib/money'
+import { ReimbursementTimeline } from '../components/support/ReimbursementTimeline'
 
 interface LocationState {
   payment_order_id?: string
@@ -109,6 +110,9 @@ export default function ScamReportPage() {
               </li>
             </ul>
           </div>
+
+          {/* Reimbursement Timeline */}
+          <ReimbursementTimeline claimType={selectedReason} />
 
           <div className="flex-1" />
 

@@ -2,6 +2,7 @@
 # Import all models to ensure they are registered with Base
 from .audit import AuditEvent
 from .customer import BankAccount, Customer, Device, Entitlement, LoanSnapshot, Profile, ProfileAccountVisibility
+from .incident import IncidentReport
 from .notification import CustomerNotification, NotificationDeliveryAttempt, ScamClaim, ServiceStatusNotice
 from .payee import CopCheck, Payee
 from .payment import (
@@ -43,5 +44,6 @@ __all__ = [
     "NotificationDeliveryAttempt",
     "ScamClaim",
     "ServiceStatusNotice",
+    "IncidentReport",
     "AuditEvent",
 ]

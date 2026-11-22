@@ -48,7 +48,7 @@ class PayeeService:
     ) -> Payee:
         """
         Get payee by ID.
-        
+
         Raises:
             ResourceNotFoundError: If payee not found
             AuthorizationError: If payee doesn't belong to customer
@@ -74,7 +74,7 @@ class PayeeService:
     ):
         """
         Create new payee with CoP check.
-        
+
         Returns:
             (payee, cop_check) tuple
         """
@@ -141,7 +141,7 @@ class PayeeService:
     ):
         """
         Update payee. Runs CoP check if account details changed.
-        
+
         Returns:
             (payee, cop_check_or_none) tuple
         """
