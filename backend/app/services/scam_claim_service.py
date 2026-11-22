@@ -20,6 +20,17 @@ class ScamClaimService:
         self.scam_claim_repo = ScamClaimRepository(db)
         self.fraud_case_adapter = get_fraud_case_adapter()
         self.support_routing_adapter = get_support_routing_adapter()
+    
+    def get_reimbursement_timeline_days(self, claim_reason_code: str) -> int:
+        """Calculate reimbursement timeline based on claim reason"""
+        # Different claim types may have different processing timelines
+        timeline_map = {
+            "unauthorised_transaction": 15,
+            "authorised_push_payment_fraud": 30,
+            "merchant_dispute": 45,
+            "other": 15
+        }
+        return timeline_map.get(claim_reason_code, 15)
 
     def create_scam_claim(
         self,

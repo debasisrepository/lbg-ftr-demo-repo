@@ -33,10 +33,10 @@ class AccountsOverviewService:
     ) -> tuple[list[tuple[BankAccount, bool]], list[LoanSnapshot]]:
         """
         Get accounts and loans overview for profile.
-        
+
         Calls Core Banking and Loan adapters in parallel.
         Uses stale snapshots if fresh data unavailable.
-        
+
         Returns:
             (accounts_with_permission, loans) where accounts_with_permission
             is list of (BankAccount, payment_permission) tuples

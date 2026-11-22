@@ -4,8 +4,8 @@ import uuid
 from fastapi import APIRouter, Depends, Request
 from sqlalchemy.orm import Session
 
-from app.core.errors import AuthorizationError, ResourceNotFoundError
-from app.core.security import decode_jwt_token
+from app.core.auth_middleware import get_current_customer_id, get_current_session_id
+from app.core.errors import ResourceNotFoundError
 from app.database import get_db
 from app.schemas.profile_schemas import (
     ProfileListResponse,
@@ -18,45 +18,12 @@ from app.services.profile_service import ProfileService
 router = APIRouter(prefix="/profiles", tags=["profiles"])
 
 
-def get_current_customer_id(request: Request) -> uuid.UUID:
-    """Extract customer ID from JWT token"""
-    auth_header = request.headers.get("Authorization")
-    if not auth_header or not auth_header.startswith("Bearer "):
-        raise AuthorizationError("Missing or invalid authorization header")
-
-    token = auth_header.split(" ")[1]
-    payload = decode_jwt_token(token)
-
-    customer_id_str = payload.get("sub")
-    if not customer_id_str:
-        raise AuthorizationError("Invalid token: missing subject")
-
-    return uuid.UUID(customer_id_str)
-
-
-def get_session_id(request: Request) -> uuid.UUID:
-    """Extract session ID from JWT token"""
-    auth_header = request.headers.get("Authorization")
-    if not auth_header or not auth_header.startswith("Bearer "):
-        raise AuthorizationError("Missing or invalid authorization header")
-
-    token = auth_header.split(" ")[1]
-    payload = decode_jwt_token(token)
-
-    session_id_str = payload.get("session_id")
-    if not session_id_str:
-        raise AuthorizationError("Invalid token: missing session_id")
-
-    return uuid.UUID(session_id_str)
-
-
 @router.get("", response_model=ProfileListResponse)
 def get_profiles(
-    request: Request,
+    customer_id: uuid.UUID = Depends(get_current_customer_id),
     db: Session = Depends(get_db)
 ):
     """Get all profiles for authenticated customer"""
-    customer_id = get_current_customer_id(request)
 
     profile_service = ProfileService()
     profiles = profile_service.get_profiles_for_customer(db, customer_id)
@@ -93,12 +60,11 @@ def get_profiles(
 @router.put("/active", response_model=SetActiveProfileResponse)
 def set_active_profile(
     request_body: SetActiveProfileRequest,
-    request: Request,
+    customer_id: uuid.UUID = Depends(get_current_customer_id),
+    session_id: uuid.UUID = Depends(get_current_session_id),
     db: Session = Depends(get_db)
 ):
     """Set active profile for session"""
-    customer_id = get_current_customer_id(request)
-    session_id = get_session_id(request)
 
     profile_service = ProfileService()
 

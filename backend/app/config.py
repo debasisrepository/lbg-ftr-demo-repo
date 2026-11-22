@@ -5,6 +5,9 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 class Settings(BaseSettings):
     """Application settings loaded from environment variables"""
 
+    # Environment
+    environment: str = "development"  # development, staging, production
+
     # Database
     database_url: str = "sqlite:///./app.db"
 

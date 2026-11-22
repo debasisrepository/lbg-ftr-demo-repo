@@ -22,15 +22,15 @@ class EntitlementService:
     ) -> bool:
         """
         Check if profile has capability.
-        
+
         Args:
             profile_id: Profile to check
             capability: One of 'view_accounts', 'manage_payees', 'initiate_payments'
             fail_safe: If True, deny on ambiguity or error; if False, raise exception
-            
+
         Returns:
             True if profile has capability
-            
+
         Raises:
             AuthorizationError: If fail_safe=False and check fails
         """
@@ -54,7 +54,7 @@ class EntitlementService:
     ) -> None:
         """
         Require profile to have capability (raises on failure).
-        
+
         Raises:
             AuthorizationError: If profile lacks capability
         """

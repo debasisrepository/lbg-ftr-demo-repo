@@ -27,7 +27,7 @@ class RefCodeRepository:
             .where(
                 and_(
                     RefCode.code_group == code_group,
-                    RefCode.is_active == True
+                    RefCode.is_active
                 )
             )
             .order_by(RefCode.sort_order)

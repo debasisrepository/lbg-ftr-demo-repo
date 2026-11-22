@@ -32,10 +32,10 @@ class CopService:
     ) -> CopCheck:
         """
         Run Confirmation of Payee check.
-        
+
         Args:
             trigger: One of 'new_payee', 'amended_payee', 'recheck'
-            
+
         Returns:
             CopCheck record
         """
@@ -97,7 +97,7 @@ class CopService:
     ) -> CopCheck:
         """
         Record customer acknowledgement of CoP mismatch/partial match.
-        
+
         Raises:
             ResourceNotFoundError: If no unacknowledged CoP check found
         """
@@ -119,7 +119,7 @@ class CopService:
     def _determine_policy_treatment(self, outcome: str) -> str:
         """
         Determine policy treatment based on CoP outcome.
-        
+
         Returns:
             One of 'allow', 'warn', 'block'
         """

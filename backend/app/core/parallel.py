@@ -8,14 +8,14 @@ T = TypeVar('T')
 def run_parallel(*callables: Callable[[], T], timeout: float = 5.0) -> list[T]:
     """
     Execute multiple callables in parallel using thread pool.
-    
+
     Args:
         *callables: Functions to execute (no arguments)
         timeout: Maximum time to wait for all results
-        
+
     Returns:
         List of results in same order as callables
-        
+
     Raises:
         TimeoutError: If any callable exceeds timeout
         Exception: Re-raises first exception from any callable

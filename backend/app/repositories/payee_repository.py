@@ -43,7 +43,7 @@ class PayeeRepository:
                 (Payee.profile_id == profile_id) | (Payee.profile_id.is_(None))
             )
             .where(Payee.status.in_(["active", "pending_verification"]))
-            .where(Payee.is_saved == True)
+            .where(Payee.is_saved)
             .options(joinedload(Payee.cop_checks))
             .order_by(Payee.payee_name)
         )

@@ -35,6 +35,7 @@ export function AccountsPage() {
     const isUnavailable = account.source_status === 'unavailable' || account.current_balance_minor === null
     const isStale = account.source_status === 'stale'
     const isCreditCard = account.account_type === 'credit_card'
+    const canPay = account.payment_permission
 
     return (
       <div
@@ -49,9 +50,27 @@ export function AccountsPage() {
           gap: '4px',
         }}
       >
-        <h3 style={{ margin: 0, fontSize: '16px', lineHeight: '24px', fontWeight: 600 }}>
-          {account.account_name}
-        </h3>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '4px' }}>
+          <h3 style={{ margin: 0, fontSize: '16px', lineHeight: '24px', fontWeight: 600 }}>
+            {account.account_name}
+          </h3>
+          {!canPay && (
+            <span 
+              style={{ 
+                fontSize: '12px', 
+                padding: '2px 8px', 
+                background: '#f3f4f6', 
+                color: '#525252',
+                border: '1px solid #c6c6c6',
+                borderRadius: '2px',
+                fontWeight: 600 
+              }}
+              aria-label="View only permission"
+            >
+              View only
+            </span>
+          )}
+        </div>
         {account.sort_code_masked && account.account_number_masked && (
           <p style={{ margin: 0, fontSize: '14px', lineHeight: '20px', color: '#525252' }}>
             {account.sort_code_masked} | {account.account_number_masked}

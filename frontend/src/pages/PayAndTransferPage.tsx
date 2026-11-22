@@ -6,10 +6,13 @@
 
 import { useNavigate } from 'react-router-dom'
 import { usePayees } from '../features/payees/usePayees'
+import { usePendingApprovals } from '../features/payments/usePendingApprovals'
+import { PendingApprovalsList } from '../components/payments/PendingApprovalsList'
 
 export function PayAndTransferPage() {
   const navigate = useNavigate()
   const { payees, loading, error } = usePayees()
+  const { approvals } = usePendingApprovals()
 
   const handlePayeeClick = (payeeId: string) => {
     const payee = payees.find((p) => p.payee_id === payeeId)
@@ -27,6 +30,15 @@ export function PayAndTransferPage() {
 
   const handleAddPayee = () => {
     navigate('/add-payee')
+  }
+
+  const handleApprovalClick = (paymentOrderId: string) => {
+    // Navigate to payment approval/review screen
+    navigate(`/payment/review`, { state: { payment_order_id: paymentOrderId } })
+  }
+
+  const handleIncidentReport = () => {
+    navigate('/support/incident-report')
   }
 
   if (loading) {
@@ -57,6 +69,9 @@ export function PayAndTransferPage() {
         <h2 style={{ margin: '16px 0 24px', fontSize: '28px', lineHeight: '36px', fontWeight: 600 }}>
           Pay &amp; Transfer
         </h2>
+
+        {/* Pending Approvals for Business Payments */}
+        <PendingApprovalsList approvals={approvals} onApprovalClick={handleApprovalClick} />
 
         <h3 style={{ margin: '12px 0 8px', fontSize: '20px', lineHeight: '28px', fontWeight: 600 }}>
           Pay someone
@@ -155,6 +170,44 @@ export function PayAndTransferPage() {
               <path d="M9 5l7 7-7 7" />
             </svg>
           </div>
+        </div>
+
+        {/* Help & Support Section */}
+        <h3 style={{ margin: '24px 0 8px', fontSize: '20px', lineHeight: '28px', fontWeight: 600 }}>
+          Help &amp; Support
+        </h3>
+
+        <div style={{ borderTop: '1px solid #c6c6c6' }}>
+          <button
+            onClick={handleIncidentReport}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              minHeight: '64px',
+              padding: '12px 0',
+              width: '100%',
+              border: 'none',
+              borderBottom: '1px solid #c6c6c6',
+              background: 'transparent',
+              textAlign: 'left',
+              cursor: 'pointer',
+            }}
+          >
+            <div style={{ display: 'flex', flexDirection: 'column' }}>
+              <strong style={{ fontWeight: 600 }}>Report an issue</strong>
+              <span style={{ fontSize: '14px', lineHeight: '20px', color: '#525252' }}>
+                Technical problems or service issues
+              </span>
+            </div>
+            <svg
+              viewBox="0 0 24 24"
+              style={{ width: '20px', height: '20px', stroke: '#161616', fill: 'none', strokeWidth: 2 }}
+              aria-hidden="true"
+            >
+              <path d="M9 5l7 7-7 7" />
+            </svg>
+          </button>
         </div>
 
         <div style={{ flex: '1 0 0' }} />

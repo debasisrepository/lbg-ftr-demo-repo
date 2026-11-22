@@ -15,6 +15,7 @@ class ScamClaimCreateRequest(BaseModel):
 class ScamClaimResponse(BaseModel):
     """Scam claim details"""
     scam_claim_id: uuid.UUID
+    customer_id: uuid.UUID
     claim_reference: str
     claim_status: str
     claim_reason_code: str | None
@@ -22,6 +23,7 @@ class ScamClaimResponse(BaseModel):
     support_case_reference: str | None
     fraud_case_reference: str | None
     payment_order_id: uuid.UUID | None
+    reimbursement_timeline_days: int = Field(default=15, description="Expected days for reimbursement")
     created_at: datetime
     updated_at: datetime
 

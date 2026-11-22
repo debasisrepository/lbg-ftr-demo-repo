@@ -30,7 +30,7 @@ class ProfileService:
     ) -> None:
         """
         Set active profile for session.
-        
+
         Raises:
             ResourceNotFoundError: If profile not found
             AuthorizationError: If profile doesn't belong to customer

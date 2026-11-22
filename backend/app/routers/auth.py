@@ -6,6 +6,7 @@ from sqlalchemy.orm import Session
 
 from ..core.middleware import get_correlation_id
 from ..database import get_db
+from ..models.notification import CustomerNotification
 from ..schemas.auth_schemas import (
     ExtendSessionResponse,
     ProofRequest,
@@ -23,7 +24,6 @@ from ..schemas.auth_schemas import (
 from ..services.auth_service import AuthService
 from ..services.session_service import SessionService
 from ..services.step_up_service import StepUpService
-from ..models.notification import CustomerNotification
 
 router = APIRouter()
 
@@ -153,25 +153,26 @@ def start_recovery(
     Start account recovery flow.
     Creates a recovery challenge and sends notification.
     """
+    import uuid
+    from datetime import datetime, timedelta
+
+    from ..models.session import StepUpChallenge
     from ..repositories.customer_repository import CustomerRepository
     from ..services.notification_service import NotificationService
-    from ..models.session import StepUpChallenge
-    from datetime import datetime, timedelta
-    import uuid
 
     correlation_id = getattr(request.state, "correlation_id", str(uuid.uuid4()))
-    
+
     # Find customer by username (email)
     customer_repo = CustomerRepository(db)
     customer = customer_repo.get_by_external_identity_ref(request_body.username)
-    
+
     if not customer:
         # Don't reveal whether username exists - return success anyway
         return RecoveryResponse(
             message="If an account exists with that email, recovery instructions have been sent.",
             recovery_reference=None
         )
-    
+
     # Create recovery challenge
     now = datetime.now(datetime.now().astimezone().tzinfo)
     recovery_challenge = StepUpChallenge(
@@ -186,12 +187,12 @@ def start_recovery(
         attempt_count=0,
         correlation_id=correlation_id
     )
-    
+
     db.add(recovery_challenge)
     db.flush()
-    
+
     # Send notification
-    notification_service = NotificationService(db)
+    NotificationService(db)
     notification = CustomerNotification(
         customer_notification_id=uuid.uuid4(),
         customer_id=customer.customer_id,
@@ -207,10 +208,10 @@ def start_recovery(
         read_at=None,
         provider_reference=None
     )
-    
+
     db.add(notification)
     db.commit()
-    
+
     return RecoveryResponse(
         message="If an account exists with that email, recovery instructions have been sent.",
         recovery_reference=str(recovery_challenge.step_up_challenge_id)

@@ -1,0 +1,854 @@
+{
+  "$schema": "https://raw.githubusercontent.com/oasis-tcs/sarif-spec/main/sarif-2.1/schema/sarif-schema-2.1.0.json",
+  "version": "2.1.0",
+  "runs": [
+    {
+      "tool": {
+        "driver": {
+          "name": "brownfield-security-scanner",
+          "version": "1.0.0",
+          "informationUri": "https://github.com/brownfield-sdlc/security-scanner",
+          "rules": [
+            {
+              "id": "SEC-001",
+              "name": "MissingAuthenticationMiddleware",
+              "shortDescription": {
+                "text": "Missing global authentication middleware"
+              },
+              "fullDescription": {
+                "text": "The application does not enforce authentication at the middleware level. JWT token extraction is implemented per-route using dependency injection, which is error-prone and can lead to authentication bypass if a route handler forgets to include the dependency."
+              },
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "properties": {
+                "tags": ["security", "authentication", "CWE-306"],
+                "precision": "high",
+                "security-severity": "8.5"
+              }
+            },
+            {
+              "id": "SEC-002",
+              "name": "SessionTokenInHeader",
+              "shortDescription": {
+                "text": "Session ID transmitted in custom header instead of secure cookie"
+              },
+              "fullDescription": {
+                "text": "Session IDs are transmitted via custom X-Session-ID headers instead of HTTP-only secure cookies. This exposes sessions to XSS attacks and makes session management more complex and error-prone."
+              },
+              "defaultConfiguration": {
+                "level": "warning"
+              },
+              "properties": {
+                "tags": ["security", "session-management", "CWE-614"],
+                "precision": "high",
+                "security-severity": "6.5"
+              }
+            },
+            {
+              "id": "SEC-003",
+              "name": "HorizontalPrivilegeEscalation",
+              "shortDescription": {
+                "text": "Missing ownership verification in resource access"
+              },
+              "fullDescription": {
+                "text": "Payment and account endpoints do not consistently verify that the authenticated customer owns the requested resource. An attacker could potentially access or modify other customers' payments by changing IDs in requests."
+              },
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "properties": {
+                "tags": ["security", "authorization", "CWE-639"],
+                "precision": "high",
+                "security-severity": "9.0"
+              }
+            },
+            {
+              "id": "SEC-004",
+              "name": "WeakDefaultSecret",
+              "shortDescription": {
+                "text": "Weak default secret key in configuration"
+              },
+              "fullDescription": {
+                "text": "The default JWT secret key is weak and embedded in source code. While intended for development, it poses a risk if accidentally deployed to production or if developers don't rotate secrets properly."
+              },
+              "defaultConfiguration": {
+                "level": "warning"
+              },
+              "properties": {
+                "tags": ["security", "cryptography", "CWE-798"],
+                "precision": "high",
+                "security-severity": "7.0"
+              }
+            },
+            {
+              "id": "SEC-005",
+              "name": "MissingRateLimitingEnforcement",
+              "shortDescription": {
+                "text": "Rate limiting disabled by default"
+              },
+              "fullDescription": {
+                "text": "Rate limiting is disabled by default (RATE_LIMIT_ENABLED=false). This leaves the application vulnerable to brute-force attacks, credential stuffing, and denial of service."
+              },
+              "defaultConfiguration": {
+                "level": "warning"
+              },
+              "properties": {
+                "tags": ["security", "availability", "CWE-770"],
+                "precision": "high",
+                "security-severity": "6.0"
+              }
+            },
+            {
+              "id": "SEC-006",
+              "name": "InsecureDirectObjectReference",
+              "shortDescription": {
+                "text": "Direct use of UUIDs without ownership checks"
+              },
+              "fullDescription": {
+                "text": "Multiple endpoints accept UUID parameters without verifying the requesting user has permission to access the resource. This creates IDOR vulnerabilities where attackers can enumerate and access resources by guessing or incrementing IDs."
+              },
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "properties": {
+                "tags": ["security", "authorization", "CWE-639"],
+                "precision": "high",
+                "security-severity": "8.5"
+              }
+            },
+            {
+              "id": "SEC-007",
+              "name": "MissingCSRFProtection",
+              "shortDescription": {
+                "text": "No CSRF protection implemented"
+              },
+              "fullDescription": {
+                "text": "The application uses JWT tokens for authentication but does not implement CSRF protection. While JWT in Authorization headers provides some protection, state-changing operations (payments, profile switching) should have additional CSRF defenses."
+              },
+              "defaultConfiguration": {
+                "level": "warning"
+              },
+              "properties": {
+                "tags": ["security", "csrf", "CWE-352"],
+                "precision": "medium",
+                "security-severity": "6.5"
+              }
+            },
+            {
+              "id": "SEC-008",
+              "name": "PermissiveCORSConfiguration",
+              "shortDescription": {
+                "text": "Overly permissive CORS configuration"
+              },
+              "fullDescription": {
+                "text": "CORS is configured to allow all methods and headers (allow_methods=['*'], allow_headers=['*']). This increases attack surface and may allow unintended cross-origin requests."
+              },
+              "defaultConfiguration": {
+                "level": "note"
+              },
+              "properties": {
+                "tags": ["security", "cors", "CWE-942"],
+                "precision": "medium",
+                "security-severity": "4.0"
+              }
+            },
+            {
+              "id": "SEC-009",
+              "name": "MissingSecurityHeaders",
+              "shortDescription": {
+                "text": "Missing security headers"
+              },
+              "fullDescription": {
+                "text": "The application does not set critical security headers such as Content-Security-Policy, X-Frame-Options, X-Content-Type-Options, and Strict-Transport-Security. These headers provide defense-in-depth against XSS, clickjacking, and MIME-sniffing attacks."
+              },
+              "defaultConfiguration": {
+                "level": "warning"
+              },
+              "properties": {
+                "tags": ["security", "headers", "CWE-693"],
+                "precision": "high",
+                "security-severity": "5.5"
+              }
+            },
+            {
+              "id": "SEC-010",
+              "name": "GenericErrorMessages",
+              "shortDescription": {
+                "text": "Generic exception handler may leak sensitive information"
+              },
+              "fullDescription": {
+                "text": "The generic exception handler in main.py may expose stack traces or internal error details in production. While the code shows error handling, it should be verified that debug mode is disabled in production."
+              },
+              "defaultConfiguration": {
+                "level": "note"
+              },
+              "properties": {
+                "tags": ["security", "information-disclosure", "CWE-209"],
+                "precision": "medium",
+                "security-severity": "4.5"
+              }
+            },
+            {
+              "id": "SEC-011",
+              "name": "StubAuthenticationAdapter",
+              "shortDescription": {
+                "text": "Stub authentication adapter in use"
+              },
+              "fullDescription": {
+                "text": "The CIAM adapter is configured to run in 'stub' mode, which bypasses real authentication. This is acceptable for development but must never be deployed to production."
+              },
+              "defaultConfiguration": {
+                "level": "warning"
+              },
+              "properties": {
+                "tags": ["security", "authentication", "CWE-306"],
+                "precision": "high",
+                "security-severity": "9.5"
+              }
+            },
+            {
+              "id": "SEC-012",
+              "name": "IncompleteEntitlementChecks",
+              "shortDescription": {
+                "text": "Entitlement checks not enforced on all sensitive endpoints"
+              },
+              "fullDescription": {
+                "text": "While the accounts endpoint checks entitlements (require_capability), payment endpoints do not consistently verify that the active profile has 'initiate_payments' permission. This could allow privilege escalation across profiles."
+              },
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "properties": {
+                "tags": ["security", "authorization", "CWE-862"],
+                "precision": "high",
+                "security-severity": "8.0"
+              }
+            },
+            {
+              "id": "SEC-013",
+              "name": "DualAuthorizationBypass",
+              "shortDescription": {
+                "text": "Dual authorization workflow incomplete"
+              },
+              "fullDescription": {
+                "text": "The payment approval workflow does not enforce dual authorization for business accounts. While the data model supports it, the payment service does not verify that two distinct users have approved high-value transactions."
+              },
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "properties": {
+                "tags": ["security", "authorization", "business-logic", "CWE-863"],
+                "precision": "high",
+                "security-severity": "7.5"
+              }
+            },
+            {
+              "id": "SEC-014",
+              "name": "RaceConditionInPaymentApproval",
+              "shortDescription": {
+                "text": "Potential race condition in payment approval"
+              },
+              "fullDescription": {
+                "text": "The payment approval process does not use database-level locking. Concurrent approval requests for the same payment could result in double-submission or inconsistent state."
+              },
+              "defaultConfiguration": {
+                "level": "warning"
+              },
+              "properties": {
+                "tags": ["security", "concurrency", "CWE-362"],
+                "precision": "medium",
+                "security-severity": "6.0"
+              }
+            },
+            {
+              "id": "SEC-015",
+              "name": "SessionFixation",
+              "shortDescription": {
+                "text": "Session not regenerated after privilege elevation"
+              },
+              "fullDescription": {
+                "text": "When a user submits proof (second factor) and upgrades from 'password_only' to 'proven' auth level, the session ID is not regenerated. This could allow session fixation attacks where an attacker pre-establishes a session and tricks the victim into authenticating with it."
+              },
+              "defaultConfiguration": {
+                "level": "warning"
+              },
+              "properties": {
+                "tags": ["security", "session-management", "CWE-384"],
+                "precision": "medium",
+                "security-severity": "6.5"
+              }
+            },
+            {
+              "id": "INFO-001",
+              "name": "NoDependencyVulnerabilities",
+              "shortDescription": {
+                "text": "No dependency vulnerabilities found"
+              },
+              "fullDescription": {
+                "text": "Dependency scanning with pip-audit and npm audit found no known CVEs in Python or Node.js dependencies."
+              },
+              "defaultConfiguration": {
+                "level": "none"
+              },
+              "properties": {
+                "tags": ["info", "dependencies"],
+                "precision": "high"
+              }
+            },
+            {
+              "id": "INFO-002",
+              "name": "NoHardcodedSecrets",
+              "shortDescription": {
+                "text": "No hardcoded secrets in source code"
+              },
+              "fullDescription": {
+                "text": "No hardcoded API keys, passwords, or tokens found in source code. All sensitive values are loaded from environment variables."
+              },
+              "defaultConfiguration": {
+                "level": "none"
+              },
+              "properties": {
+                "tags": ["info", "secrets"],
+                "precision": "high"
+              }
+            },
+            {
+              "id": "INFO-003",
+              "name": "NoSQLInjection",
+              "shortDescription": {
+                "text": "No SQL injection vulnerabilities detected"
+              },
+              "fullDescription": {
+                "text": "All database queries use SQLAlchemy ORM with parameterized queries. No string concatenation or formatting in SQL found."
+              },
+              "defaultConfiguration": {
+                "level": "none"
+              },
+              "properties": {
+                "tags": ["info", "sql-injection"],
+                "precision": "high"
+              }
+            },
+            {
+              "id": "INFO-004",
+              "name": "NoXSSVulnerabilities",
+              "shortDescription": {
+                "text": "No XSS vulnerabilities detected in React frontend"
+              },
+              "fullDescription": {
+                "text": "React's built-in XSS protection is in use. No dangerouslySetInnerHTML or direct innerHTML manipulation found."
+              },
+              "defaultConfiguration": {
+                "level": "none"
+              },
+              "properties": {
+                "tags": ["info", "xss"],
+                "precision": "high"
+              }
+            }
+          ]
+        }
+      },
+      "results": [
+        {
+          "ruleId": "SEC-001",
+          "level": "error",
+          "message": {
+            "text": "Application lacks global authentication middleware. JWT extraction is done per-route, increasing risk of authentication bypass."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "backend/app/main.py"
+                },
+                "region": {
+                  "startLine": 30,
+                  "startColumn": 1
+                }
+              }
+            }
+          ],
+          "fixes": [
+            {
+              "description": {
+                "text": "Implement a global authentication middleware that extracts and validates JWT tokens, storing user context in request.state. Protected routes should use Depends() to access this context."
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "SEC-002",
+          "level": "warning",
+          "message": {
+            "text": "Session IDs transmitted via X-Session-ID header instead of HTTP-only secure cookies. This exposes sessions to XSS and complicates session management."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "backend/app/routers/auth.py"
+                },
+                "region": {
+                  "startLine": 78,
+                  "startColumn": 23
+                }
+              }
+            }
+          ],
+          "fixes": [
+            {
+              "description": {
+                "text": "Use HTTP-only, secure cookies for session management. Set session cookie with SameSite=Lax or Strict and Secure flag."
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "SEC-003",
+          "level": "error",
+          "message": {
+            "text": "Payment endpoint does not verify that the authenticated customer owns the payment order. Attacker could access other customers' payments."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "backend/app/routers/payments.py"
+                },
+                "region": {
+                  "startLine": 207,
+                  "startColumn": 1
+                }
+              }
+            }
+          ],
+          "fixes": [
+            {
+              "description": {
+                "text": "Add ownership verification: verify that payment_order.customer_id matches the authenticated customer_id before returning payment details."
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "SEC-003",
+          "level": "error",
+          "message": {
+            "text": "Payment approval endpoint does not verify ownership. Attacker could approve other customers' payments."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "backend/app/routers/payments.py"
+                },
+                "region": {
+                  "startLine": 94,
+                  "startColumn": 1
+                }
+              }
+            }
+          ],
+          "fixes": [
+            {
+              "description": {
+                "text": "Verify payment_order.customer_id matches authenticated customer_id before allowing approval."
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "SEC-003",
+          "level": "error",
+          "message": {
+            "text": "Payment submission endpoint does not verify ownership."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "backend/app/routers/payments.py"
+                },
+                "region": {
+                  "startLine": 159,
+                  "startColumn": 1
+                }
+              }
+            }
+          ],
+          "fixes": [
+            {
+              "description": {
+                "text": "Verify payment_order.customer_id matches authenticated customer_id before submission."
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "SEC-004",
+          "level": "warning",
+          "message": {
+            "text": "Default JWT secret key is weak ('change-me-in-production-min-32-chars'). This poses a risk if not rotated in production."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "backend/app/config.py"
+                },
+                "region": {
+                  "startLine": 12,
+                  "startColumn": 5
+                }
+              }
+            }
+          ],
+          "fixes": [
+            {
+              "description": {
+                "text": "Require SECRET_KEY to be set in production. Add validation that fails startup if the default value is detected in non-development environments."
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "SEC-005",
+          "level": "warning",
+          "message": {
+            "text": "Rate limiting disabled by default (RATE_LIMIT_ENABLED=false). Exposes application to brute-force and DoS attacks."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "backend/dev.env"
+                },
+                "region": {
+                  "startLine": 17,
+                  "startColumn": 1
+                }
+              }
+            }
+          ],
+          "fixes": [
+            {
+              "description": {
+                "text": "Enable rate limiting by default. Set RATE_LIMIT_ENABLED=true in production configuration."
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "SEC-006",
+          "level": "error",
+          "message": {
+            "text": "Incident report endpoint retrieves by reference without verifying ownership until after retrieval. Timing attack possible."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "backend/app/routers/incidents.py"
+                },
+                "region": {
+                  "startLine": 67,
+                  "startColumn": 1
+                }
+              }
+            }
+          ],
+          "fixes": [
+            {
+              "description": {
+                "text": "Pass customer_id to get_incident_report() and verify ownership at the repository/service layer before loading the full record."
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "SEC-007",
+          "level": "warning",
+          "message": {
+            "text": "No CSRF protection implemented for state-changing operations."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "backend/app/main.py"
+                },
+                "region": {
+                  "startLine": 30,
+                  "startColumn": 1
+                }
+              }
+            }
+          ],
+          "fixes": [
+            {
+              "description": {
+                "text": "Implement double-submit cookie pattern or synchronizer token pattern for CSRF protection on state-changing operations."
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "SEC-008",
+          "level": "note",
+          "message": {
+            "text": "CORS configured with allow_methods=['*'] and allow_headers=['*']. Consider restricting to specific methods and headers."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "backend/app/main.py"
+                },
+                "region": {
+                  "startLine": 45,
+                  "startColumn": 1
+                }
+              }
+            }
+          ],
+          "fixes": [
+            {
+              "description": {
+                "text": "Restrict CORS to specific methods: ['GET', 'POST', 'PUT', 'DELETE'] and specific headers: ['Authorization', 'Content-Type', 'X-Correlation-ID']"
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "SEC-009",
+          "level": "warning",
+          "message": {
+            "text": "Missing critical security headers: Content-Security-Policy, X-Frame-Options, X-Content-Type-Options, Strict-Transport-Security"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "backend/app/main.py"
+                },
+                "region": {
+                  "startLine": 30,
+                  "startColumn": 1
+                }
+              }
+            }
+          ],
+          "fixes": [
+            {
+              "description": {
+                "text": "Add security headers middleware setting: CSP with default-src 'self', X-Frame-Options: DENY, X-Content-Type-Options: nosniff, Strict-Transport-Security: max-age=31536000"
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "SEC-010",
+          "level": "note",
+          "message": {
+            "text": "Verify debug mode is disabled in production to prevent information disclosure through error messages."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "backend/app/core/errors.py"
+                },
+                "region": {
+                  "startLine": 1,
+                  "startColumn": 1
+                }
+              }
+            }
+          ],
+          "fixes": [
+            {
+              "description": {
+                "text": "Add environment check that fails startup if FastAPI debug mode is enabled in production."
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "SEC-011",
+          "level": "warning",
+          "message": {
+            "text": "CIAM adapter configured in 'stub' mode. This bypasses real authentication and must never be deployed to production."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "backend/dev.env"
+                },
+                "region": {
+                  "startLine": 20,
+                  "startColumn": 1
+                }
+              }
+            }
+          ],
+          "fixes": [
+            {
+              "description": {
+                "text": "Add startup validation that fails if adapter_mode_ciam=stub in production. Require production configuration to explicitly set adapter mode."
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "SEC-012",
+          "level": "error",
+          "message": {
+            "text": "Payment preparation endpoint does not verify 'initiate_payments' entitlement for active profile."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "backend/app/routers/payments.py"
+                },
+                "region": {
+                  "startLine": 44,
+                  "startColumn": 1
+                }
+              }
+            }
+          ],
+          "fixes": [
+            {
+              "description": {
+                "text": "Add entitlement check: entitlement_service.require_capability(db, profile_id, 'initiate_payments') before allowing payment preparation."
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "SEC-013",
+          "level": "error",
+          "message": {
+            "text": "Dual authorization not enforced for business payments. Business account payments may require two approvers."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "backend/app/services/payment_service.py"
+                },
+                "region": {
+                  "startLine": 217,
+                  "startColumn": 1
+                }
+              }
+            }
+          ],
+          "fixes": [
+            {
+              "description": {
+                "text": "Implement dual authorization check: verify that business payments above threshold require approval from two distinct users before submission."
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "SEC-014",
+          "level": "warning",
+          "message": {
+            "text": "Payment approval may be vulnerable to race condition. No database locking prevents concurrent approval attempts."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "backend/app/services/payment_service.py"
+                },
+                "region": {
+                  "startLine": 217,
+                  "startColumn": 1
+                }
+              }
+            }
+          ],
+          "fixes": [
+            {
+              "description": {
+                "text": "Use SELECT FOR UPDATE when retrieving payment order for approval to prevent concurrent modifications."
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "SEC-015",
+          "level": "warning",
+          "message": {
+            "text": "Session ID not regenerated after authentication privilege elevation (password_only -> proven)."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "backend/app/services/auth_service.py"
+                },
+                "region": {
+                  "startLine": 159,
+                  "startColumn": 1
+                }
+              }
+            }
+          ],
+          "fixes": [
+            {
+              "description": {
+                "text": "Regenerate session token after successful proof submission to prevent session fixation attacks."
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "INFO-001",
+          "level": "none",
+          "message": {
+            "text": "Dependency scan completed: 0 CVEs found in Python and Node.js dependencies."
+          },
+          "locations": []
+        },
+        {
+          "ruleId": "INFO-002",
+          "level": "none",
+          "message": {
+            "text": "Secrets scan completed: No hardcoded API keys, passwords, or tokens found."
+          },
+          "locations": []
+        },
+        {
+          "ruleId": "INFO-003",
+          "level": "none",
+          "message": {
+            "text": "SQL injection scan completed: All queries use parameterized SQLAlchemy ORM, no vulnerabilities detected."
+          },
+          "locations": []
+        },
+        {
+          "ruleId": "INFO-004",
+          "level": "none",
+          "message": {
+            "text": "XSS scan completed: React's built-in protection active, no dangerouslySetInnerHTML usage found."
+          },
+          "locations": []
+        }
+      ],
+      "invocations": [
+        {
+          "executionSuccessful": true,
+          "endTimeUtc": "2026-11-22T10:30:00Z"
+        }
+      ]
+    }
+  ]
+}

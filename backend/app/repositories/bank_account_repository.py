@@ -18,7 +18,7 @@ class BankAccountRepository:
     def get_visible_for_profile(self, db: Session, profile_id: uuid.UUID) -> list[tuple[BankAccount, bool]]:
         """
         Get accounts visible to profile with payment permission flag.
-        
+
         Returns:
             List of (BankAccount, payment_permission) tuples
         """
