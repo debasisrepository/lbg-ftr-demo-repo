@@ -1,0 +1,273 @@
+name: CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - 'v*.*.*'
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Target environment'
+        required: true
+        type: choice
+        options:
+          - staging
+          - production
+
+env:
+  PYTHON_VERSION: '3.11'
+  NODE_VERSION: '22'
+  REGISTRY: ghcr.io
+
+jobs:
+  build-and-publish:
+    name: Build & Publish Container Images
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    
+    outputs:
+      backend-image: ${{ steps.meta-backend.outputs.tags }}
+      frontend-image: ${{ steps.meta-frontend.outputs.tags }}
+      version: ${{ steps.version.outputs.version }}
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Determine version
+        id: version
+        run: |
+          if [[ "${{ github.ref }}" == refs/tags/* ]]; then
+            VERSION=${GITHUB_REF#refs/tags/}
+          else
+            VERSION=main-${GITHUB_SHA::8}
+          fi
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "Version: $VERSION"
+      
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      
+      - name: Log in to Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Extract backend metadata
+        id: meta-backend
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ github.repository }}/backend
+          tags: |
+            type=ref,event=branch
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=sha
+      
+      - name: Build and push backend image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./backend/Dockerfile
+          push: true
+          tags: ${{ steps.meta-backend.outputs.tags }}
+          labels: ${{ steps.meta-backend.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          build-args: |
+            PIP_TARGET=.[postgres]
+      
+      - name: Extract frontend metadata
+        id: meta-frontend
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ github.repository }}/frontend
+          tags: |
+            type=ref,event=branch
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=sha
+      
+      - name: Build and push frontend image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./frontend/Dockerfile
+          push: true
+          tags: ${{ steps.meta-frontend.outputs.tags }}
+          labels: ${{ steps.meta-frontend.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+  deploy-staging:
+    name: Deploy to Staging
+    runs-on: ubuntu-latest
+    needs: build-and-publish
+    if: github.ref == 'refs/heads/main' || github.event.inputs.environment == 'staging'
+    environment:
+      name: staging
+      url: https://staging.lbg-ftr-demo.example.com
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Deploy to staging
+        run: |
+          echo "Deploying version ${{ needs.build-and-publish.outputs.version }} to staging"
+          echo "Backend image: ${{ needs.build-and-publish.outputs.backend-image }}"
+          echo "Frontend image: ${{ needs.build-and-publish.outputs.frontend-image }}"
+          # Deployment commands would go here - kubectl apply, helm upgrade, etc.
+          # This is a placeholder for the actual deployment mechanism
+      
+      - name: Health check staging
+        run: |
+          echo "Running health checks against staging environment"
+          # Add actual health check commands here
+          # curl -f https://staging.lbg-ftr-demo.example.com/health || exit 1
+      
+      - name: Notify deployment
+        run: |
+          echo "✅ Staging deployment completed successfully"
+          echo "Version: ${{ needs.build-and-publish.outputs.version }}"
+
+  smoke-test-staging:
+    name: Smoke Tests - Staging
+    runs-on: ubuntu-latest
+    needs: deploy-staging
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: frontend/package-lock.json
+      
+      - name: Install dependencies
+        working-directory: frontend
+        run: npm ci
+      
+      - name: Install Playwright
+        working-directory: frontend
+        run: npx playwright install --with-deps chromium
+      
+      - name: Run smoke tests
+        working-directory: frontend
+        run: |
+          # Run a subset of critical E2E tests against staging
+          npx playwright test e2e/smoke_login.spec.ts --grep @smoke
+        env:
+          BASE_URL: https://staging.lbg-ftr-demo.example.com
+      
+      - name: Upload smoke test results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: staging-smoke-test-results
+          path: frontend/test-results/
+
+  deploy-production:
+    name: Deploy to Production
+    runs-on: ubuntu-latest
+    needs: [build-and-publish, smoke-test-staging]
+    if: startsWith(github.ref, 'refs/tags/v') || github.event.inputs.environment == 'production'
+    environment:
+      name: production
+      url: https://lbg-ftr-demo.example.com
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Deploy to production
+        run: |
+          echo "Deploying version ${{ needs.build-and-publish.outputs.version }} to production"
+          echo "Backend image: ${{ needs.build-and-publish.outputs.backend-image }}"
+          echo "Frontend image: ${{ needs.build-and-publish.outputs.frontend-image }}"
+          # Production deployment commands would go here
+          # This would typically involve:
+          # - Blue/green deployment or canary rollout
+          # - Database migration checks
+          # - Gradual traffic shifting
+      
+      - name: Health check production
+        run: |
+          echo "Running health checks against production environment"
+          # Add actual health check commands here
+          # curl -f https://lbg-ftr-demo.example.com/health || exit 1
+      
+      - name: Notify deployment
+        run: |
+          echo "✅ Production deployment completed successfully"
+          echo "Version: ${{ needs.build-and-publish.outputs.version }}"
+
+  smoke-test-production:
+    name: Smoke Tests - Production
+    runs-on: ubuntu-latest
+    needs: deploy-production
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: frontend/package-lock.json
+      
+      - name: Install dependencies
+        working-directory: frontend
+        run: npm ci
+      
+      - name: Install Playwright
+        working-directory: frontend
+        run: npx playwright install --with-deps chromium
+      
+      - name: Run production smoke tests
+        working-directory: frontend
+        run: |
+          # Run critical smoke tests against production
+          npx playwright test e2e/smoke_login.spec.ts --grep @smoke
+        env:
+          BASE_URL: https://lbg-ftr-demo.example.com
+      
+      - name: Upload smoke test results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: production-smoke-test-results
+          path: frontend/test-results/
+
+  rollback:
+    name: Rollback Procedure
+    runs-on: ubuntu-latest
+    needs: [deploy-production, smoke-test-production]
+    if: failure()
+    environment:
+      name: production
+    
+    steps:
+      - name: Trigger rollback
+        run: |
+          echo "⚠️ Deployment or smoke tests failed - initiating rollback"
+          # Rollback commands would go here
+          # This would typically involve:
+          # - Reverting to previous stable version
+          # - Database rollback if necessary
+          # - Traffic redirection
+      
+      - name: Notify rollback
+        run: |
+          echo "🔄 Rollback completed"

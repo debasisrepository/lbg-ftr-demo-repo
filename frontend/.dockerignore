@@ -1,0 +1,12 @@
+# Frontend-specific excludes for frontend Dockerfile
+node_modules
+dist
+.vite
+coverage
+test-results
+playwright-report
+*.log
+.DS_Store
+.env
+.env.local
+*.md
