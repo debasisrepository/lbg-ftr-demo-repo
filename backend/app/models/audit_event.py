@@ -5,7 +5,7 @@ Requirement: REQ-AUD-001
 import uuid
 from datetime import UTC, datetime
 
-from sqlalchemy import Column, DateTime, String, Uuid
+from sqlalchemy import DateTime, String, Uuid
 from sqlalchemy.orm import Mapped, mapped_column
 
 from app.database import Base

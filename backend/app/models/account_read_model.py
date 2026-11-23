@@ -45,6 +45,12 @@ class AccountReadModel(Base):
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False, default=lambda: datetime.now(UTC))
     updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False, default=lambda: datetime.now(UTC), onupdate=lambda: datetime.now(UTC))
     
+    # Release 2: Loan-specific fields (BR-ACCT-004, BR-ACCT-007)
+    loan_outstanding_balance_minor = Column(BigInteger, nullable=True)
+    loan_next_repayment_date = Column(DateTime(timezone=True), nullable=True)
+    loan_next_repayment_amount_minor = Column(BigInteger, nullable=True)
+    loan_remaining_term_months = Column(BigInteger, nullable=True)
+    
     __table_args__ = (
         CheckConstraint("account_type IN ('current','savings','card','loan')", name="ck_arm_account_type"),
         CheckConstraint("balance_availability_state IN ('current','stale','unavailable','unknown')", name="ck_arm_state"),

@@ -16,7 +16,7 @@ from app.middleware.error_handlers import (
     generic_exception_handler,
     validation_exception_handler,
 )
-from app.routers import accounts, auth, payees, payments, status
+from app.routers import accounts, auth, payees, payments, profiles, scam_reports, status
 
 
 @asynccontextmanager
@@ -32,8 +32,8 @@ async def lifespan(app: FastAPI):
 # Create FastAPI app
 app = FastAPI(
     title="LBG FTR Demo Backend",
-    description="Release 1 Mobile Banking Platform Backend API",
-    version="0.1.0",
+    description="Release 2 Mobile Banking Platform Backend API - Loans, Business Profiles and Scam Reporting",
+    version="0.2.0",
     lifespan=lifespan,
 )
 
@@ -60,6 +60,9 @@ app.include_router(accounts.router, prefix="/api/v1/accounts", tags=["accounts"]
 app.include_router(status.router, prefix="/api/v1/capability-statuses", tags=["status"])
 app.include_router(payees.router, prefix="/api/v1", tags=["payees"])
 app.include_router(payments.router, prefix="/api/v1/payments", tags=["payments"])
+# Release 2: Profile management and scam reporting
+app.include_router(profiles.router, prefix="/api/v1/profiles", tags=["profiles"])
+app.include_router(scam_reports.router, prefix="/api/v1/scam-reports", tags=["scam-reports"])
 
 
 # Health endpoints (no /api prefix per architecture contract)

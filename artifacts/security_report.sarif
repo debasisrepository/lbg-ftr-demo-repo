@@ -1,0 +1,402 @@
+{
+  "$schema": "https://raw.githubusercontent.com/oasis-tcs/sarif-spec/main/sarif-2.1/schema/sarif-schema-2.1.0.json",
+  "version": "2.1.0",
+  "runs": [
+    {
+      "tool": {
+        "driver": {
+          "name": "brownfield-security-scanner",
+          "version": "1.0.0",
+          "informationUri": "https://github.com/oasis-tcs/sarif-spec",
+          "rules": [
+            {
+              "id": "SEC-001",
+              "name": "WeakSecretKey",
+              "shortDescription": { "text": "Weak or hardcoded JWT secret key" },
+              "fullDescription": { "text": "JWT secret key is weak or hardcoded in development configuration file, compromising token security" },
+              "defaultConfiguration": { "level": "error" },
+              "properties": { "tags": ["security", "cryptography", "CWE-798"], "precision": "high" }
+            },
+            {
+              "id": "SEC-002",
+              "name": "InsecureTokenStorage",
+              "shortDescription": { "text": "Authentication token stored in sessionStorage" },
+              "fullDescription": { "text": "Authentication tokens stored in sessionStorage are vulnerable to XSS attacks. Use httpOnly cookies instead." },
+              "defaultConfiguration": { "level": "warning" },
+              "properties": { "tags": ["security", "authentication", "CWE-522"], "precision": "high" }
+            },
+            {
+              "id": "SEC-003",
+              "name": "WeakPasswordHashing",
+              "shortDescription": { "text": "SHA-256 used for token hashing" },
+              "fullDescription": { "text": "SHA-256 is used for hashing session tokens. While acceptable for this use case, ensure proper entropy in token generation." },
+              "defaultConfiguration": { "level": "note" },
+              "properties": { "tags": ["security", "cryptography", "CWE-327"], "precision": "medium" }
+            },
+            {
+              "id": "SEC-004",
+              "name": "MissingAuthorizationCheck",
+              "shortDescription": { "text": "Missing entitlement verification in profile switching" },
+              "fullDescription": { "text": "Profile switching implementation does not verify that the target profile belongs to the authenticated identity, only checks for entitlements. This could allow profile hijacking if identity reference validation is bypassed." },
+              "defaultConfiguration": { "level": "error" },
+              "properties": { "tags": ["security", "authorization", "CWE-639"], "precision": "high" }
+            },
+            {
+              "id": "SEC-005",
+              "name": "SQLInjectionRisk",
+              "shortDescription": { "text": "Potential SQL injection via query construction" },
+              "fullDescription": { "text": "While SQLAlchemy ORM is used (which provides SQL injection protection), verify all user inputs are properly parameterized." },
+              "defaultConfiguration": { "level": "note" },
+              "properties": { "tags": ["security", "injection", "CWE-89"], "precision": "low" }
+            },
+            {
+              "id": "SEC-006",
+              "name": "InformationDisclosure",
+              "shortDescription": { "text": "Detailed error information in development" },
+              "fullDescription": { "text": "Error handlers print stack traces to console in production. Ensure DEBUG mode is disabled and verbose errors are suppressed in production deployments." },
+              "defaultConfiguration": { "level": "warning" },
+              "properties": { "tags": ["security", "information-disclosure", "CWE-209"], "precision": "high" }
+            },
+            {
+              "id": "SEC-007",
+              "name": "InsecureDependency",
+              "shortDescription": { "text": "Vulnerable setuptools version" },
+              "fullDescription": { "text": "setuptools has known vulnerabilities (GHSA-xmj3-9gf7-h52w) allowing path traversal in wheel installation" },
+              "defaultConfiguration": { "level": "warning" },
+              "properties": { "tags": ["security", "dependency", "CWE-22"], "precision": "high" }
+            },
+            {
+              "id": "SEC-008",
+              "name": "MissingCSRFProtection",
+              "shortDescription": { "text": "No CSRF protection for state-changing operations" },
+              "fullDescription": { "text": "API does not implement CSRF protection. While token-based auth provides some protection, consider adding CSRF tokens for state-changing operations." },
+              "defaultConfiguration": { "level": "note" },
+              "properties": { "tags": ["security", "csrf", "CWE-352"], "precision": "medium" }
+            },
+            {
+              "id": "SEC-009",
+              "name": "PotentialIDOR",
+              "shortDescription": { "text": "Insufficient authorization in scam report retrieval" },
+              "fullDescription": { "text": "Scam report retrieval checks customer_id match, but relies on application-level logic. Ensure database-level constraints prevent IDOR attacks." },
+              "defaultConfiguration": { "level": "note" },
+              "properties": { "tags": ["security", "authorization", "CWE-639"], "precision": "medium" }
+            },
+            {
+              "id": "SEC-010",
+              "name": "MissingRateLimiting",
+              "shortDescription": { "text": "No rate limiting on critical endpoints" },
+              "fullDescription": { "text": "Profile switching, scam reporting, and payment endpoints lack rate limiting. Add rate limiting to prevent abuse." },
+              "defaultConfiguration": { "level": "warning" },
+              "properties": { "tags": ["security", "rate-limiting", "CWE-307"], "precision": "high" }
+            },
+            {
+              "id": "SEC-011",
+              "name": "MissingInputValidation",
+              "shortDescription": { "text": "Limited input validation on payment reference" },
+              "fullDescription": { "text": "Payment reference validation only checks length. Consider sanitizing special characters to prevent injection attacks in downstream systems." },
+              "defaultConfiguration": { "level": "note" },
+              "properties": { "tags": ["security", "input-validation", "CWE-20"], "precision": "medium" }
+            },
+            {
+              "id": "SEC-012",
+              "name": "MissingAuditLogging",
+              "shortDescription": { "text": "Insufficient audit logging for sensitive operations" },
+              "fullDescription": { "text": "Profile switching and business account access lack comprehensive audit logging. Ensure all authorization decisions are logged for security monitoring." },
+              "defaultConfiguration": { "level": "warning" },
+              "properties": { "tags": ["security", "audit", "CWE-778"], "precision": "high" }
+            }
+          ]
+        }
+      },
+      "results": [
+        {
+          "ruleId": "SEC-001",
+          "level": "error",
+          "message": { "text": "Weak JWT secret key 'dev-secret-key-change-in-production-min-32-chars-xxxxxxxx' found in dev.env. This key is exposed in source control and must not be used in production." },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": { "uri": "backend/dev.env" },
+                "region": { "startLine": 3, "startColumn": 1, "endLine": 3, "endColumn": 72 }
+              }
+            }
+          ],
+          "fixes": [
+            {
+              "description": { "text": "Generate a cryptographically secure random key for production deployments using secrets.token_urlsafe(32) or similar. Never commit production secrets to source control." }
+            }
+          ],
+          "partialFingerprints": {
+            "primaryLocationLineHash": "5e3c8f1a2d4b6e9f"
+          }
+        },
+        {
+          "ruleId": "SEC-002",
+          "level": "warning",
+          "message": { "text": "Authentication token stored in sessionStorage at line 90. sessionStorage is vulnerable to XSS attacks. Consider using httpOnly cookies for secure token storage." },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": { "uri": "frontend/src/lib/auth-context.tsx" },
+                "region": { "startLine": 90, "startColumn": 7, "snippet": { "text": "sessionStorage.setItem('auth_token', response.access_token);" } }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "id": 1,
+              "physicalLocation": {
+                "artifactLocation": { "uri": "frontend/src/lib/auth-context.tsx" },
+                "region": { "startLine": 61, "startColumn": 20 }
+              },
+              "message": { "text": "Token retrieved from sessionStorage" }
+            },
+            {
+              "id": 2,
+              "physicalLocation": {
+                "artifactLocation": { "uri": "frontend/src/pages/PaymentEntryPage.tsx" },
+                "region": { "startLine": 152, "startColumn": 36 }
+              },
+              "message": { "text": "Token retrieved from sessionStorage" }
+            }
+          ],
+          "partialFingerprints": {
+            "primaryLocationLineHash": "a7b2c8d9e3f1g4h5"
+          }
+        },
+        {
+          "ruleId": "SEC-004",
+          "level": "error",
+          "message": { "text": "Profile switching in switch_profile() does not verify that target profile belongs to authenticated identity. Only entitlement check is performed. This creates authorization bypass risk if identity_reference validation is not enforced upstream." },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": { "uri": "backend/app/services/profile_service.py" },
+                "region": { "startLine": 95, "startColumn": 1, "endLine": 157, "endColumn": 1, "snippet": { "text": "def switch_profile(\n        self,\n        profile_id: str | uuid.UUID,\n        identity_reference: str\n    ) -> SwitchProfileResponse:" } }
+              }
+            }
+          ],
+          "fixes": [
+            {
+              "description": { "text": "Add identity_reference validation: verify that the target profile's ciam_subject_reference matches the authenticated user's identity_reference before allowing profile switch. Query: profile = db.query(CustomerProfileRef).filter(CustomerProfileRef.id == profile_id, CustomerProfileRef.ciam_subject_reference == identity_reference, CustomerProfileRef.is_active == True).first()" }
+            }
+          ],
+          "partialFingerprints": {
+            "primaryLocationLineHash": "b8c3d2e1f9g7h6i5"
+          }
+        },
+        {
+          "ruleId": "SEC-006",
+          "level": "warning",
+          "message": { "text": "Stack traces printed to console in generic_exception_handler. Ensure this is disabled in production to prevent information disclosure." },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": { "uri": "backend/app/middleware/error_handlers.py" },
+                "region": { "startLine": 54, "startColumn": 1, "endLine": 57, "endColumn": 1, "snippet": { "text": "import traceback\n    print(f\"Internal error [{correlation_id}]: {exc!s}\")\n    traceback.print_exc()" } }
+              }
+            }
+          ],
+          "fixes": [
+            {
+              "description": { "text": "Replace print/traceback with structured logging using structlog. Only log full stack traces in non-production environments. Example: logger.error('internal_error', correlation_id=correlation_id, exc_info=True if settings.debug else False)" }
+            }
+          ],
+          "partialFingerprints": {
+            "primaryLocationLineHash": "c9d4e3f2g1h8i7j6"
+          }
+        },
+        {
+          "ruleId": "SEC-007",
+          "level": "warning",
+          "message": { "text": "setuptools dependency has known vulnerabilities (GHSA-xmj3-9gf7-h52w) allowing path traversal during wheel installation. Update to setuptools >= 84.1.0." },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": { "uri": "backend/pyproject.toml" },
+                "region": { "startLine": 38, "startColumn": 1 }
+              }
+            }
+          ],
+          "fixes": [
+            {
+              "description": { "text": "Update setuptools to version 84.1.0 or later: requires = ['setuptools>=84.1.0']" }
+            }
+          ],
+          "partialFingerprints": {
+            "primaryLocationLineHash": "d1e5f4g3h2i9j8k7"
+          }
+        },
+        {
+          "ruleId": "SEC-010",
+          "level": "warning",
+          "message": { "text": "Profile switching endpoint POST /api/v1/profiles/switch lacks rate limiting. Add rate limiting to prevent abuse and account enumeration attacks." },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": { "uri": "backend/app/routers/profiles.py" },
+                "region": { "startLine": 50, "startColumn": 1 }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "id": 1,
+              "physicalLocation": {
+                "artifactLocation": { "uri": "backend/app/routers/scam_reports.py" },
+                "region": { "startLine": 24, "startColumn": 1 }
+              },
+              "message": { "text": "Scam reporting endpoint also lacks rate limiting" }
+            },
+            {
+              "id": 2,
+              "physicalLocation": {
+                "artifactLocation": { "uri": "backend/app/routers/profiles.py" },
+                "region": { "startLine": 83, "startColumn": 1 }
+              },
+              "message": { "text": "Business accounts endpoint lacks rate limiting" }
+            }
+          ],
+          "fixes": [
+            {
+              "description": { "text": "Implement rate limiting middleware for profile, scam reporting, and business account endpoints. Example: from slowapi import Limiter; limiter.limit('5 per minute')(endpoint)" }
+            }
+          ],
+          "partialFingerprints": {
+            "primaryLocationLineHash": "e2f6g5h4i3j1k9l8"
+          }
+        },
+        {
+          "ruleId": "SEC-012",
+          "level": "warning",
+          "message": { "text": "Profile switching operation at line 95 lacks comprehensive audit logging. Log profile_id, identity_reference, source IP, and timestamp for security monitoring." },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": { "uri": "backend/app/services/profile_service.py" },
+                "region": { "startLine": 95, "startColumn": 1 }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "id": 1,
+              "physicalLocation": {
+                "artifactLocation": { "uri": "backend/app/services/profile_service.py" },
+                "region": { "startLine": 158, "startColumn": 1 }
+              },
+              "message": { "text": "Business account access also lacks audit logging" }
+            }
+          ],
+          "fixes": [
+            {
+              "description": { "text": "Add structured audit logging: logger.info('profile_switched', customer_id=customer_id, target_profile_id=profile_id, identity_reference=identity_reference, correlation_id=correlation_id)" }
+            }
+          ],
+          "partialFingerprints": {
+            "primaryLocationLineHash": "f3g7h6i5j4k2l1m9"
+          }
+        },
+        {
+          "ruleId": "SEC-009",
+          "level": "note",
+          "message": { "text": "Scam report retrieval at line 110 checks customer_id match at application level. Ensure database query uses parameterized filters to prevent IDOR attacks." },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": { "uri": "backend/app/services/scam_service.py" },
+                "region": { "startLine": 110, "startColumn": 1, "endLine": 133, "endColumn": 1 }
+              }
+            }
+          ],
+          "partialFingerprints": {
+            "primaryLocationLineHash": "g4h8i7j6k5l3m2n1"
+          }
+        },
+        {
+          "ruleId": "SEC-003",
+          "level": "note",
+          "message": { "text": "SHA-256 used for token hashing in _hash_token() at line 422. This is acceptable for session tokens with high entropy, but verify token generation uses cryptographically secure random source." },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": { "uri": "backend/app/services/auth_service.py" },
+                "region": { "startLine": 422, "startColumn": 1 }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "id": 1,
+              "physicalLocation": {
+                "artifactLocation": { "uri": "backend/app/services/auth_service.py" },
+                "region": { "startLine": 419, "startColumn": 1 }
+              },
+              "message": { "text": "Token generation uses secrets.token_urlsafe(32) - good practice" }
+            }
+          ],
+          "partialFingerprints": {
+            "primaryLocationLineHash": "h5i9j8k7l6m4n3o2"
+          }
+        },
+        {
+          "ruleId": "SEC-008",
+          "level": "note",
+          "message": { "text": "API does not implement CSRF protection for state-changing operations. While Bearer token authentication provides some protection, consider adding CSRF tokens for defense-in-depth." },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": { "uri": "backend/app/main.py" },
+                "region": { "startLine": 1, "startColumn": 1 }
+              }
+            }
+          ],
+          "partialFingerprints": {
+            "primaryLocationLineHash": "i6j1k9l8m7n5o4p3"
+          }
+        },
+        {
+          "ruleId": "SEC-011",
+          "level": "note",
+          "message": { "text": "Payment reference validation only checks length (max 18 characters). Consider sanitizing special characters and validating against allowed character set to prevent injection in downstream systems." },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": { "uri": "frontend/src/pages/PaymentEntryPage.tsx" },
+                "region": { "startLine": 121, "startColumn": 1 }
+              }
+            }
+          ],
+          "partialFingerprints": {
+            "primaryLocationLineHash": "j7k2l1m9n8o6p5q4"
+          }
+        },
+        {
+          "ruleId": "SEC-005",
+          "level": "note",
+          "message": { "text": "SQLAlchemy ORM is used throughout the application, which provides built-in SQL injection protection through parameterized queries. Manual verification recommended for any raw SQL usage." },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": { "uri": "backend/app/database.py" },
+                "region": { "startLine": 1, "startColumn": 1 }
+              }
+            }
+          ],
+          "partialFingerprints": {
+            "primaryLocationLineHash": "k8l3m2n1o9p7q6r5"
+          }
+        }
+      ],
+      "invocations": [
+        {
+          "executionSuccessful": true,
+          "endTimeUtc": "2026-11-23T12:00:00Z",
+          "workingDirectory": {
+            "uri": "file:///repos/lbg-ftr-demo-repo/"
+          }
+        }
+      ]
+    }
+  ]
+}
