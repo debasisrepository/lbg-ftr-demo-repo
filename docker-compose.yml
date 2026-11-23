@@ -1,0 +1,34 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: lbg-ftr-backend
+    env_file:
+      - ./backend/dev.env
+    environment:
+      - DATABASE_URL=sqlite:////data/app.db
+      - CORS_ORIGINS=http://localhost
+    volumes:
+      - backend-data:/data
+    ports:
+      - "9000:9000"
+    x-preview-port: 9000
+
+  frontend:
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+    container_name: lbg-ftr-frontend
+    env_file:
+      - ./frontend/dev.env
+    depends_on:
+      - backend
+    ports:
+      - "80:80"
+    x-preview-port: 80
+
+volumes:
+  backend-data:
