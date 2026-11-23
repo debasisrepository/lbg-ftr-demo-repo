@@ -14,6 +14,7 @@ from app.schemas.accounts_schemas import (
     AccountOverviewResponse,
     Balance,
     CapabilityStatus,
+    LoanDetails,
 )
 from app.services.capability_status_service import CapabilityStatusService
 from app.services.read_model_service import ReadModelService
@@ -131,6 +132,16 @@ class AccountService:
                 account.balance_amount_minor is not None
             )
             
+            # Release 2: Include loan details if account_type is 'loan' (BR-ACCT-004)
+            loan_details = None
+            if account.account_type == "loan":
+                loan_details = LoanDetails(
+                    outstanding_balance_minor=account.loan_outstanding_balance_minor,
+                    next_repayment_date=account.loan_next_repayment_date,
+                    next_repayment_amount_minor=account.loan_next_repayment_amount_minor,
+                    remaining_term_months=account.loan_remaining_term_months
+                )
+            
             items.append(AccountItem(
                 account_id=str(account.id),
                 account_type=account.account_type,
@@ -141,7 +152,8 @@ class AccountService:
                 freshness_status=account.freshness_status,
                 freshness_text=freshness_text,
                 item_state=item_state,
-                payment_source_eligible=payment_source_eligible
+                payment_source_eligible=payment_source_eligible,
+                loan_details=loan_details
             ))
         
         # Build capability status

@@ -3,7 +3,6 @@ Fraud Engine sandbox adapter - scam and fraud decisioning.
 In production, calls the fraud decisioning engine.
 Requirement: REQ-PAY-006, REQ-PAY-007
 """
-import random
 import time
 import uuid
 from typing import Literal

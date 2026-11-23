@@ -3,6 +3,7 @@
 *.pyc
 .DS_Store
 .env
+prod.env
 .pass_summaries/
 .pytest_cache/
 .venv/

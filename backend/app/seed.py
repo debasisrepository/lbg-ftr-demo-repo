@@ -23,9 +23,11 @@ import bcrypt
 from sqlalchemy.orm import Session
 
 from app.models.account_read_model import AccountReadModel
+from app.models.business_profile_read_model import BusinessProfileReadModel
 from app.models.capability_status_record import CapabilityStatusRecord
 from app.models.customer_profile_ref import CustomerProfileRef
 from app.models.device_registration import DeviceRegistration
+from app.models.material_third_party_register import MaterialThirdPartyRegister
 from app.models.payee import Payee
 from app.models.sandbox_credential import SandboxCredential
 from app.models.sandbox_entitlement import SandboxEntitlement
@@ -48,13 +50,15 @@ def seed_database(db: Session) -> None:
     """
     print("🌱 Seeding database...")
     
-    # Seed customers
+    # Seed customers (Release 1 + Release 2)
     customers = [
         {
             "id": uuid.UUID("00000000-0000-0000-0000-000000000001"),
             "customer_party_id": "CUST-SYNTH-001",
             "ciam_subject_reference": "ciam-subject-synth-001",
             "display_name": "Alex Taylor",
+            "profile_type": "personal",
+            "business_name": None,
             "passcode": "Pass1234",
         },
         {
@@ -62,7 +66,29 @@ def seed_database(db: Session) -> None:
             "customer_party_id": "CUST-SYNTH-002",
             "ciam_subject_reference": "ciam-subject-synth-002",
             "display_name": "Jordan Smith",
+            "profile_type": "personal",
+            "business_name": None,
             "passcode": "Pass5678",
+        },
+        # Release 2: Business profile (TD-04: SP Events Ltd)
+        {
+            "id": uuid.UUID("00000000-0000-0000-0000-000000000003"),
+            "customer_party_id": "CUST-SYNTH-003",
+            "ciam_subject_reference": "ciam-subject-synth-003",
+            "display_name": "SP Events Ltd",
+            "profile_type": "business",
+            "business_name": "SP Events Ltd",
+            "passcode": "Pass9999",
+        },
+        # Release 2: TD-09 Alex Morgan (viewer, no pay entitlement)
+        {
+            "id": uuid.UUID("00000000-0000-0000-0000-000000000004"),
+            "customer_party_id": "CUST-SYNTH-004",
+            "ciam_subject_reference": "ciam-subject-synth-004",
+            "display_name": "Alex Morgan",
+            "profile_type": "personal",
+            "business_name": None,
+            "passcode": "Pass2222",
         },
     ]
     
@@ -75,7 +101,8 @@ def seed_database(db: Session) -> None:
                 customer_party_id=cust_data["customer_party_id"],
                 ciam_subject_reference=cust_data["ciam_subject_reference"],
                 display_name=cust_data["display_name"],
-                profile_type="personal",
+                profile_type=cust_data.get("profile_type", "personal"),
+                business_name=cust_data.get("business_name"),
                 release_scope_status="in_scope",
                 is_active=True,
             )
@@ -252,7 +279,7 @@ def seed_database(db: Session) -> None:
                 print(f"✓ Customer {cust_data['display_name']} already has {existing_payees} payees")
     
     # Seed capability status records
-    capabilities = ["accounts_overview", "saved_payees", "payments", "payment_status"]
+    capabilities = ["accounts_overview", "saved_payees", "payments", "payment_status", "loan_view"]
     for cap_name in capabilities:
         existing_cap = db.query(CapabilityStatusRecord).filter_by(capability_name=cap_name).first()
         if not existing_cap:
@@ -265,15 +292,135 @@ def seed_database(db: Session) -> None:
             )
             db.add(capability)
     
+    # Release 2: Seed loan account for Alex Taylor (TD-03: Personal loan)
+    alex_id = uuid.UUID("00000000-0000-0000-0000-000000000001")
+    loan_account = db.query(AccountReadModel).filter_by(
+        customer_profile_ref_id=alex_id,
+        account_type="loan"
+    ).first()
+    
+    if not loan_account:
+        now = datetime.now(UTC)
+        loan_account = AccountReadModel(
+            id=uuid.uuid4(),
+            customer_profile_ref_id=alex_id,
+            account_system_reference="LOAN-001-ALEX",
+            account_type="loan",
+            display_name="Personal Loan",
+            masked_account_identifier="****1234",
+            balance_amount_minor=1850000,  # £18,500 outstanding
+            balance_currency="GBP",
+            balance_availability_state="current",
+            as_of_timestamp=now,
+            freshness_status="within_target",
+            freshness_breach_indicator=False,
+            source_system_type="loan_servicing",
+            provenance_reference="loan-servicing-synth-001",
+            projection_updated_at=now,
+            # Release 2 loan fields
+            loan_outstanding_balance_minor=1850000,
+            loan_next_repayment_date=now + timedelta(days=15),
+            loan_next_repayment_amount_minor=45000,  # £450 per month
+            loan_remaining_term_months=42,
+        )
+        db.add(loan_account)
+        print("✓ Seeded loan account for Alex Taylor")
+    
+    # Release 2: Seed business account for SP Events Ltd (TD-04)
+    business_id = uuid.UUID("00000000-0000-0000-0000-000000000003")
+    business_account = db.query(BusinessProfileReadModel).filter_by(
+        customer_profile_ref_id=business_id
+    ).first()
+    
+    if not business_account:
+        now = datetime.now(UTC)
+        business_account = BusinessProfileReadModel(
+            id=uuid.uuid4(),
+            customer_profile_ref_id=business_id,
+            business_name="SP Events Ltd",
+            business_account_system_reference="BIZ-CURR-001",
+            account_type="business_current",
+            display_name="SP Events Ltd - Current Account",
+            masked_account_identifier="****5678",
+            balance_amount_minor=12450000,  # £124,500 available
+            balance_currency="GBP",
+            balance_availability_state="current",
+            pending_outgoing_payments_count=3,
+            pending_outgoing_payments_amount_minor=850000,  # £8,500 pending
+            as_of_timestamp=now,
+            freshness_status="within_target",
+            source_system_type="business_banking",
+            projection_updated_at=now,
+        )
+        db.add(business_account)
+        print("✓ Seeded business account for SP Events Ltd")
+    
+    # Release 2: Seed material third-party register (TPR-01, TPR-02, TPR-03)
+    third_parties = [
+        {
+            "name": "AWS (Cloud Infrastructure)",
+            "category": "cloud",
+            "description": "Cloud hosting for backend services and databases",
+            "criticality": "critical",
+        },
+        {
+            "name": "Vocalink (CoP Provider)",
+            "category": "cop_provider",
+            "description": "Confirmation of Payee service provider",
+            "criticality": "critical",
+        },
+        {
+            "name": "Featurespace (Fraud Engine)",
+            "category": "fraud_engine",
+            "description": "Real-time fraud detection and scam prevention",
+            "criticality": "important",
+        },
+        {
+            "name": "Firebase Cloud Messaging",
+            "category": "push_notification",
+            "description": "Push notification delivery for mobile app",
+            "criticality": "important",
+        },
+    ]
+    
+    for tp in third_parties:
+        existing_tp = db.query(MaterialThirdPartyRegister).filter_by(
+            third_party_name=tp["name"]
+        ).first()
+        
+        if not existing_tp:
+            third_party = MaterialThirdPartyRegister(
+                id=uuid.uuid4(),
+                third_party_name=tp["name"],
+                service_category=tp["category"],
+                service_description=tp["description"],
+                criticality=tp["criticality"],
+                contract_start_date=datetime.now(UTC).date() - timedelta(days=365),
+                contract_review_date=datetime.now(UTC).date() + timedelta(days=180),
+                exit_plan_status="approved",
+                exit_plan_last_tested=datetime.now(UTC).date() - timedelta(days=90),
+                regulatory_reportable=True,
+            )
+            db.add(third_party)
+    
+    print("✓ Seeded material third-party register (4 entries)")
+    
     db.commit()
     print("✅ Database seeding complete!")
     print("\n📋 Seed credentials:")
-    print("   Customer 1: Alex Taylor   - passcode: Pass1234")
+    print("   Customer 1: Alex Taylor (personal)   - passcode: Pass1234")
     print("              Device iOS:     device-CUST-SYNTH-001-iOS")
     print("              Device Android: device-CUST-SYNTH-001-Android")
-    print("   Customer 2: Jordan Smith  - passcode: Pass5678")
+    print("              Has loan account with £18,500 outstanding")
+    print("   Customer 2: Jordan Smith (personal)  - passcode: Pass5678")
     print("              Device iOS:     device-CUST-SYNTH-002-iOS")
     print("              Device Android: device-CUST-SYNTH-002-Android")
+    print("   Customer 3: SP Events Ltd (business) - passcode: Pass9999")
+    print("              Device iOS:     device-CUST-SYNTH-003-iOS")
+    print("              Business account with £124,500 available")
+    print("   Customer 4: Alex Morgan (personal)   - passcode: Pass2222")
+    print("              Device iOS:     device-CUST-SYNTH-004-iOS")
+    print("              Viewer role (no pay entitlement)")
 
 
 if __name__ == "__main__":

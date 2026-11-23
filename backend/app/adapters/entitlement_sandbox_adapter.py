@@ -21,7 +21,8 @@ class EntitlementSandboxAdapter:
         self,
         customer_id: uuid.UUID,
         resource_type: str,
-        resource_reference: str
+        resource_reference: str,
+        entitlement_type: str | None = None
     ) -> str:
         """
         Check if customer has access to a specific resource.
@@ -30,6 +31,7 @@ class EntitlementSandboxAdapter:
             customer_id: Customer profile reference ID
             resource_type: Type of resource (account, payee, payment)
             resource_reference: Specific resource ID or '*' for all
+            entitlement_type: Optional filter for 'view', 'pay', or 'approve' (Release 2)
         
         Returns:
             Decision: 'allow', 'deny', or 'conditional'
@@ -42,6 +44,11 @@ class EntitlementSandboxAdapter:
                 SandboxEntitlement.resource_reference == "*"
             )
         )
+        
+        # Release 2: Filter by entitlement_type if specified (BR-PAY-012)
+        if entitlement_type:
+            stmt = stmt.where(SandboxEntitlement.entitlement_type == entitlement_type)
+        
         wildcard = self.db.execute(stmt).scalar_one_or_none()
         
         if wildcard:
@@ -55,6 +62,11 @@ class EntitlementSandboxAdapter:
                 SandboxEntitlement.resource_reference == resource_reference
             )
         )
+        
+        # Release 2: Filter by entitlement_type if specified
+        if entitlement_type:
+            stmt = stmt.where(SandboxEntitlement.entitlement_type == entitlement_type)
+        
         specific = self.db.execute(stmt).scalar_one_or_none()
         
         if specific:

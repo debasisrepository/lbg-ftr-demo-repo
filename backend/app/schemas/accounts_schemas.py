@@ -1,6 +1,7 @@
 """
 Account overview schemas.
 Requirement: FR-ACCT-001, FR-ACCT-002, FR-ACCT-003
+Release 2: BR-ACCT-002, BR-ACCT-003, BR-ACCT-004 (loans, business profiles)
 """
 from datetime import datetime
 
@@ -15,6 +16,16 @@ class Balance(BaseModel):
     display_text: str = Field(..., description="Plain-language balance text")
 
 
+class LoanDetails(BaseModel):
+    """Loan-specific details (Release 2: BR-ACCT-004)."""
+    outstanding_balance_minor: int | None = Field(None, description="Outstanding loan balance in minor units")
+    next_repayment_date: datetime | None = Field(None, description="Next scheduled repayment date")
+    next_repayment_amount_minor: int | None = Field(None, description="Next repayment amount in minor units")
+    remaining_term_months: int | None = Field(None, description="Remaining loan term in months")
+    
+    model_config = ConfigDict(from_attributes=True)
+
+
 class AccountItem(BaseModel):
     """Account item in overview response."""
     account_id: str = Field(..., description="UUID of account read model")
@@ -27,6 +38,7 @@ class AccountItem(BaseModel):
     freshness_text: str = Field(..., description="Accessible plain-language freshness indicator")
     item_state: str = Field(..., description="available or partial")
     payment_source_eligible: bool = Field(..., description="True if account can be used as payment source")
+    loan_details: LoanDetails | None = Field(None, description="Loan-specific details (Release 2)")
     
     model_config = ConfigDict(from_attributes=True)
 
