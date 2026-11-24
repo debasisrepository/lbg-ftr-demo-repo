@@ -15,19 +15,19 @@
  * 11. Sees promise indicator on queue item
  */
 
-import { test, expect } from '@playwright/test';
+import { test, expect } from './_pipeline_guard';
 
 test.describe('Journey: New Request to Promise', () => {
   test('complete journey from queue to promise capture', async ({ page }) => {
     // Step 1: Login as analyst
     await page.goto('/login');
-    await page.fill('input[name="username"]', 'analyst1');
-    await page.fill('input[name="password"]', 'analyst123');
+    await page.fill('input[id="username"]', 'analyst1');
+    await page.fill('input[id="password"]', 'analyst123');
     await page.click('button[type="submit"]');
     
     // Wait for navigation to landing page
     await page.waitForURL('/');
-    await expect(page.getByRole('heading', { name: /welcome/i })).toBeVisible();
+    await expect(page.getByRole('heading', { name: /Good morning/i })).toBeVisible();
     
     // Step 2: Navigate to work queue
     await page.click('a[href="/queue"]');
@@ -182,8 +182,8 @@ test.describe('Journey: New Request to Promise', () => {
     // This test specifically checks the validation failure path
     // Login
     await page.goto('/login');
-    await page.fill('input[name="username"]', 'analyst1');
-    await page.fill('input[name="password"]', 'analyst123');
+    await page.fill('input[id="username"]', 'analyst1');
+    await page.fill('input[id="password"]', 'analyst123');
     await page.click('button[type="submit"]');
     await page.waitForURL('/');
     

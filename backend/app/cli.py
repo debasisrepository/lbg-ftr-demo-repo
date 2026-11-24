@@ -56,7 +56,7 @@ def seed():
                 description="Standard collections analyst role",
                 allowed_widgets_json={"codes": ["queue_summary", "open_promises"]},
                 entitled_queue_states_json={"states": ["active", "awaiting_follow_up"]},
-                allowed_actions_json={"actions": ["queue.read", "customer.view", "promise.create", "promise.read", "policy.read", "audit.read"]},
+                allowed_actions_json={"actions": ["queue.read", "queue.refresh", "customer.view", "promise.create", "promise.read", "policy.read", "audit.read"]},
                 can_view_sensitive_fields=False,
                 profile_status="active"
             ),

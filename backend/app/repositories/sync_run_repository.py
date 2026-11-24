@@ -1,4 +1,5 @@
 """Sync run repository."""
+import uuid
 from datetime import datetime
 from typing import Optional
 
@@ -22,7 +23,11 @@ class SyncRunRepository:
 
     def get_by_id(self, run_id: str) -> Optional[SapSyncRun]:
         """Get sync run by ID."""
-        return self.db.query(SapSyncRun).filter(SapSyncRun.id == run_id).first()
+        try:
+            run_uuid = uuid.UUID(run_id)
+        except (ValueError, AttributeError):
+            return None
+        return self.db.query(SapSyncRun).filter(SapSyncRun.id == run_uuid).first()
 
     def update_status(
         self,

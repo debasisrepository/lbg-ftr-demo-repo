@@ -32,7 +32,7 @@ export default defineConfig({
       // Backend: install dependencies, delete old db, migrate, seed, start uvicorn
       command: `cd ../backend && ([ -d .venv ] || ${E2E_PYTHON} -m venv .venv) && .venv/bin/python -m pip install -q -e . && rm -f e2e_test.db && .venv/bin/python -m alembic upgrade head && .venv/bin/python app/cli.py seed && .venv/bin/python -m uvicorn app.main:app --host 127.0.0.1 --port ${E2E_BACKEND_PORT}`,
       url: `http://127.0.0.1:${E2E_BACKEND_PORT}/health`,
-      reuseExistingServer: false,
+      reuseExistingServer: !!process.env.E2E_REUSE_SERVER,
       timeout: 180_000,
       stdout: 'pipe',
       stderr: 'pipe',
@@ -44,7 +44,7 @@ export default defineConfig({
       // Frontend: dev server with backend proxy
       command: `npm run dev -- --host 127.0.0.1 --port ${E2E_FRONTEND_PORT} --strictPort`,
       url: `http://127.0.0.1:${E2E_FRONTEND_PORT}`,
-      reuseExistingServer: false,
+      reuseExistingServer: !!process.env.E2E_REUSE_SERVER,
       timeout: 180_000,
       stdout: 'pipe',
       stderr: 'pipe',

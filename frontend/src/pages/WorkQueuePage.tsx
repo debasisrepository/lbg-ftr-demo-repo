@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useAuth } from '../lib/use-auth'
 import { useQueue } from '../hooks/useQueue'
 import { QueueFilters, QueueFilterValues } from '../components/queue/QueueFilters'
 import { QueueTable } from '../components/queue/QueueTable'
@@ -8,6 +9,7 @@ import type { QueueGroup } from '../types/queue'
 
 export function WorkQueuePage() {
   const navigate = useNavigate()
+  const { activeRole } = useAuth()
   const { data, isLoading, error, fetchQueue, triggerRefresh, checkRefreshStatus } = useQueue()
   const [activeTab, setActiveTab] = useState('active')
   const [isRefreshing, setIsRefreshing] = useState(false)
@@ -99,6 +101,8 @@ export function WorkQueuePage() {
     return group?.count || 0
   }
 
+  const canRefresh = activeRole?.allowed_actions.includes('queue.refresh') ?? false
+
   return (
     <div>
       <div className="flex justify-between items-end mb-5">
@@ -111,13 +115,15 @@ export function WorkQueuePage() {
             value, ageing, promise status, actionability.
           </p>
         </div>
-        <button
-          className="min-h-[44px] px-5 py-2 rounded border-2 border-[#14283A] bg-[#14283A] text-white font-bold disabled:opacity-50"
-          onClick={handleRefresh}
-          disabled={isRefreshing}
-        >
-          {isRefreshing ? 'Refreshing...' : 'Refresh queue'}
-        </button>
+        {canRefresh && (
+          <button
+            className="min-h-[44px] px-5 py-2 rounded border-2 border-[#14283A] bg-[#14283A] text-white font-bold disabled:opacity-50"
+            onClick={handleRefresh}
+            disabled={isRefreshing}
+          >
+            {isRefreshing ? 'Refreshing...' : 'Refresh queue'}
+          </button>
+        )}
       </div>
 
       {refreshMessage ? (

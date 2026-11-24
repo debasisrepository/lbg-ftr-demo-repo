@@ -22,3 +22,8 @@ _test.env
 *.db
 .quality/
 graphify-out/cache/
+_start_frontend.py
+_stop_frontend.py
+_frontend.log
+_frontend.pid
+/tests/

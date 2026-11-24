@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test'
+import { test, expect } from './_pipeline_guard'
 
 test.describe('Wireframe 02: Work Queue', () => {
   test('logs in, navigates to queue, filters, clicks refresh, waits for completion, sees updated ranks', async ({
@@ -36,26 +36,20 @@ test.describe('Wireframe 02: Work Queue', () => {
     await page.waitForTimeout(500)
 
     // Check if table is present (may be empty depending on seed data)
-    const tableOrEmptyMessage = page.locator('table, text="No items in this queue"')
-    await expect(tableOrEmptyMessage.first()).toBeVisible()
+    const table = page.locator('table')
+    const emptyMessage = page.getByText(/No items in this queue/i)
+    await expect(table.or(emptyMessage).first()).toBeVisible()
 
     // Click refresh button
     const refreshButton = page.getByRole('button', { name: /Refresh queue/i })
     await expect(refreshButton).toBeVisible()
     await refreshButton.click()
 
-    // Wait for refresh to start
-    await expect(page.getByText(/Refresh/i)).toBeVisible()
+    // Wait for refresh to start - look for "Refreshing..." button specifically
+    await expect(page.getByRole('button', { name: /Refreshing/i })).toBeVisible({ timeout: 10000 })
 
-    // Wait for refresh to complete (timeout after 35 seconds)
-    // The refresh polls every second for up to 30 attempts
-    await page.waitForTimeout(5000) // Give it some time to complete
-
-    // Check for completion message or updated data freshness notice
-    const refreshCompleteOrRunning = page.locator(
-      'text=/Refresh completed|Refresh running|Refresh is taking longer/'
-    )
-    await expect(refreshCompleteOrRunning.first()).toBeVisible({ timeout: 35000 })
+    // Wait for refresh to complete - button should return to "Refresh queue" state
+    await expect(page.getByRole('button', { name: /Refresh queue/i })).toBeVisible({ timeout: 40000 })
 
     // Verify queue data is displayed (ranks should be visible if items exist)
     const hasItems = await page.locator('table tbody tr').count()

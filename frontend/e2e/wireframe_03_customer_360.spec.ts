@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test'
+import { test, expect } from './_pipeline_guard'
 
 test.describe('Wireframe 03 - Customer 360', () => {
   test('displays customer 360 view with all sections and masked fields', async ({ page }) => {

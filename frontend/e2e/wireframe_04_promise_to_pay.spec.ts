@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test'
+import { test, expect } from './_pipeline_guard'
 
 test.describe('Wireframe 04 - Promise to Pay', () => {
   test('submits promise, sees validation failure, fixes and succeeds', async ({ page }) => {
